@@ -1,0 +1,294 @@
+
+; ===================================================================
+;     Definition der Mnemonic des MC6805
+;     (c) Dietmar Harlos am 28.07.1999 - 29.06.2000
+;     diese Datei wird von IDI05.EXE benoetigt
+; ===================================================================
+
+; Beschreibung:
+; Um den Disassembler leichter an eigene Beduerfnisse anzupassen, wird
+; die Mnemonic durch diese Datei definiert. Jeder Befehl besteht aus
+; einem Byte und keinem, einem oder zwei nachfolgenden Byte. So gibt
+; es also genau 256 verschiedene Befehle, von denen jeder einzelne
+; durch eine Zeile in dieser Datei beschrieben wird. Die Nachfolge-
+; bytes haben folgende Bedeutung:
+
+; AA = Bytewert, nie negativ
+; NB = NearBranch (1 Byte lang, vorzeichenbehaftet)
+; BBBB = Wordwert (2 Byte, Big Endian), z.B. Adressen, nie negativ
+; CCCC = Integerwert (2 Byte, Big Endian), z.B. Adressenoffsets, auch negativ
+; NBNB = Adresse, die sich aus PC+NB ergibt (wird errechnet)
+
+; Jede Zeile enthaelt in den ersten 6 Spalten den Maschinencode fuer
+; jeden Befehl, ab Spalte 8 folgt die Mnemonic und (optional) ab Spalte
+; 28 ein Kommentar zu jedem Befehl. In der gesamten Zeile wird AA, NBNB,
+; BBBB und CCCC vom Disassembler durch hexadezimale Zahlen ersetzt.
+; Jede Zeile darf nicht laenger als 71 Zeichen sein.
+
+; Geaendert werden darf in dieser Datei jederzeit der Kommentar, solange
+; er bei Spalte 28 beginnt und jede Zeile nicht laenger als 71 Zeichen ist.
+; Ausserdem koennen die Befehle umbenannt werden (z.B. cmpx in cpx,
+; brset #? in brset?, db in fcb, usw.).
+
+; Bugs & Probleme:
+; illegale Opcodes am 19. August 1999 ueberprueft, sind ok
+; bei der Adressierungsart $CCCC,x wird vom Disassembler z.Z. nicht das
+;   Vorzeichen beachtet (d.h. $FFFF,x entspricht -$0001,x)
+
+
+00AANB brset #0,$AA,$NBNB  ; branch to $NBNB if bit #0 at $AA is set
+01AANB brclr #0,$AA,$NBNB  ; branch to $NBNB if bit #0 at $AA is clear
+02AANB brset #1,$AA,$NBNB  ; branch to $NBNB if bit #1 at $AA is set
+03AANB brclr #1,$AA,$NBNB  ; branch to $NBNB if bit #1 at $AA is clear
+04AANB brset #2,$AA,$NBNB  ; branch to $NBNB if bit #2 at $AA is set
+05AANB brclr #2,$AA,$NBNB  ; branch to $NBNB if bit #2 at $AA is clear
+06AANB brset #3,$AA,$NBNB  ; branch to $NBNB if bit #3 at $AA is set
+07AANB brclr #3,$AA,$NBNB  ; branch to $NBNB if bit #3 at $AA is clear
+08AANB brset #4,$AA,$NBNB  ; branch to $NBNB if bit #4 at $AA is set
+09AANB brclr #4,$AA,$NBNB  ; branch to $NBNB if bit #4 at $AA is clear
+0aAANB brset #5,$AA,$NBNB  ; branch to $NBNB if bit #5 at $AA is set
+0bAANB brclr #5,$AA,$NBNB  ; branch to $NBNB if bit #5 at $AA is clear
+0cAANB brset #6,$AA,$NBNB  ; branch to $NBNB if bit #6 at $AA is set
+0dAANB brclr #6,$AA,$NBNB  ; branch to $NBNB if bit #6 at $AA is clear
+0eAANB brset #7,$AA,$NBNB  ; branch to $NBNB if bit #7 at $AA is set
+0fAANB brclr #7,$AA,$NBNB  ; branch to $NBNB if bit #7 at $AA is clear
+10AA   bset #0,$AA         ; set bit #0 at memory address $AA
+11AA   bclr #0,$AA         ; clear bit #0 at memory address $AA
+12AA   bset #1,$AA         ; set bit #1 at memory address $AA
+13AA   bclr #1,$AA         ; clear bit #1 at memory address $AA
+14AA   bset #2,$AA         ; set bit #2 at memory address $AA
+15AA   bclr #2,$AA         ; clear bit #2 at memory address $AA
+16AA   bset #3,$AA         ; set bit #3 at memory address $AA
+17AA   bclr #3,$AA         ; clear bit #3 at memory address $AA
+18AA   bset #4,$AA         ; set bit #4 at memory address $AA
+19AA   bclr #4,$AA         ; clear bit #4 at memory address $AA
+1aAA   bset #5,$AA         ; set bit #5 at memory address $AA
+1bAA   bclr #5,$AA         ; clear bit #5 at memory address $AA
+1cAA   bset #6,$AA         ; set bit #6 at memory address $AA
+1dAA   bclr #6,$AA         ; clear bit #6 at memory address $AA
+1eAA   bset #7,$AA         ; set bit #7 at memory address $AA
+1fAA   bclr #7,$AA         ; clear bit #7 at memory address $AA
+20NB   bra $NBNB           ; branch always to $NBNB
+21NB   brn $NBNB           ; branch never to $NBNB
+22NB   bhi $NBNB           ; branch if accu is higher (unsigned)
+23NB   bls $NBNB           ; branch if accu is lower or same (unsigned)
+24NB   bhs $NBNB           ; branch if accu is higher or same (C clear)
+25NB   blo $NBNB           ; branch if accu is lower (C is set)
+26NB   bne $NBNB           ; branch if not equal (Z is clear)
+27NB   beq $NBNB           ; branch if equal (Z is set)
+28NB   bhcc $NBNB          ; branch if half carry bit clear (H clear)
+29NB   bhcs $NBNB          ; branch if half carry bit set (H is set)
+2aNB   bpl $NBNB           ; branch if plus (N bit is clear)
+2bNB   bmi $NBNB           ; branch if minus (N bit is set)
+2cNB   bmc $NBNB           ; branch if interrupt mask clear (I clear)
+2dNB   bms $NBNB           ; branch if interrupt mask set (I clear)
+2eNB   bil $NBNB           ; branch if external IRQ pin is low
+2fNB   bih $NBNB           ; branch if external IRQ pin is high
+30AA   neg $AA             ; negate at address $AA (two's complement)
+31     db $31              ; illegal opcode
+32     db $32              ; illegal opcode
+33AA   com $AA             ; inverse at address $AA (one's complement)
+34AA   lsr $AA             ; logical shift right at address $AA
+35     db $35              ; illegal opcode
+36AA   ror $AA             ; rotate right through carry at address $AA
+37AA   asr $AA             ; arithmetic shift right at address $AA
+38AA   lsl $AA             ; shift left at address $AA
+39AA   rol $AA             ; rotate left through carry at address $AA
+3aAA   dec $AA             ; decrement at address $AA
+3b     db $3b              ; illegal opcode
+3cAA   inc $AA             ; increment at address $AA
+3dAA   tst $AA             ; test for negative or zero at address $AA
+3e     db $3e              ; illegal opcode
+3fAA   clr $AA             ; clear memory at address $AA
+40     nega                ; negate accumulator (two's complement)
+41     db $41              ; illegal opcode
+42     mul                 ; unsigned multiply of accu & index reg.
+43     coma                ; inverse accumulator (one's complement)
+44     lsra                ; logical shift right accumulator
+45     db $45              ; illegal opcode
+46     rora                ; rotate accumulator right through carry
+47     asra                ; arithmetic shift right accumulator
+48     lsla                ; shift left accumulator
+49     rola                ; rotate accumulator left through carry
+4a     deca                ; decrement accumulator
+4b     db $4b              ; illegal opcode
+4c     inca                ; increment accumulator
+4d     tsta                ; test accumulator for negative or zero
+4e     db $4e              ; illegal opcode
+4f     clra                ; clear accumulator
+50     negx                ; negate index register (two's complement)
+51     db $51              ; illegal opcode
+52     db $52              ; illegal opcode
+53     comx                ; inverse index register (one's complement)
+54     lsrx                ; logical shift right index register
+55     db $55              ; illegal opcode
+56     rorx                ; rotate index register right through carry
+57     asrx                ; arithmetic shift right index register
+58     lslx                ; shift left index register
+59     rolx                ; rotate index register left through carry
+5a     decx                ; decrement index register
+5b     db $5b              ; illegal opcode
+5c     incx                ; increment index register
+5d     tstx                ; test index register for negative or zero
+5e     db $5e              ; illegal opcode
+5f     clrx                ; clear index register
+60AA   neg $AA,x           ; negate memory at $AA + x (two's complem.)
+61     db $61              ; illegal opcode
+62     db $62              ; illegal opcode
+63AA   com $AA,x           ; inverse memory at $AA + x (one's complem.)
+64AA   lsr $AA,x           ; logical shift right at $AA + index reg.
+65     db $65              ; illegal opcode
+66AA   ror $AA,x           ; rotate right through carry at $AA + x-reg.
+67AA   asr $AA,x           ; arithmetic shift right at $AA + index reg.
+68AA   lsl $AA,x           ; shift left at address $AA + index register
+69AA   rol $AA,x           ; rotate left through carry at $AA + x-reg.
+6aAA   dec $AA,x           ; decrement memory at $AA + index register
+6b     db $6b              ; illegal opcode
+6cAA   inc $AA,x           ; increment memory at $AA + index register
+6dAA   tst $AA,x           ; test for negative or zero at $AA + x-reg.
+6e     db $6e              ; illegal opcode
+6fAA   clr $AA,x           ; clear memory at $AA + index register
+70     neg ,x              ; negate memory at x-register (two's compl.)
+71     db $71              ; illegal opcode
+72     db $72              ; illegal opcode
+73     com ,x              ; inverse memory at x-register (one's comp.)
+74     lsr ,x              ; logical shift right at index register
+75     db $75              ; illegal opcode
+76     ror ,x              ; rotate right through carry at x-register
+77     asr ,x              ; arithmetic shift right at index register
+78     lsl ,x              ; shift left at index register
+79     rol ,x              ; rotate left through carry at x-register
+7a     dec ,x              ; decrement memory at index register
+7b     db $7b              ; illegal opcode
+7c     inc ,x              ; increment memory at index register
+7d     tst ,x              ; test for negative or zero at x-register
+7e     db $7e              ; illegal opcode
+7f     clr ,x              ; clear memory at index register
+80     rti                 ; return from interrupt
+81     rts                 ; return from subroutine
+82     db $82              ; illegal opcode
+83     swi                 ; software irq (addr. at $xFFC:$xFFD, x=1,3)
+84     db $84              ; illegal opcode
+85     db $85              ; illegal opcode
+86     db $86              ; illegal opcode
+87     db $87              ; illegal opcode
+88     db $88              ; illegal opcode
+89     db $89              ; illegal opcode
+8a     db $8a              ; illegal opcode
+8b     db $8b              ; illegal opcode
+8c     db $8c              ; illegal opcode
+8d     db $8d              ; illegal opcode
+8e     stop                ; enable ext. interrupt pin, stop oscillator
+8f     wait                ; enable interrupts & wait for interrupt
+90     db $90              ; illegal opcode
+91     db $91              ; illegal opcode
+92     db $92              ; illegal opcode
+93     db $93              ; illegal opcode
+94     db $94              ; illegal opcode
+95     db $95              ; illegal opcode
+96     db $96              ; illegal opcode
+97     tax                 ; transfer accumulator to index register
+98     clc                 ; clear carry bit
+99     sec                 ; set carry bit
+9a     cli                 ; clear interrupt mask (enable interrupts)
+9b     sei                 ; set interrupt mask (disable interrupts)
+9c     rsp                 ; reset stack pointer (SP=$FF)
+9d     nop                 ; no operation (wait for two cycles)
+9e     db $9e              ; illegal opcode
+9f     txa                 ; transfer index register to accumulator
+a0AA   sub #$AA            ; subtract value #$AA from accumulator
+a1AA   cmp #$AA            ; compare accumulator with value #$AA
+a2AA   sbc #$AA            ; subtract (with carry) value #$AA from accu
+a3AA   cmpx #$AA           ; compare index register with value #$AA
+a4AA   and #$AA            ; AND accu with value #$AA
+a5AA   bit #$AA            ; AND accu with value #$AA (without alter)
+a6AA   lda #$AA            ; load accumulator with value #$AA
+a7     db $a7              ; illegal opcode
+a8AA   eor #$AA            ; XOR accumulator with value #$AA
+a9AA   adc #$AA            ; add (with carry) value #$AA to accu
+aaAA   ora #$AA            ; OR accumulator with value #$AA
+abAA   add #$AA            ; add value #$AA to accumulator
+ac     db $ac              ; illegal opcode
+adNB   bsr $NBNB           ; branch to subroutine at address $NBNB
+aeAA   ldx #$AA            ; load index register with value #$AA
+af     db $af              ; illegal opcode
+b0AA   sub $AA             ; subtract value at address $AA from accu
+b1AA   cmp $AA             ; compare accu with value at address $AA
+b2AA   sbc $AA             ; subtract (with carry) value at addr. $AA
+b3AA   cmpx $AA            ; compare index register with value at $AA
+b4AA   and $AA             ; AND accu with value at address $AA
+b5AA   bit $AA             ; AND accu with value at $AA (no alter)
+b6AA   lda $AA             ; load accu with value at address $AA
+b7AA   sta $AA             ; store accumulator at address $AA
+b8AA   eor $AA             ; XOR accu with value at address $AA
+b9AA   adc $AA             ; add (with carry) value at address $AA
+baAA   ora $AA             ; OR accu with value at address $AA
+bbAA   add $AA             ; add value at address $AA to accumulator
+bcAA   jmp $AA             ; unconditional jump to address $AA
+bdAA   jsr $AA             ; jump to subroutine at address $AA
+beAA   ldx $AA             ; load index reg. with value at addr. $AA
+bfAA   stx $AA             ; store index register at address $AA
+c0BBBB sub $BBBB           ; subtract value at address $BBBB from accu
+c1BBBB cmp $BBBB           ; compare accu with value at address $BBBB
+c2BBBB sbc $BBBB           ; subtract (with carry) value at $BBBB
+c3BBBB cmpx $BBBB          ; compare index reg. with value at $BBBB
+c4BBBB and $BBBB           ; AND accu with value at address $BBBB
+c5BBBB bit $BBBB           ; AND accu with value at $BBBB (no alter)
+c6BBBB lda $BBBB           ; load accumulator with value at $BBBB
+c7BBBB sta $BBBB           ; store accumulator at address $BBBB
+c8BBBB eor $BBBB           ; XOR accu with value at address $BBBB
+c9BBBB adc $BBBB           ; add (with carry) value at $BBBB to accu
+caBBBB ora $BBBB           ; OR accu with value at address $BBBB
+cbBBBB add $BBBB           ; add value at $BBBB to accumulator
+ccBBBB jmp $BBBB           ; unconditional jump to address $BBBB
+cdBBBB jsr $BBBB           ; jump to subroutine at address $BBBB
+ceBBBB ldx $BBBB           ; load index reg. with value at addr. $BBBB
+cfBBBB stx $BBBB           ; store index register at address $BBBB
+d0CCCC sub $CCCC,x         ; subtract value at addr. $CCCC+x from accu
+d1CCCC cmp $CCCC,x         ; compare accu with value at addr. $CCCC+x
+d2CCCC sbc $CCCC,x         ; subtract (with carry) value at $CCCC + x
+d3CCCC cmpx $CCCC,x        ; compare index reg. with value at $CCCC+x
+d4CCCC and $CCCC,x         ; AND accu with value at address $CCCC + x
+d5CCCC bit $CCCC,x         ; AND accu & value at $CCCC + x (no alter)
+d6CCCC lda $CCCC,x         ; load accu with value at address $CCCC + x
+d7CCCC sta $CCCC,x         ; store accumulator at address $CCCC + x
+d8CCCC eor $CCCC,x         ; XOR accu with value at address $CCCC + x
+d9CCCC adc $CCCC,x         ; add (with carry) value at $CCCC+x to accu
+daCCCC ora $CCCC,x         ; OR accu with value at address $CCCC + x
+dbCCCC add $CCCC,x         ; add value at $CCCC + x to accumulator
+dcCCCC jmp $CCCC,x         ; unconditional jump to address $CCCC + x
+ddCCCC jsr $CCCC,x         ; jump to subroutine at address $CCCC + x
+deCCCC ldx $CCCC,x         ; load index reg. with value at $CCCC + x
+dfCCCC stx $CCCC,x         ; store index register at address $CCCC + x
+e0AA   sub $AA,x           ; subtract value at addr. $AA + x from accu
+e1AA   cmp $AA,x           ; compare accu with value at addr. $AA + x
+e2AA   sbc $AA,x           ; subtract (with carry) value at $AA + x
+e3AA   cmpx $AA,x          ; compare index reg. with value at $AA + x
+e4AA   and $AA,x           ; AND accu with value at address $AA + x
+e5AA   bit $AA,x           ; AND accu with value at $AA + x (no alter)
+e6AA   lda $AA,x           ; load accu with value at addr. $AA + x-reg.
+e7AA   sta $AA,x           ; store accumulator at address $AA + x-reg.
+e8AA   eor $AA,x           ; XOR accu with value at addr. $AA + x
+e9AA   adc $AA,x           ; add (with carry) value at $AA + x to accu
+eaAA   ora $AA,x           ; OR accu with value at addr. $AA + x-reg.
+ebAA   add $AA,x           ; add value at $AA + x-reg. to accumulator
+ecAA   jmp $AA,x           ; unconditional jump to address $AA + x
+edAA   jsr $AA,x           ; jump to subroutine at address $AA + x
+eeAA   ldx $AA,x           ; load index reg. with value at $AA + x
+efAA   stx $AA,x           ; store index register at address $AA + x
+f0     sub ,x              ; subtract value at address in x from accu
+f1     cmp ,x              ; compare accu with value at address in x
+f2     sbc ,x              ; subtract (with carry) value at addr. in x
+f3     cmpx ,x             ; compare x-reg. with value at addr. x-reg.
+f4     and ,x              ; AND accu with value at address in x-reg.
+f5     bit ,x              ; AND accu with value at addr. x (no alter)
+f6     lda ,x              ; load accu with value at address in x
+f7     sta ,x              ; store accumulator at address in x-regist.
+f8     eor ,x              ; XOR accu with value at address in x-reg.
+f9     adc ,x              ; add (with carry) value at x-reg. to accu
+fa     ora ,x              ; OR accu with value at addr. in x-register
+fb     add ,x              ; add value at addr. x-reg. to accumulator
+fc     jmp ,x              ; unconditional jump to address in x-reg.
+fd     jsr ,x              ; jump to subroutine at address in x-reg.
+fe     ldx ,x              ; load index reg. with value at addr. x-reg.
+ff     stx ,x              ; store index register at address in x-reg.

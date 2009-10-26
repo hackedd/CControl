@@ -1,0 +1,85 @@
+
+       ßÛÛßßÛÛ                    (beinahe)
+        ÛÛ Ü ß ÜÜ ÜÜÜÜ  ÜÜÜÜÜ   ÜÜÜÜÜ  ÜÜ   ÜÜ  ÜÜÜÜÜ  ÜÜ ÜÜÜÜ  ÜÜÜÜÜ
+        ÛÛßÛ    ÛÛß ßß ÛÛÜÜÜÛÛ ÛÛÜÜÜÛÛ ÛÛ Ü ÛÛ  ÜÜÜÜÛÛ  ÛÛß ßß ÛÛÜÜÜÛÛ
+        ÛÛ      ÛÛ     ÛÛ   ÜÜ ÛÛ   ÜÜ ÛÛÛßÛÛÛ ÛÛ   ÛÛ  ÛÛ     ÛÛ   ÜÜ
+       ßßßß    ßßßß     ßßßßß   ßßßßß  ßß   ßß  ßßßßßß ßßßß     ßßßßß
+
+ Obwohl die Benutzung der in dieser Sammlung enthaltenen Informationen, Tips
+ und Beispielprogramme umsonst ist, sollte sich jeder Nutzer an der
+ Weiterentwicklung beteiligen. Das kann beispielsweise durch verfassen
+ eigener Beitraege fuer diese Informationssammlung geschehen. Es ist aber
+ auch moeglich, den Autor durch Zusenden eines kleinen Geldbetrags zu
+ unterstuetzen.
+
+ Jeder Mensch, der durch diese Sammlung Informationen erhalten hat, die er
+ ohne diese Sammlung nicht oder nicht so schnell gefunden haette, sollte fuer
+ die Nutzung dieser Informationen eine geringe Gebuehr an den Autor
+ entrichten.
+
+ Die Hoehe dieser Nutzungsgebuehr richtet sich nach den finanziellen
+ Verhaeltnissen des Lesers: Schueler, Studenten, Sozialhilfeempfaenger und
+ Menschen mit sehr niedrigem Einkommen brauchen nichts zu zahlen. Alle
+ anderen sollten einen Betrag von 10,- DM an den Autor entrichten. Dies kann
+ durch Zusenden eines Geldscheines in einem Briefumschlag oder per
+ Ueberweisung auf das Konto des Autors (siehe unten) geschehen.
+
+ Ausdruecklich ausgenommen von dieser "Registrierung" sind aber die beiden
+ Disassembler DI05.EXE und IDI05.EXE, sowie der Assembler AS05.EXE. Beim
+ Assembler handelt es sich um Freeware, bei den Disassemblern um Shareware.
+
+ Auch ausgenommen ist die Verwendung des Speicherdumps des C-Control/BASIC-
+ Betriebssystems, dessen Copyright bei Martin Foerster vom Conrad Electronic
+ Technologie Centrum liegt, als auch die Verwendung des "Self-Check-ROM I",
+ dessen Copyright bei Motorola liegt.
+
+ Im Registrierungsbetrag von 10,- DM ist einzig die private Nutzung dieser
+ Informationssammlung und aller beigelegten Programme, mit Ausnahme des
+ Assemblers und der beiden Disassembler, enthalten. Die gewerbliche Nutzung
+ der vom Autor entwickelten Verfahren, insbesondere die Nutzung der beiden
+ Disassembler erfordert eine eigene Lizenz. Fuer Informationen hierzu sollte
+ der Autor per Brief- oder elektronische Post kontaktet werden.
+
+ Ich denke der Betrag von 10,- DM ist nicht zu hoch; immerhin zahlt man fuer
+ ein gutes Buch, dessen Inhalt meist noch nicht einmal vor dem Kauf bekannt
+ ist, sehr viel mehr. Beachten Sie bitte, dass das Zusammensuchen und
+ Erstellen der Informationen und Programme in diesem ZIP-Archiv einiges an
+ Muehen und Zeit gekostet hat. Vor der Registrierung kann die Information in
+ dieser Sammlung genauso wie die enthaltenen Programme ausgiebig getestet
+ werden.
+
+ Die Sammlung darf ALS GANZES an jeden interessierten Endanwender
+ weitergegeben werden. Dafuer darf kein Geld verlangt werden! Das Aendern und
+ die anschliessende Weitergabe irgendeiner Information oder irgendeines
+ Programmes ist ausdruecklich untersagt.
+
+ Auch wer sich nicht registrieren lassen moechte, sollte mir doch zumindest
+ eine e-mail schicken, damit ich weiss, ob meine Informationssammlung
+ ueberhaupt von Irgendjemandem benutzt wird. Sollten die Informationen und
+ Programme in diesen ZIP-Archiv auf voelliges Desinteresse stossen, werde ich
+ keine weiteren Versionen meiner Sammlung herausgeben!!
+
+
+           ú ú -Ä-Ä-ÄÄÄ-ÄÄÄÄ-ÄÄÄÄÄúÄ/\/\/\ÄúÄÄÄÄÄ-ÄÄÄÄ-ÄÄÄ-Ä-Ä- ú ú
+
+
+                                 Postadresse:
+                                Dietmar Harlos
+                              Webereistrasse 25
+                                 32139 Spenge
+
+                                   e-mail:
+                                dharlos@web.de
+
+                               Bankverbindung:
+                           Deutsche Bank 24 Buende
+                           Bankleitzahl 480 700 24
+                             Kontonummer 2620706
+
+      Bitte geben Sie im Feld "Verwendungszweck" der Ueberweisung Ihren
+    Namen und dahinter "CCINTERN" an. Die Durchschrift oder eine Kopie des
+    Ueberweisungsbelegs sollte aus Sicherheitsgruenden zusaetzlich an die
+            Postadresse des Autors (siehe oben) geschickt werden.
+
+
+

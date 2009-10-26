@@ -1,0 +1,688 @@
+
+          ---------------------------------------------------------
+           -------- ﬂ€€ﬂ  ﬂ€€ﬂﬂ€‹  ﬂ€€ﬂ  ‹€ﬂﬂﬂ€‹  €€ﬂﬂﬂﬂﬂ (tm) ---
+            -------  €€    €€  €€   €€   €€  €€€  €€      -------
+             ------  €€    €€  €€   €€   €€ € €€  ﬂﬂﬂﬂﬂ€‹ ------
+            -------  €€    €€  €€   €€   €€€  €€       €€ -------
+           -------- ‹€€‹  ‹€€‹‹€ﬂ  ‹€€‹  ﬂ€‹‹‹€ﬂ  ﬂ€‹‹‹€ﬂ --------
+          ---------------------------------------------------------
+         ----- Der "intelligente" Disassembler zur 6805'er CPU -----
+          ---------------------------------------------------------
+
+ ----------------------------------------------------------------------------
+                              Inhaltsverzeichnis                             
+ ----------------------------------------------------------------------------
+
+     1.0 Was ist IDI05 ?
+        1.1 Dateien in diesem ZIP-Archiv
+ 
+     2.0 Benutzung von IDI05
+        2.1 Schneller Start
+        2.2 Ausgabeformat des Disassemblers
+           2.21 Die Fehlerliste
+           2.22 Das Ausgabelisting
+        2.3 Erstellen eigener Konfigurationsdateien
+           2.31 Die benutzbaren Befehle und Optionen
+        2.4 Nuetzliche Tools fuer IDI05
+           2.41 Der interaktive Disassembler DI05.EXE
+           2.42 Der Assembler AS05.EXE
+        2.5 Die Mnemonic-Datei
+        2.6 Ein einfaches Uebungsprojekt
+ 
+     3.0 Funktionsweise des Disassemblers IDI05
+ 
+     4.0 Rechtliches
+
+
+ ----------------------------------------------------------------------------
+                             1.0 Was ist IDI05 ?                             
+ ----------------------------------------------------------------------------
+
+ IDI05 ("Intelligenter Disassembler fuer eine 6805'er CPU") dient dazu ein
+ Maschinenspracheprogramm, das fuer eine 6805'er CPU geschrieben wurde,
+ vollstaendig zu disassemblieren. Im guenstigsten Fall wird IDI05 gestartet
+ und erstellt ausgehend von einigen Startadressen selbststaendig ein
+ disassembliertes Listing des Maschinenspracheprogramms inklusive
+ Speicherbelegungsplan ("cross reference list").
+
+ Nuetzlich ist das z.B. fuer Assemblerprogramme zu denen der Quellcode
+ verlorengegangen ist oder zu denen der Quellcode nicht veroeffentlicht
+ wurde. Doch auch zum Ueberpruefen von eigenen Programmen kann dieses Utility
+ durchaus nuetzlich sein.
+
+ Der Sinn und Zweck der Disassemblierung eines Maschinenspracheprogramms
+ mittels IDI05 ist weniger ein wieder assemblierfaehiges Textfile zu
+ erzeugen, als vielmehr ein Listing zu generieren, mit dessen Hilfe das
+ Ausgangsprogramm kommentiert werden kann. Aus diesem Grund enthaelt das
+ Ausgabelisting sehr viele Informationen.
+
+
+ ----------------------------------------------------------------------------
+                       1.1 Dateien in diesem ZIP-Archiv                      
+ ----------------------------------------------------------------------------
+
+ Die folgenden Dateien sollten wenigstens in dem ZIP-Archiv, in dem Sie IDI05
+ erhalten haben, vorhanden sein:
+
+   IDI05.EXE     Das Hauptprogramm
+   IDI05.MNE     Die Mnemonic-Datei von IDI05.EXE
+   IDI05.MAN     Das Manual zu IDI05
+   DI05.EXE      einfacher Disassembler fuer einen 6805'er - Hilfe mit F1
+   DI05.MNE      Die Mnemonic-Datei von DI05.EXE
+   CCBASDMP.BIN  Speicherdump des C-Control/BASIC-Chips (als Beispiel)
+   CCBASDMP.CFG  Konfigurationsdatei zum Speicherdump (als Beispiel)
+   BEISPIEL.BAT  Durch Aufruf dieser BAT-Datei wird das Beispiel gestartet
+   LAUFLICH.BIN  Speicherdump des Uebungsprojektes (siehe Kapitel 2.6)
+   REGISTER.TXT  Informationen zur Registrierung
+
+ Alle Dateien sollten in ein gemeinsames Verzeichnis entpackt werden.
+
+ Bitte beachten Sie, dass die Programme IDI05 und DI05 nur benutzt werden
+ duerfen, wenn an den Autor der Programme eine (geringe) Benutzungsgebuehr
+ gezahlt wird. Informationen hierzu befinden sich in der Textdatei
+ REGISTER.TXT.
+
+ ----------------------------------------------------------------------------
+                           2.0 Benutzung von IDI05                           
+ ----------------------------------------------------------------------------
+
+ Der Disassembler wird mit Hilfe einer Textdatei konfiguriert. Fuer jedes zu
+ disassemblierende Programm sollte eine eigene Konfigurationsdatei angelegt
+ werden. Das zu disassemblierende Programm muss als Binaerdatei vorliegen
+ (das von Motorola spezifizierte S19-Format wird z.Z. noch nicht
+ unterstuetzt).
+
+
+ ----------------------------------------------------------------------------
+                             2.1 Schneller Start                             
+ ----------------------------------------------------------------------------
+
+ Das ZIP-Archiv enthaelt bereits eine Konfigurationsdatei mit deren Hilfe das
+ ebenfalls im Archiv enthaltene Betriebssystem eines C-Control/BASIC-
+ Minicomputers disassembliert werden kann.
+
+ Der C-Control/BASIC-Minicomputer ist ein Mikrokontrollersystem das von der
+ Firma Conrad Electronic entwickelt wurde und auf dem MC68HC05B6-
+ Mikrokontroller der Firma Motorola basiert. Naehere Information zu diesem
+ System ist im Internet unter der URL "http://www.c-control.de" verfuegbar.
+
+ Die Datei CCBASDMP.BIN enthaelt den Speicherdump des Minicomputers und die
+ Datei CCBASDMP.CFG ist eine bereits angelegte Beispielkonfigurationsdatei um
+ das Betriebssystem des Mikrokontrollersystem zu disassemblieren und einen
+ Speicherbelegungsplan ("cross reference list") zu erstellen.
+
+ Dazu muss der Disassembler IDI05.EXE unter DOS oder (unter Windows 95/98/NT)
+ in einer DOS-Box gestartet werden. Der Aufruf muss am DOS-Prompt in dem
+ Verzeichnis, in das der Inhalt des ZIP-Archives extrahiert wurde, mit
+ folgender Zeile erfolgen:
+
+     idi05 ccbasdmp.cfg
+
+ Nach dem Aufruf erstellt der Disassembler die Ausgabedatei mit dem Namen
+ CCBASDMP.OUT, was je nach Geschwindigkeit des PCs einige Sekunden dauern
+ kann. Anschliessend kann die Datei CCBASDMP.OUT mit dem DOS-Editor EDIT.COM
+ untersucht werden.
+
+
+ ----------------------------------------------------------------------------
+                     2.2 Ausgabeformat des Disassemblers                     
+ ----------------------------------------------------------------------------
+
+ Nachdem der Disassembler das zu disassemblierende Programm analysiert hat
+ wird eine Ausgabedatei (im allgemeinen mit der Endung .OUT) erzeugt. Die
+ Ausgabedatei enthaelt nach einem Header in dem vermerkt ist, welches
+ Maschinenspracheprogramm wann disassembliert wurde eine Fehlerliste und
+ darauffolgend das Ausgabelisting. Das Ausgabelisting besteht aus einem Mix
+ aus Daten- und Codebereichen, die jeweils in einem sinnvollen Format
+ ausgegeben werden. Das Ausgabelisting beginnt mit der Adresse 0 und endet
+ allgemein bei der letzten Adresse auf die die CPU zugreifen kann.
+
+
+ ----------------------------------------------------------------------------
+                             2.21 Die Fehlerliste                            
+ ----------------------------------------------------------------------------
+
+ Da beim Analysieren und Disassemblieren eines Programms Fehler oder
+ Warnungen auftauchen koennen, werden diese am Anfang der Ausgabedatei in
+ einer Fehlerliste zusammengefasst.
+
+ Die Information in dieser Fehlerliste soll den Anwender darauf hinweisen, an
+ welchen Adressen im Speicher eventuell Tabellen oder zusaetzlicher
+ Programmcode zu finden ist, die z.B. ueber das Index-Register der CPU
+ angesprochen werden.
+
+ Waehrend der Analyse des zu disassemblierenden Maschinenspracheprogramms
+ kann der Disassembler nicht feststellen, welcher Inhalt zu einem bestimmten
+ Zeitpunkt im Index-Register steht. Deshalb ist jede Stelle an der das
+ Maschinenspracheprogramm Daten oder Unterprogrammroutinen ueber das Index
+ Register adressiert in der Fehlerliste vermerkt. Der Benutzer des
+ Disassembler muss solche Bereiche in der Konfigurationsdatei als
+ Datentabellen oder als zusaetzliche Startadressen definieren.
+
+ Da die 6805'er CPU keine 16-Bit Zeiger unterstuetzt kommt es sehr haeufig
+ vor, das groessere Programme die auf Daten ausserhalb der Zeropage (das ist
+ der Bereich von Adresse $0 bis $ff) zugreifen muessen, 16-Bit Zugriffe mit
+ Hilfe kleiner Maschinenspracheprogramme im RAM nachbilden. Da diese kleinen
+ Unterroutinen aber erst zur Laufzeit des zu disassemblierenden Programms zur
+ Verfuegung stehen muss der RAM-Bereich von der Analyse durch den
+ Disassembler ausgeschlossen werden. Dies geschieht in der
+ Konfigurationsdatei mit Hilfe des Exclude-Kommandos. Jeder Sprung des zu
+ disassemblierenden Programms in diesen Exclude-Bereich wird in der
+ Fehlerliste vermerkt.
+
+ Zusaetzlich ist in der Fehlerliste vermerkt, ob waehrend der Analyse des
+ Programms illegaler Opcode ausgefuehrt wurde oder ob Bereiche entdeckt
+ wurden die sich ueberschneiden. In solchen Faellen muss ueberprueft werden,
+ ob z.B. Datenbereiche faelschlicherweise als Codebereiche analysiert wurden
+ und warum das passieren konnte.
+
+ Es kommt vor, dass Bereiche des Speichers vom Disassembler mehrfach
+ typisiert werden. Manche Bereiche im RAM werden z.B. - wie oben bereits
+ beschrieben - vom Hauptprogramm erst dann aufgerufen, nachdem sie angelegt
+ wurden. In diesem Fall deklariert der Disassembler diese Bereiche sowohl als
+ Code- als auch als Datenbereich. Es erscheinen dann mehrere Hinweise (wie
+ z.B. "UNLOGISCHE DOPPELBELEGUNGEN") im Fehlerlisting. Die Hinweise koennen
+ in diesem Fall ignoriert werden.
+
+
+ ----------------------------------------------------------------------------
+                           2.22 Das Ausgabelisting                           
+ ----------------------------------------------------------------------------
+
+ Im Ausgabelisting werden alle Bereiche, die der Disassembler waehrend der
+ Analyse "entdecken" konnte, in einem entsprechenden Format ausgegeben.
+
+ Speicherbereiche werden in Code-, Daten- und in bisher noch nicht
+ untersuchte Bereiche ("unexplored") unterteilt. Bei Speicherbereichen die
+ Datenbytes enthalten wird zusaetzlich aufgefuehrt von welchen Adressen auf
+ diese lesend oder schreibend zugegriffen wird.
+
+ Bereiche die der Disassembler als Codebereiche erkennen konnte werden
+ disassembliert ausgegeben. Jede Unterroutine erhaelt ihren eigenen
+ Kommentarheader in dem vermerkt ist, auf welche Register und auf welche
+ Speicheradressen lesend und schreibend zugegriffen wird. Datenbereiche auf
+ die ueber das Index Register zugegriffen wird erscheinen hier allerdings
+ nicht, sondern werden nur im Fehlerlisting (siehe oben) angegeben.
+ Schliesslich steht im Header von welchem Punkt des Programms aus die
+ Subroutine aufgerufen wurde.
+
+ Da die Disassemblierung mit Hilfe der Datei IDI05.MNE durchgefuehrt wird
+ enthalten Codebereiche bereits einen Kommentar, der allgemein die Funktion
+ eines jeden Maschinencode-Befehls erklaert.
+
+ Zusammenhaengende Datenbereiche werden vom Disassembler automatisch zu
+ Tabellen und Bitarrays zusammengefasst.
+
+ Die Konfigurationsdatei sollte solange editiert werden, bis jeder Bereich
+ vom Disassembler untersucht werden konnte und kein "unexplored"
+ uebrigbleibt.
+
+
+ ----------------------------------------------------------------------------
+                 2.3 Erstellen eigener Konfigurationsdateien                 
+ ----------------------------------------------------------------------------
+
+ Zum Erstellen einer eigenen Konfigurationsdatei sollte dem Disassembler
+ IDI05.EXE beim Aufruf der Name einer bisher noch nicht existierenden Datei
+ uebergeben werden. In diesem Fall fragt das Programm nach, ob es
+ selbststaendig eine Defaultkonfigurationsdatei anlegen soll. Wenn diese
+ Frage bejaht wird, wird eine Datei erstellt, die bereits zu jedem Befehl der
+ zur Konfiguration des Disassemblers benutzt werden kann eine kurze
+ Erlaeuterung enthaelt, so dass diese Datei recht einfach an eigene
+ Beduerfnisse angepasst werden kann.
+
+ Zum Editieren der Konfigurationsdatei sollte ein einfacher ASCII-Texteditor
+ wie z.B. EDIT.COM unter DOS oder NOTEPAD.EXE unter Windows benutzt werden.
+
+ Ein - wie ich finde - ganz gutes Beispiel fuer eine Konfigurationsdatei
+ stellt die Beispieldatei CCBASDMP.CFG dar. Anhand dieser Datei sollte leicht
+ zu erkennen sein, auf welche Weise die verschiedenen Startadressen und
+ Daten-Tabellenadressen an den Disassembler uebergeben werden muessen.
+
+ Die kleinste denkbare Konfigurationsdatei besteht uebrigens aus dem Befehl
+ InputFile und einem Kommando, mit dem wenigstens eine Startadresse fuer die
+ Disassemblierung uebergeben wird (z.B. mit JmpAddr, JsrAddr oder
+ InterruptTable).
+
+
+ ----------------------------------------------------------------------------
+                  2.31 Die benutzbaren Befehle und Optionen                  
+ ----------------------------------------------------------------------------
+
+ Hexadezimale Zahlen werden innerhalb der Konfigurationsdatei durch ein
+ fuehrendes Dollarzeichen ($) gekennzeichnet. In der folgenden Liste steht
+ <Adresse> fuer einen 16-Bit Wert (z.B. $1fff), <String> fuer einen in
+ Gaensefuesschen eingeschlossenen String (z.B. "C:\TEST.BIN") und <Bereich>
+ fuer einen Adressbereich (z.B. $101-$1ff). Alle Parameter die in eckigen
+ Klammern stehen ([]) sind optional und muessen bei dem jeweiligen Befehl
+ nicht mit uebergeben werden. Ein senkrechter Trennstrich (|) symbolisiert
+ das logische Exclusiv-Oder: Nur einer der beiden Parameter darf angegeben
+ werden.
+
+ Alle Strings die in dieser Liste als optional gekennzeichnet sind dienen
+ dazu, dem durch den jeweiligen Befehl definierten Adressbereich eine
+ Bezeichnung zu geben. Diese Bezeichnung wird vom Disassembler im
+ Kommentarheader des jeweiligen Bereichs verwendet.
+
+
+ MaxAddr = <Adresse>
+       Mit diesem Befehl wird die Groesse des Adressraums der CPU festgelegt.
+       Falls innerhalb des zu disassemblierenden Programms auf eine Adresse
+       ausserhalb des Adressraums zugegriffen oder gesprungen wird, beendet
+       der Disassembler die Analyse des Programms mit einer Fehlermeldung.
+       In einem solchen Fall wurde vermutlich ein Datenbereich als Code
+       disassembliert. Bei einem MC68HC05B6 muss als Parameter $1fff ange-
+       geben werden.
+
+ Org = <Adresse>
+       Das erste Byte der Binaerdatei InputFile wird an diese Adresse des
+       virtuellen Speicherraums des Disassemblers geladen. Falls InputFile
+       ein Dump des gesamten Speicherraums ist muss Org gleich null sein.
+
+ InputFile = <String>
+       Hiermit wird der Pfad und Name der zu disassemblierenden Binaerdatei
+       festgelegt. InputFile muss hinter MaxAddr und Org und vor den anderen
+       Optionen stehen. Wenn die Groesse des InputFiles kleiner als die
+       Groesse des virtuellen Adressraumes ist, wird der nicht von der Datei
+       belegte Speicherbereich automatisch excludet (siehe Exclude).
+
+ MnemonicFile = <String>
+       Hiermit wird der Pfad und Name der Mnemonic-Datei (defaultmaessig
+       IDI05.MNE) festgelegt.
+
+ OutputFile = <String>
+       Die Fehlerliste und das Ausgabelisting wird in diese Ausgabedatei
+       geschrieben. Falls diese Datei bereits vorhanden ist, wird sie
+       ueberschrieben.
+
+ Exclude = <Bereich>
+       Mit diesem Befehl koennen Speicherbereiche, die Maschinencode
+       enthalten der erst waehrend der Programmausfuehrung des zu
+       disassemblierenden Programms zur Verfuegung steht, von der Analyse
+       ausgeschlossen werden. Der Disassembler verfolgt Spruenge in diesen
+       Bereich nicht weiter, sondern gibt nur einen Hinweis in der
+       Fehlerliste aus. Der Exclude-Befehl muss vor den anderen Optionen
+       und nach dem Lesen der Dateien definiert werden! Steht in irgendeiner
+       Sprungtabelle oder innerhalb der Konfigurationsdatei eine Startadresse
+       die innerhalb des Exclude-Bereichs liegt, so wird diese Adresse
+       ignoriert (es erscheint nur ein Hinweis in der Fehlerliste).
+
+ InterruptTable = <Bereich> [, <String>]
+       Mit diesem Befehl wird die Lage und Groesse der Interrupttabelle
+       festgelegt. Bei einem MC68HC05B6 liegt sie z.B. von $1ff2 bis $1fff.
+       Die Adressen der Interruptroutinen in der Tabelle werden vom
+       Disassembler als Startadressen fuer die Disassemblierung benutzt.
+       Optional kann durch einen String definiert werden, welche Beschreibung
+       im Kommentarheader fuer die Interrupttabelle eingefuegt wird.
+
+ JmpAddr = <Adresse> [, <String>]
+       Legt eine Startadresse fuer die Disassemblierung fest. Dieser Befehl
+       wird immer dann benoetigt, wenn Maschinencodebereiche an keiner Stelle
+       im Programm von anderen Sprungbefehlen aufgerufen werden und wenn
+       deren Anfangsadressen auch in keiner Sprungtabelle stehen. Damit diese
+       Codebereiche vom Disassembler trotzdem analysiert werden koennen,
+       muessen deren Anfangsadressen mit diesem Befehl uebergeben werden.
+
+ JsrAddr = <Adresse> [, <String>]
+       wie bei JmpAddr; mit dem Unterschied, dass es sich um die Startadresse
+       einer Subroutine handelt.
+
+ JmpTable = <Bereich> [, <String>]
+       Adressbereich in dem sich eine Tabelle mit Sprungzielen befindet.
+       Die Tabelle wird wordweise gelesen und die gelesenen Worte (im Big
+       Endian Format) als Startadressen - wie bei JmpAddr - verwendet.
+
+ JsrTable = <Bereich> [, <String>]
+       wie bei JmpTable; mit dem Unterschied, dass es sich um Startadressen
+       von Subroutinen handelt.
+
+ ByteTable = <Bereich> [, <String>]
+       Adressbereich, in dem sich eine Tabelle mit Datenbytes befindet.
+
+ WordTable = <Bereich> [, <String>]
+       Adressbereich, in dem sich eine Tabelle mit Datenwords befindet.
+
+ Bytes = <Bereich> [, <String>]
+       Adressbereich der einzelne Bytes enthaelt. Der Unterschied zu
+       ByteTable ist der, dass jedes Byte im Ausgabelisting leicht kommen-
+       tiert werden kann.
+
+ Words = <Bereich> [, <String>]
+       Adressbereich der einzelne Words enthaelt. Der Unterschied zu
+       WordTable ist der, dass jedes Word im Ausgabelisting leicht kommen-
+       tiert werden kann.
+
+ String = <Bereich> [, <String>]
+       Adressbereich in dem sich ein ASCII-String befindet. Der ASCII-
+       String darf jedes beliebige Zeichen enthalten.
+
+ Code = <Bereich> [, <String>]
+       Adressbereich der disassembliert im Ausgabelisting erscheint. Der
+       Maschinencode wird vom Disassembler aber nicht analysiert.
+
+ MarkLabels [on] | [off]
+       Wenn diese Option aktiv ist werden Sprungziele durch einen Doppel-
+       punkt gekennzeichnet. Dadurch erhoeht sich die Lesbarkeit des
+       Listings, da Adressen, auf die per kurzem Sprungbefehl (Short Branch)
+       verzweigt wird, schneller ausfindig gemacht werden koennen.
+
+ ReadWrite [on] | [off]
+       Mit dieser Option kann festgelegt werden, ob in jedem Kommentar-Header
+       einer Subroutine Read/Write-Sektionen erscheinen sollen. Falls die
+       Generierung der beiden Sektionen ausgeschaltet wird, erstellt der
+       Disassembler das Listing sehr viel schneller. Allerdings sind die
+       Informationen aeusserst nuetzlich beim Kommentieren des Listings,
+       da mit einem Blick gesehen werden kann, auf welche Speicherbereiche
+       eine Subroutine lesend oder schreibend zugreift.
+
+ Listing [normal] | [asm]
+       Wenn diese Option auf asm gesetzt wird generiert der Disassembler
+       ein Listing das (mit ein paar Einschraenkungen) gleich assembliert
+       werden kann. Z.B. fehlen die stoerenden Originalbytes und es werden
+       statt den Originaladressen Label ausgegeben. Die Offsets bei der
+       Adressierung mittels Index-Register, die Words in den Sprungtabellen
+       und die Adressen, die erst waehrend der Programmausfuehrung errechnet
+       werden, muessen allerdings noch angepasst werden!
+
+ Species [on] | [off]
+       Mit dieser Option kann festgelegt werden, ob in jedem Header eines
+       Sprungzieles bei der "called from"- und "jumped from"-Sektion die Art
+       des Befehls erscheint der die Routine aufgerufen hat (JXX/BXX/TABLE).
+       Nuetzlich zum Debuggen des Listings.
+
+ Name <Adresse>, <String>
+       Mit dem Befehl Name kann Routinen, Tabellen oder Speicheradressen
+       eine Bezeichnung gegeben werden. Diese Bezeichnung erscheint aber nur
+       im Listing wenn Anfangsadressen bezeichnet werden. Z.B. ist es
+       sinnlos eine Adresse innerhalb einer Subroutine zu bezeichnen. Wenn
+       die Bezeichnung mehrere Zeilen enthalten soll, muessen diese durch
+       senkrechte Trennstriche (|) voneinander getrennt werden.
+
+ Exit
+       Mit dem Pseudokommando Exit kann das Lesen der Konfigurationsdatei
+       vorzeitig beendet werden.
+
+ Debug [on] | [off]
+       Wenn diese Option aktiviert wird, kann der Programmfluss waehrend
+       der Analyse des Programms verfolgt werden. Die Bedienung im Debug-
+       modus geschieht mit den Tasten SPACE, BACKSPACE und ESC. Nach der
+       Analyse kann der Status in der Textdatei C:\IDI05.STA gespeichert
+       werden. Der Debugmodus richtet sich an erfahrene Benutzer, die etwas
+       ueber den Aufbau der internen Datenstrukturen und die Arbeitsweise
+       des Disassemblers erfahren moechten.
+
+ BreakPoint <Adresse>
+       Erst wenn der interne Programmcounter des Disassemblers bei der
+       Analyse des Programms auf die durch BreakPoint festgelegte Adresse
+       stoesst wird die Debug-Option aktiviert. Deshalb muss die Debug-
+       Option in der Konfigurationsdatei ausgeschaltet werden.
+
+
+ ----------------------------------------------------------------------------
+                       2.4 Nuetzliche Tools fuer IDI05                       
+ ----------------------------------------------------------------------------
+
+ Um das Erstellen eines disassemblierten Listings leichter zu machen kann der
+ interaktive Disassembler DI05.EXE benutzt werden.
+
+ Zum Rueckassemblieren des Listings (nach erfolgreicher Disassemblierung)
+ kann der Assembler AS05.EXE von Kingswood Software verwendet werden.
+
+
+ ----------------------------------------------------------------------------
+                  2.41 Der interaktive Disassembler DI05.EXE                 
+ ----------------------------------------------------------------------------
+
+ In diesem ZIP-Archiv ist ein einfacher Disassembler mit dem Namen DI05.EXE
+ enthalten. Dieser interaktiv zu bedienende Disassembler erzeugt keine
+ Ausgabedatei, dafuer kann mit seiner Hilfe das zu disassemblierende Programm
+ leichter untersucht werden.
+
+ Das Programm DI05.EXE kann dazu benutzt werden, sinnvolle Startadressen fuer
+ IDI05.EXE zu finden. Da der interaktive Disassembler den Speicherinhalt auch
+ als Hexdump darstellt, koennen Datenbereiche und Tabellen leichter ausfindig
+ gemacht werden.
+
+ Auch dieser Disassembler muss unter DOS oder in einer DOS-Box gestartet
+ werden. Wird DI05.EXE ohne Parameteruebergabe aufgerufen erscheint eine
+ kurze Hilfe. Um den Beginn des C-Control/BASIC-Betriebssystems zu
+ disassemblieren muss am DOS-Prompt "DI05 ccbasdmp.bin $0 $800" eingegeben
+ werden.
+
+ Nachdem das Programm geladen wurde, erscheint im oberen Teil des
+ Ausgabebildschirm das disassemblierte Maschinenspracheprogramm und im
+ unteren Teil der HEX-Dump des Binaerfiles. Bedient wird der Disassembler
+ mittels abgekuerzter Befehle die in der Eingabezeile eingetippt werden
+ koennen. Ueber die Taste F1 erhaelt man eine kurze Bedienungsanleitung.
+
+ Der intelligente Disassembler IDI05.EXE unterscheidet sich vom einfachen
+ Disassembler also grundlegend in der Art der Bedienung. Waehrend DI05.EXE
+ eine einfache IDE enthaelt und das disassemblierte Listing gleich anzeigt,
+ kann mit IDI05.EXE nur mittels einer Konfigurationsdatei ein Listing erzeugt
+ werden. Zum Erzeugen des Ausgabelisting muss IDI05 aufgerufen und die
+ Konfigurationsdatei (falls das Ausgabelisting Fehler enthaelt oder das zu
+ disassemblierende Programm nicht vollstaendig disassembliert wurde) solange
+ geaendert werden bis das Ergebnis zufriedenstellt. Bei diesem mitunter
+ muehsamen Kreislauf aus Aendern der Konfigurationsdatei, Aufruf von IDI05
+ und Ueberpruefen des Ergebnisses kann der einfache Disassembler die Arbeit
+ stark erleichtern, da mit diesem das zu disassemblierende Programm
+ interaktiv untersucht werden kann.
+
+
+ ----------------------------------------------------------------------------
+                         2.42 Der Assembler AS05.EXE                         
+ ----------------------------------------------------------------------------
+
+ Zum Ueberpruefen, ob der Disassembler beim Erstellen des Ausgabelistings
+ keine Fehler gemacht hat, kann das Listing mit Hilfe des Assemblers AS05.EXE
+ von Kingswood Software rueckassembliert werden. Hierzu muss die Option
+ Listing in der Konfigurationsdatei von IDI05 auf asm gesetzt und eventuelle
+ Offsets durch "EQU"-Zeilen definiert werden.
+
+ Der Assembler ist Freeware und wird zur Zeit in dem ZIP-Archiv mit dem Namen
+ "as05_111.zip" verbreitet. Finden kann man ihn meines Wissens im SimtelNet-
+ Archiv fuer MS-DOS unter der URL "http://www.simtelnet.com".
+
+
+ ----------------------------------------------------------------------------
+                            2.5 Die Mnemonic-Datei                           
+ ----------------------------------------------------------------------------
+
+ Der Disassembler IDI05.EXE fuehrt die Disassemblierung mit Hilfe der
+ Mnemonic-Datei IDI05.MNE durch. Diese Datei kann eigenen Wuenschen angepasst
+ werden. Z.B. ist es moeglich, die englischen Kommentare zu jedem
+ Assemblerbefehl einzudeutschen oder sonstwie zu aendern. Auf jeden Fall
+ sollten die Hinweise, die in der Datei IDI05.MNE zu Beginn stehen, beachtet
+ werden.
+
+ Der Name der Mnemonic-Datei kann mit Hilfe der Konfigurationsdatei geaendert
+ werden. Auf diese Weise ist es moeglich, fuer jedes Projekt eine eigene
+ Mnemonic-Datei zu verwenden.
+
+ Auch der einfache Disassembler benutzt eine Mnemonic-Datei. Diese heisst
+ DI05.MNE und kann ebenso geaendert werden. Prinzipiell kann IDI05 die
+ Mnemonic-Datei des einfachen Disassemblers verwenden, wenn deren Name in der
+ Konfigurationsdatei beim Befehl "MnemonicFile" angegeben wird. Auf diese
+ Weise muss nur eine Mnemonic-Datei geaendert werden, wenn die automatisch
+ von den Disassemblern ausgegebenen Kommentare z.B. ins Deutsche uebersetzt
+ werden sollen.
+
+
+ ----------------------------------------------------------------------------
+                       2.6 Ein einfaches Uebungsprojekt                      
+ ----------------------------------------------------------------------------
+
+ Diesem ZIP-Archiv liegt die Datei LAUFLICH.BIN bei. Wie der Name vielleicht
+ schon vermuten laesst, handelt es sich dabei um ein Maschinensprache-
+ programm, das ein Lauflicht erzeugt. Wenn an die acht I/O-Pins von PORTB
+ eines C-Control-Mikrokontrollers acht LEDs angeschlossen werden, laeuft ein
+ Licht in wechselnder Geschwindigkeit hin und her. Das Programm haengt sich
+ in den Timer Output Compare Interrupt, der bei der C-Control alle 20
+ Millisekunden ausgeloest wird.
+
+ Um eine eigene Interruptroutine in den Timer Output Compare Interrupt
+ systemkonform einzubinden, unterstuetzt der C-Control-Mikrokontroller einen
+ Userpointer an Adresse $52, in den die Startadresse der einzubindenden
+ Routine geladen werden muss. Da dieser Pointer nur ein Byte lang ist, wird
+ die Adresse relativ zum Beginn des internen EEPROMs (Adresse $100)
+ angegeben. Eine eigene Interruptroutine kann also immer nur im internen
+ EEPROM (Adresse $101 und folgende) stehen.
+
+ Der Grund, warum ich das Programm beigelegt habe, ist der, dass ich dem
+ interessierten Leser dieses Manuals die Moeglichkeit geben moechte, das
+ Maschinenspracheprogramm mit Hilfe der beiden Disassembler - sozusagen als
+ kleine Uebungsaufgabe - zu disassemblieren.
+
+ Rufen Sie den Disassembler IDI05 auf, indem Sie ihm den Namen einer bisher
+ nicht existierenden Konfigurationsdatei (z.B. LAUFLICH.CFG) uebergeben.
+ Diese Konfigurationsdatei muessen Sie nun an drei Stellen editieren.
+
+ Bei der Datei LAUFLICH.BIN handelt es sich um einen Speicherauszug des
+ internen EEPROMs, d.h. das Programm beginnt im Speicher an Adresse $101. Aus
+ diesem Grund muss "Org=$101" in der Konfigurationsdatei angegeben werden.
+
+ Nun muessen wir dem Disassembler noch geeignete Startadressen fuer die
+ Analyse des Programms uebergeben. Das Programm wird von BASIC aus durch den
+ Befehl "SYS &h101" gestartet. Das entspricht in Maschinensprache dem "jsr
+ $101"-Befehl, also gehoert ein "Jsraddr=$101" in die Konfigurationsdatei,
+ hinter das "Exclude"-Kommando. Wenn der Disassembler jetzt mittels "IDI05
+ LAUFLICH.CFG" gestartet wird, disassembliert er zumindest schon den
+ Initialisierungsteil des Assemblerprogramms, d.h. den Teil des Programms,
+ der fuer die Initialisierung der Ports und dem Einbinden der eigenen Routine
+ in den Timer Output Compare Interrupt zustaendig ist.
+
+ Uns interessiert die Adresse dieser Routine, denn diese muss ja noch in der
+ Konfigurationsdatei uebergeben werden, damit der Disassembler die Routine
+ analysieren kann. Die Adresse finden wir, indem wir die Assemblerbefehle auf
+ Adresse $109 und folgende untersuchen:
+
+     0109   a60e   lda #$0e            ; load accumulator with value #$0e
+     010b   b752   sta $52             ; store accumulator at address $52
+
+ Aha, auf Adresse $52 wird der Wert $e geschrieben. Also muss die
+ Interruptroutine auf Adresse $100+$e=$10e beginnen (Begruendung siehe oben).
+ Also schreiben wir noch ein "Jsraddr=$10e" in die Konfigurationsdatei und
+ starten den Disassembler neu. Er wird das gesamte Programm disassemblieren.
+
+ Die Adressen $a1,$a2,$a3 und $dc werden vom Programm als Zwischenspeicher
+ fuer irgendwelche Zeiger, Zaehler oder Marker benutzt. Welche Aufgaben die
+ verschiedenen Adresseninhalte haben kann der Disassembler natuerlich nicht
+ feststellen - hier ist die Intelligenz des Anwenders gefragt.
+
+
+ ----------------------------------------------------------------------------
+                  3.0 Funktionsweise des Disassemblers IDI05                 
+ ----------------------------------------------------------------------------
+
+ Ausgehend von einigen Startadressen "verfolgt" der Disassembler den
+ Programmfluss in einem Programm. Wird bei dieser Analyse auf einen bedingten
+ Sprung oder auf einen Unterprogrammaufruf gestossen, pusht der Disassembler
+ die Sprungadresse auf seinen Adressstack und faehrt mit dem naechsten Befehl
+ fort. Stoesst er bei der Analyse schliesslich auf eine bereits untersuchte
+ Adresse oder auf einen Return-Befehl (RTS oder RTI) wird eine Adresse vom
+ Stack geholt und bei dieser Adresse weitergemacht. Auf diese Weise wird das
+ gesamte Programm einmal "durchlaufen" - vorausgesetzt, wirklich jede
+ Befehlsadresse ist von den gewaehlten Startadressen aus erreichbar.
+
+ Zusaetzlich wird noch etwas Statistik betrieben. So wird z.B. festgehalten,
+ welche Subroutine von wo aus aufgerufen wird, auf welche Adressen lesend
+ oder schreibend zugegriffen wird und welche Bits von welchen Ports oder RAM-
+ Speicherzellen wie benutzt werden. Bei Problemen beim Disassemblieren (z.B.
+ bei Spruengen ins RAM oder beim Zugriff auf Tabellen ueber das Index-
+ Register) wird ein entsprechender Hinweis gegeben. Zum Schluss werden alle
+ gesammelten Daten ausgegeben und das Ausgabelisting erstellt.
+ Zwischenbereiche die der Disassembler durch seine Programmlogik nicht
+ erkunden konnte werden genauso wie Datenbereiche in einem passenden Format
+ ausgegeben.
+
+ Da die Disassemblierung mit Hilfe der Datei IDI05.MNE durchgefuehrt wird
+ enthaelt das fertige Listing bereits einen Kommentar, der allgemein die
+ Funktion eines jeden Maschinencode-Befehls erklaert.
+
+ Falls der Disassembler waehrend der Programmanalyse auf einen illegalen
+ Opcode trifft wird eine Warnung ausgegeben und mit dem naechsten Byte nach
+ dem Opcode fortgefahren.
+
+ Nach jedem bra,rts,rti oder jmp wird eine Leerzeile im Ausgabelisting
+ eingefuegt, um Sinnabschnitte innerhalb des Programms besser klar zu machen.
+
+ Programmteile die nur mittels bra, bhi, bls, usw. aufgerufen werden, werden
+ nicht mit einem Kommentar-Header versehen. Programmteile die nur mittels jmp
+ (und nicht ueber jsr oder bsr-Befehle) aufgerufen werden, werden als
+ Sprungziele ("jumptarget") bezeichnet.
+
+ Ob ein Bereich vom zu untersuchenden Programm nicht benutzt wird, laesst
+ sich erst sagen nachdem der Disassembler wirklich jedes Befehlsbyte im
+ Speicher untersucht hat und nachdem saemtliche Speicherstellen die ueber das
+ Index-Register adressiert werden vom Benutzer untersucht wurden. Ausserdem
+ besteht noch die Moeglichkeit, das es sich bei dem "freien" Speicherplatz um
+ einen Port handelt, dessen Inhalt nur nie im Programm gelesen oder geaendert
+ wird. Schliesslich muss noch kontrolliert werden, ob das disassemblierte
+ Programm eventuell Maschinencode im RAM generiert und ausfuehrt und so auf
+ diese vermeintlich ungenutzten Speicherbereiche zugreift. In jedem Fall
+ sollte das Fehlerlisting helfen, die Logik des Programms zu durchschauen.
+
+ Falls durch die Konfigurationsdatei ein Bereich in einem bestimmten Format
+ definiert wird hat diese Definition im Ausgabelisting absolute Prioritaet.
+ Der Disassembler nimmt keine Aenderungen an diesen Definition durch, auch
+ wenn sie falsch sein sollten. Allerdings wird nach dem Analysieren des
+ Programms ein Kausalitaetstest durchgefuehrt der entsprechende Warnungen in
+ der Fehlerliste am Beginn der Ausgabedatei erzeugt.
+
+ Wenn innerhalb des disassemblierten Programms auf ein Codebyte als Datenbyte
+ zugegriffen wird erscheint kein Hinweis im Listing (nur in der Fehlerliste).
+ Der Code hat eine hoehere Prioritaet.
+
+
+ ----------------------------------------------------------------------------
+                               4.0 Rechtliches                               
+ ----------------------------------------------------------------------------
+
+ Das Copyright aller Dateien in diesem ZIP-Archiv (mit Ausnahme des
+ Speicherdumps der C-Control/BASIC-Unit) liegt bei Dietmar Harlos. Diese
+ Dateien duerfen nicht ohne meine Genehmigung in irgendeiner Weise veraendert
+ und dann weitergegeben werden.
+
+ Das Copyright des C-Control/BASIC-Betriebssystems liegt bei Martin Foerster
+ vom Conrad Electronic Technologie Centrum. Die Weitergabe des Dumps des C-
+ Control/BASIC-Speicherinhaltes (CCBASDMP.BIN) geschieht mit freundlicher
+ Genehmigung der Technischen Kundenbetreuung von Conrad Electronic. Das
+ Copyright des Quellcodes zum "Self-Check-ROM I" liegt bei Motorola.
+
+ Die Fehlerfreiheit eines Programms, einer Information oder eines Verfahrens
+ dieser Sammlung kann nicht garantiert werden. Der Herausgeber kann fuer
+ Fehler und deren Folgen weder eine juristische Verantwortung noch irgendeine
+ andere Haftung uebernehmen. Fuer Verbesserungsvorschlaege und Hinweise auf
+ Fehler ist der Herausgeber dankbar.
+
+ Bitte beachten Sie, dass die Programme IDI05 und DI05 nur benutzt werden
+ duerfen, wenn an den Autor der Programme eine (geringe) Benutzungsgebuehr
+ gezahlt wird. Die Hoehe der Benutzungsgebuehr richtet sich nach dem
+ Verwendungszweck. Fuer gewerbliche Nutzung ist eine hoehere Gebuehr zu
+ zahlen als fuer rein private Nutzung. Naehere Information hierzu befindet
+ sich in der Textdatei REGISTER.TXT.
+
+
+ ----------------------------------------------------------------------------
+                                 Zum Schluss                                 
+ ----------------------------------------------------------------------------
+
+ Die Programme und dieses Manual sind (leider) etwas unter Zeitdruck
+ entstanden. Der Disassembler IDI05.EXE hat die Beta-Testphase gerade erst
+ vollendet und ich habe mit ihm bisher erst ein groesseres Programm (das
+ Betriebssystem des Mikrokontrollersystems) disassembliert. Zur Zeit enthaelt
+ der Disassembler noch jede Menge Debuggingcode, was zwar die
+ Ausfuehrungszeit in die Hoehe treibt, doch das Programm auf der anderen
+ Seite sehr sicher macht.
+
+ Mich interessiert auf jeden Fall brennend ob jemand meine Programme einsetzt
+ und wie gut das erzielte Ergebnis ist. Auch ueber das Zusenden groesserer
+ Maschinencodeprogramme fuer eine 6805'er CPU wuerde ich mich sehr freuen.
+
+
+                              Dietmar Harlos
+                              Webereistrasse 25
+                              32139 Spenge
+                              
+                              dharlos@web.de
+

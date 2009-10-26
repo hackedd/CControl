@@ -1,0 +1,538 @@
+<html>
+<head>
+  <meta name="generator" content="EDLIN.COM">
+  <meta name="description" content="Informationen rund um das Betriebssystem des C-Control-Mikrokontrollersystems">
+  <meta name="keywords" lang="de" content="c-control,ccontrol,6805,M6805,MC6805,MC68HC05,Assembler,Disassembler,Reassembler,BASIC,Betriebssystem,operating system,EEPROM,DCF77,DCF,77,I2C,24C65,24C64,Manual,Interrupt,Bug,Bugs,ROM,Listing,ROM-Listing,RAM,freeware,shareware,RS232,CCBASIC,Token,Tips,Tipps,Tricks,links,High Endurance Block,C-Compiler,C,Compiler,Mnemonic,Terminal,faq,conrad,CTC,Einplatinencomputer,Motorola,Messen,Steuern,Regeln,DOS,Windows,XCTRL96A,Quellcode,Mikrokontroller,microcontroller,Chip,Port,Ports,Schnittstelle,seriell,Simulator,Emulator,Download,kostenlos,programmieren,Beispiel,Programm,Syntaxhighlighting,Anwendungen,Sammlung,Dokumentation,Adresse,Conrad Electronic,Speicher,Speichererweiterung,Adressierungsarten,Information,Informationen,Buch,Bücher,Computer,Minicomputer,Mikrocomputer,C-Control/BASIC,Unit,M-Unit,C-Control-Unit,Dateien,C-Basic,c-control intern,ccintern,Sourcecode">
+  <meta name="keywords" lang="en" content="c-control,ccontrol,6805,M6805,MC6805,MC68HC05,assembler,disassembler,BASIC,operating system,EEPROM,DCF77,DCF,77,I2C,24C65,24C64,manual,interrupt,bug,bugs,ROM,listing,ROM listing,RAM,freeware,shareware,RS232,CCBASIC,token,tips,tricks,links,high endurance block,c compiler,c,compiler,mnemonic,terminal,faq,conrad,CTC,computer,motorola,DOS,windows,XCTRL96A,sourcecode,microcontroller,chip,port,ports,serial,simulator,emulator,download,free,example,programm,syntax highlighting,Anwendungen,Sammlung,documentation,address,Conrad Electronic,Memory,address modes,information,informations,book,microcomputer,C-Control/BASIC,unit,m-Unit,C-Control-Unit,files,C-Basic,c-control intern,ccintern">
+  <meta name="author" content="Dietmar Harlos">
+  <meta name="robots" content="index">
+  <meta name="revisit-after" content="14 days">
+  <meta http-equiv="expires" content="604800">
+   <title>FAQ zu C-Control intern - letztes Update: 21.07.2000</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+
+<center><b><font size=+4>FAQ zu "C-Control intern"</font></b></center>
+
+<p><i><font size=+2>&Uuml;</font>berflieg' bitte erst kurz meine Frequently
+Asked Questions, bevor Du mir eine e-mail schickst. Hier sind einige Fragen
+aufgef&uuml;hrt, die mir andere Anwender bereits gestellt haben. Ein Blick
+in diese Liste kann Dir unter Umst&auml;nden viel Wartezeit ersparen, denn
+es kann durchaus zwei Wochen dauern, bis Du eine Antwort von mir erh&auml;lst!</i>
+<p><i><font size=+2>D</font>ie folgenden Fragen werden hier beantwortet:</i>
+<ul>
+<li>
+<a href="#a">Auf welchen Internetservern ist die "C-Control intern"-Sammlung
+zur Zeit zu finden?</a></li>
+
+<li>
+<a href="#s">Is your information collection about the C-Control microcontroller
+available in english language?</a></li>
+
+<li>
+<a href="#c">Ich w&uuml;rde gern in Assembler programmieren. Kannst Du
+mir ein paar Tips geben?</a></li>
+
+<li>
+<a href="#b">Gibt es noch einen anderen Assembler als den AS05?</a></li>
+
+<li>
+<a href="#d">Wie programmiere ich eine Interruptroutine?</a></li>
+
+<li>
+<a href="#e">Wie programmiere ich den I2C-Bus?</a></li>
+
+<li>
+<a href="#f">Kann man ein gr&ouml;&szlig;eres serielles EEPROM an die C-Control
+anschlie&szlig;en?</a></li>
+
+<li>
+<a href="#g">Ich habe ein gr&ouml;&szlig;eres EEPROM, kann aber keine BASIC-Programme
+gr&ouml;&szlig;er als 8 Kilobyte kompilieren!</a></li>
+
+<li>
+<a href="#y">Wieso 8 KB? Ich kann nur BASIC-Programme bis etwa 6400 Byte
+kompilieren!?</a></li>
+
+<li>
+<a href="#h">Was ist der High-Endurance-Block?</a></li>
+
+<li>
+<a href="#z">Wieviele Speicherzyklen sind denn nun beim EEPROM m&ouml;glich?
+10.000, 100.000 oder 1.000.000?</a></li>
+
+<li>
+<a href="#i">Laut "C-Control Anwendungen" ist die Ung&uuml;ltigkeit des
+DCF77-Signals am Beginn jeder Stunde gewollt!?</a></li>
+
+<li>
+<a href="#q">Ich habe meine Unit &uuml;bertaktet und jetzt l&auml;uft alles
+zu schnell!?</a></li>
+
+<li>
+<a href="#r">Mein Wochentagsregister (DOW) zeigt falsche Werte an.</a></li>
+
+<li>
+<a href="#t">Gibt es die verschiedenen "Manuals" zum Mikrokontroller, EEPROM,
+u. &auml;. auch in Deutsch?</a></li>
+
+<li>
+<a href="#j">Kennst Du weitere Software-Tools, die bei der Assembler-Programmerstellung
+n&uuml;tzlich sein k&ouml;nnten?</a></li>
+
+<li>
+<a href="#k">Gibt es schon Erfahrungen zum Erstellen eines neuen Betriebssystems
+mittels EPROM-68HC05-Kontroller?</a></li>
+
+<li>
+<a href="#x">Wo gibt es die fehlenden Dateien des C-Control-Betriebssystem-Quellcodes?</a></li>
+
+<li>
+<a href="#l">Ich habe Probleme beim Anschlu&szlig; der Hardware XYZ an
+meine C-Control. Kannst Du mir helfen?</a></li>
+
+<li>
+<a href="#u">Wie &uuml;bertrage ich die Programme, die sich augenblicklich
+in der C-Control befinden, zum PC?</a></li>
+
+<li>
+<a href="#v">Wie kann ich in BASIC am einfachsten detektieren, ob ein g&uuml;ltiges
+DCF77-Signal empfangen wird?</a></li>
+
+<li>
+<a href="#w">Gibt es irgendwo unbenutzten Speicher im RAM?</a></li>
+
+<li>
+<a href="#anderemc">Gibt es andere Mikrokontroller mit mehr RAM, mehr Ports,
+mehr Interrupts, Multitasking, Grafik, usw.?</a></li>
+
+<li>
+<a href="#o">Willst Du Deiner Sammlung einige von mir geschriebene Infotexte
+hinzuf&uuml;gen?</a></li>
+
+<li>
+<a href="#p">Ich habe eigene Software zur C-Control entwickelt.&nbsp; M&ouml;chtest
+Du sie Deiner Sammlung hinzuf&uuml;gen?</a></li>
+
+<li>
+<a href="#aa">D&uuml;rfen die Informationen und Programme in Deiner Sammlung
+kostenlos genutzt werden?</a></li>
+
+<li>
+<a href="#m">Was gibt es Neues von der C-Control-2?</a></li>
+
+<li>
+<a href="#n">Wen kann ich noch fragen?</a></li>
+</ul>
+<i><font size=+2>I</font>st Deine Frage nicht dabei? Dann <a href="mailto:dharlos@web.de">schreib
+mir eine e-mail</a> und hoffe, da&szlig; ich mich relativ schnell bei Dir
+melde. Achte aber bitte darauf, da&szlig; der Freemail-Provider "web.de"
+nicht in Deiner Ignore-Liste oder im Spam-Filter steht. Sonst wartest Du
+vergeblich auf meine mail und ich tippe mir umsonst die Finger wund! Wenn
+ich nach zwei Wochen noch nichts von mir h&ouml;ren lasse, darfst Du einmal
+h&ouml;flich nachfragen...</i>
+<p>
+<hr WIDTH="80%"><a NAME="a"></a>
+<br><b>Auf welchen Internetservern ist die "C-Control intern"-Sammlung
+zur Zeit zu finden?</b>
+<br><a href="http://www.geocities.com/ccontrolintern">http://www.geocities.com/ccontrolintern</a>
+<br><a href="http://computer.freepage.de/ccontrolintern">http://computer.freepage.de/ccontrolintern</a>
+<br><a href="http://members.xoom.com/ccintern">http://members.xoom.com/ccintern</a>
+<br><a NAME="s"></a>
+<br><b>Is your information collection about the C-Control microcontroller
+available in english language?</b>
+<br>No, it isn't. I have really not the time to translate it, but if you
+want to translate the collection: Please do!
+<br><a NAME="c"></a>
+<br><b>Ich w&uuml;rde gern in Assembler programmieren. Kannst Du mir ein
+paar Tips geben?</b>
+<br>Meiner Informationssammlung liegt ein kurzer Assemblerkurs bei, der
+einen kleinen Einblick in die Programmierung bietet. Es w&auml;re nett,
+wenn Du mir schreiben w&uuml;rdest, wie Du den Crash-Kurs findest und an
+welchen Stellen eventuell Probleme auftauchen. Sehr gut fuer Einsteiger
+geeignet ist auch die <a href="http://www.ymir.de/arbeiten/index.htm">Assemblerbeschreibung
+von Mario Boller-Olfert</a>.
+<br><a NAME="b"></a>
+<br><b>Gibt es noch einen anderen Assembler als den AS05?</b>
+<br>Der von mir verwendete Assembler AS05 unterst&uuml;tzt einige Instruktionen,
+die nicht zum von Motorola ver&ouml;ffentlichten Befehlssatz einer 6805-CPU
+geh&ouml;ren. Allerdings ist er "abw&auml;rtskompatibel" und unterst&uuml;tzt
+auch die Standard-Mnemonic anderer Assembler. Dieses Feature und der Umstand,
+da&szlig; er kostenlos benutzt und weitergegeben werden darf, waren der
+Grund daf&uuml;r, da&szlig; ich ihn meiner Sammlung beigelegt und seinen
+Befehlssatz in jedem Assemblerprogramm benutzt habe. Au&szlig;erdem l&auml;&szlig;t
+er sich hervorragend in die DOS-IDE einbinden. Ein Anwender, der unter
+Windows arbeitet,&nbsp; hat mir geschrieben, dass er statt dem AS05 lieber
+den <a href="http://www.halcyon.com/squakvly">Telemark Assembler</a> (TASM)
+von Thomas N. Anderson benutzt. Der TASM kann wohl in Ultraedit eingebunden
+werden, wie wohl auch das gesamte andere CC-Basic-Umfeld. Allerdings handelt
+es sich um einen Shareware-Assembler.
+<br><a NAME="d"></a>
+<br><b>Wie programmiere ich eine Interruptroutine?</b>
+<br>Informationen, wie eine Interrupt-Routine in das System eingebunden
+werden kann, steht in meiner Infosammlung in den Dateien TIPSUTRI.TXT und
+INTERRUPT.TXT. Du kannst mir aber auch gerne eine e-mail schicken, wenn
+Du nicht damit
+<br>klarkommst.
+<br><a NAME="e"></a>
+<br><b>Wie programmiere ich den I2C-Bus?</b>
+<br>In der Infosammlung gibt es eine Datei namens I2C.TXT, in der erkl&auml;rt
+wird, was ein I2C-Bus ist und wie man den Ger&auml;ten am Bus eine Lese-
+und Schreibkennung zuweist. In der Datei HIGHENDU.ASM stehen die Subroutinen
+"prolog" und "epilog", au&szlig;erdem werden dort die Betriebssystemroutinen
+I2C_Read, I2C_ReadLast, I2C_Start, I2C_Write und I2C_Stop verwendet.
+<br>Bevor man ein anderes "Ger&auml;t" als das 24C65-EEPROM ansprechen
+kann mu&szlig; man das EEPROM zuerst vom Bus abmelden (mit I2C_ReadLast)
+und anschliessend die Lese- oder Schreibkennung des neuen Ger&auml;tes
+&uuml;bermitteln (mit I2C_Start). Was danach &uuml;bertragen werden mu&szlig;,
+ist je nachdem, was man ansprechen will, unterschiedlich: Bei einem RAM-Speicher
+wird die anzusprechende Adresse in einem Byte &uuml;bertragen (mit I2C_Write);
+bei einem EEPROM ist diese Adresse zwei Byte lang. Bei Speicherbausteinen
+werden danach die eigentlichen Daten &uuml;bertragen (mit I2C_Read oder
+I2C_Write). Bei einem Portexpander wie dem PCF 8574 werden diese Daten
+direkt nach der Kennung &uuml;bertragen (keine Adresse n&ouml;tig). Nach
+dem Lesen mu&szlig; die Betriebssystemroutine I2C_ReadLast aufgerufen werden,
+um das Ger&auml;t wieder vom Bus zu trennen. Beim Schreiben &uuml;bernimmt
+die Routine I2C_Stop diese Aufgabe. Zum Schlu&szlig; darf man nicht vergessen,
+das 24C65-EEPROM wieder anzumelden (siehe "epilog"), da die C-Control-Unit
+sonst nicht mit der Ausf&uuml;hrung des BASIC-Programms fortf&uuml;hren
+kann.
+<br>Wem das alles zu trocken war, der kann auf der <a href="http://www.allround.de/CControlhelp">C-Control-Help-Site</a>
+von Thomas Trepper vorbeischauen. Ich glaube, dort gibt es die beste Sammlung
+an Datenbl&auml;ttern, Programmen, etc. zum I2C-Bus.
+<br><a NAME="f"></a>
+<br><b>Kann man ein gr&ouml;&szlig;eres serielles EEPROM an die C-Control
+anschlie&szlig;en?</b>
+<br>Man kann statt dem 24C65 (8 Kilobyte Speicher), den 24C256 von ATMEL
+einsetzen. Dieser bietet 32 KB Speicherplatz. Angeblich kann der Chip f&uuml;r
+10,- DM pro St&uuml;ck plus 4,- DM Versandkosten bestellt werden, indem
+eine mail an Schmidt@Moba.de geschickt wird. Zus&auml;tzliche Informationen
+zu diesem Thema gibt es auch unter <a href="http://home.t-online.de/home/B.Kainka">http://home.t-online.de/home/B.Kainka</a>.
+<br>Das Betriebssystem schert sich beim Speichern in die Datendatei (mit
+den "OPEN# FOR ..."- und "PRINT#"-Befehlen) &uuml;brigens nicht um die
+Groesse des EEPROMs. Falls ueber die gueltige Bereichsgrenze des EEPROMs
+hinaus in dieses geschrieben (oder aus diesem gelesen wird) laeuft einfach
+der interne Adresszaehler im EEPROM ueber und es wird der Beginn des EEPROMs
+ueberschrieben. Nur der FILEFREE-Befehl benutzt zur Berechnung des freien
+Speichers des EEPROMs eine feste Groesse.
+<br><a NAME="g"></a>
+<br><b>Ich habe ein gr&ouml;&szlig;eres EEPROM, kann aber keine BASIC-Programme
+gr&ouml;&szlig;er als 8 Kilobyte kompilieren!</b>
+<br>Wenn Du ein BASIC-Programm mit mehr als 8 Kilobyte Gr&ouml;&szlig;e
+von der C-Control ausf&uuml;hren lassen m&ouml;chtest brauchst Du einen
+BASIC-Compiler, der die 8-KB-Gr&ouml;&szlig;enbeschr&auml;nkung nicht kennt.
+F&uuml;r die Windows-IDE gibt es daf&uuml;r eine neue "CCBAS32.DLL"-Datei.
+Diese kann auf der <a href="http://members.aol.com/CEdelmann">Homepage
+von C. Edelmann</a> heruntergeladen werden. F&uuml;r die DOS-IDE habe ich
+den Original-CCBAS.EXE-Compiler etwas gepatcht. Diese Datei (CCBASBIG.EXE)
+kann als ZIP-Archiv auf meiner Internetside heruntergeladen werden.
+<br><a NAME="y"></a>
+<br><b>Wieso 8 KB? Ich kann nur BASIC-Programme bis etwa 6400 Byte kompilieren!?</b>
+<br>Dieses Problem tritt nur auf, wenn die Windows-Entwicklungsumgebung
+zur Programmentwicklung benutzt wird. Der Windows-Compiler fuegt offenbar
+in jedes BASIC-Programm zusaetzlichen Code ein, damit dieses vom Simulator
+geladen und ausgefuehrt werden kann. Dadurch k&ouml;nnen nicht die vollen
+8 Kilobyte des seriellen EEPROMs ausgenutzt werden. Mit der DOS-IDE (kann
+auf dem
+<a href="http://www.c-control.de">Conrad-Server</a> heruntergeladen
+werden), tritt dieses Problem nicht mehr auf und es k&ouml;nnen Programme
+bis 8100 Byte Gr&ouml;&szlig;e kompiliert werden. Die DOS-IDE (CCE.EXE)
+kannst Du uebrigens auch unter Windows in einem DOS-Fenster sehr gut benutzen
+(50 Zeilen-Modus bei einer Schriftgr&ouml;&szlig;e von 7 x 12 und einer
+Screenaufl&ouml;sung von 1024x768 Bildpunkten oder 43 Zeilen bei 800x600
+Punkten), nur das beiliegende Terminalprogramm MINITERM.EXE macht bei mir
+Probleme; doch dafuer kannst Du TERMINAL.EXE einsetzen. Das Programm befindet
+sich in meiner <a href="http://www.geocities.com/ccontrolintern">Sammlung</a>.
+<br><a NAME="h"></a>
+<br><b>Was ist der High-Endurance-Block?</b>
+<br>Jede Speicherstelle im seriellen 24C65-EEPROM, das im C-Control-Minicomputer
+Verwendung findet, kann 100.000 bis 1.000.000 mal neu programmiert werden,
+danach ist die Speicherstelle hin&uuml;ber. Es gibt aber einen verschiebbaren,
+4096 Bit grossen Bereich, der bis zu 10.000.000 mal neu programmiert werden
+kann. Dieser Bereich heisst High-Endurance-Block und liegt von Werk aus
+(angeblich) am Ende des Speicherraums des EEPROMs. In meiner Sammlung findest
+Du ein BASIC- und ein Assemblerprogramm, mit denen der High-Endurance-Block
+verschoben werden kann.
+<br>Leider habe ich auf meiner M-UNIT kein 24C65-EEPROM, sondern ein 24C64.
+Dieses EEPROM hat keinen High-Endurance-Block, so da&szlig; ich die Programme
+leider noch nicht richtig testen konnte. Falls sie bei Dir laufen (oder
+auch nicht) gib' mir bitte Bescheid! Genauere Infos zum EEPROM und wie
+man den High-Endurance-Block verschiebt, findest Du &uuml;brigens im <a href="http://www.geocities.com/ccontrolintern">24C65-Manual</a>
+von der Firma Microchip.
+<br><a NAME="z"></a>
+<br><b>Wieviele Speicherzyklen sind denn nun beim EEPROM m&ouml;glich?
+10.000, 100.000 oder 1.000.000?</b>
+<br>Die C-Control besitzt zwei verschiedene EEPROMs. Das eine, was ueblicherweise
+gemeint ist, ist das serielle EEPROM mit der Bezeichnung 24C65. Dieses
+"haengt" am I2C-Bus der Unit. Jede Speicherstelle in diesem EEPROM kann
+man 100.000 oder 1 Millionen mal neu beschreiben - mehr garantiert zumindest
+der Hersteller nicht. Welcher der beiden Werte richtig ist, kann ich leider
+nicht sagen, die Daten im Manual zum EEPROM von Microchip sind widerspruechlich.
+Ich vermute aber, da&szlig; 1 Millionen mal neu programmiert werden kann.
+Zus&auml;tzlich besitzt das 24C65 den weiter oben angesprochenen High-Endurance-Block.
+<br>Ausserdem besitzt die Unit - so wie jeder MC68HC05B6-Mikrokontroller
+- ein internes EEPROM. Dieses liegt im Speicher von Adresse $100 bis $1ff,
+und dient normalerweise dazu, Assemblerprogramme aufzunehmen. Dieses EEPROM
+hat (laut
+<br>Motorola) eine Lebensdauer von nur 10.000 Loesch- und Schreibzyklen.
+<br><a NAME="i"></a>
+<br><b>Laut "C-Control Anwendungen" ist die Ung&uuml;ltigkeit des DCF77-Signals
+am Beginn jeder Stunde gewollt!?</b>
+<br>Im Buch "C-Control-Anwendungen" (erschienen im Franzis-Verlag, Mitautor:
+Martin F&ouml;rster) wird beschrieben, da&szlig; es durchaus erw&uuml;nscht
+ist, da&szlig; das DCF77-Signal in der ersten Minute jeder Stunde von der
+C-Control als "ung&uuml;ltig" angesehen wird.
+<br>Meine Meinung dazu ist folgende:
+<br>Der Herr F&ouml;rster schreibt zwar, dass dieses "Feature" erw&uuml;nscht
+ist, doch scheint mir diese Behauptung eher vorgeschoben zu sein. H&auml;tte
+man die Parit&auml;tsbits des DCF77-Signals mitausgewertet und anhand dieser
+detektiert, ob das Signal g&uuml;ltig ist, w&uuml;rde sich auch das Problem
+mit der Sonntags-Anzeige in der ersten Minute nach Mitternacht an jedem
+Montag von selbst l&ouml;sen. Au&szlig;erdem h&auml;tte man einige Bytes
+mehr freien Arbeitsspeicher!
+<br><a NAME="q"></a>
+<br><b>Ich habe meine Unit &uuml;bertaktet und jetzt l&auml;uft alles zu
+schnell!?</b>
+<br>Es gibt auf der <a href="http://www.allround.de/CControlhelp">C-Control-Help-Site</a>
+unter der etwas falschen Bezeichnung "TURBOASM" ein kleines Programm, das
+sich in einen Interrupt h&auml;ngt und die zeitabh&auml;ngigen Funktionen
+des Betriebssystems korrigiert, wenn die Unit mit 12 MHz betrieben wird.
+Dazu geh&ouml;rt auch ein Downloader f&uuml;r die DOS-IDE, der auf die
+3-fache Baudrate eingestellt ist. Wenn man die Funktion des Programms durchschaut,
+m&uuml;ssten auch andere Taktraten korrigiert werden k&ouml;nnen.
+<br><a NAME="r"></a>
+<br><b>Das Wochentagsregister (DOW) zeigt falsche Werte an.</b>
+<br>Es gibt mehrere Fehler im Betriebssytem der C-Control, die im Zusammenhang
+mit dem Wochentagsregister stehen. Einfache Abhilfe: Wenn der DOW in einem
+BASIC-Programm ben&ouml;tigt wird, folgende Zeile vor jeder Abfrage des
+Wochentags einf&uuml;gen: IF DOW > 6 THEN DOW = 0
+<br><a NAME="t"></a>
+<br><b>Gibt es die verschiedenen "Manuals" zum Mikrokontroller, EEPROM,
+u. &auml;. auch in Deutsch?</b>
+<br>Leider nein. Aber zum Gl&uuml;ck sind diese meist in "Easy English"
+geschrieben, so da&szlig; es eigentlich kein Problem sein sollte, zumindest
+die wichtigsten Dinge zu verstehen. Es gibt ein Freeware-Tool namens <a href="http://www.babylon.com">Babylon
+Translator</a>, mit dem s&auml;mtliche englischen Texte, die auf dem Bildschirm
+erscheinen, mittels eines einfachen Klicks mit der Maus ins Deutsche &uuml;bersetzt
+werden k&ouml;nnen. Das funktioniert nach einem &auml;hnlichen Prinzip
+wie OCR. Damit der Translator gut mit dem Acrobat Reader zusammenarbeiten
+kann mu&szlig; beim Reader allerdings die Funktion "Text und Bilder gl&auml;tten"
+ausgeschaltet sein.
+<br><a NAME="j"></a>
+<br><b>Kennst Du weitere Software-Tools, die bei der Assembler-Programmerstellung
+n&uuml;tzlich sein k&ouml;nnten? Gibt es einen besseren Simulator als den
+ZAP?</b>
+<br>Meine Linkliste zum MC68HC05 (in der Datei INTERNET.TXT) stammt vom
+November 1999. Seitdem habe ich mich nicht mehr nach Software zum Mikrokontroller
+umgesehen. Damals habe ich so ziemlich alles heruntergezogen, was es nur
+irgendwie an Software f&uuml;r den 6805 gab. Trotzdem habe ich nur einen
+Simulator gefunden. Die "<a href="http://www.introl.com">Introl-COntroller
+Development Environment</a>" enth&auml;lt zwar Simulatoren f&uuml;r diverse
+CPUs - aber ein Simulator f&uuml;r die 6805 fehlt leider. Vielleicht wurde
+diese Environment in der Zwischenzeit weiterentwickelt, oder es gibt einen
+Simulator, von dem ich keine Ahnung habe?
+<br>F&uuml;r den, der viel in Assembler programmiert und vielleicht sogar
+einen 68HC05 mit eigenem Betriebssystem entwickeln m&ouml;chte, lohnt sich
+vielleicht die Anschaffung eines "In-Circuit Emulator". Den kann man bei
+der Firma Motorola bestellen. Der In-Circuit-Emulator ist - soweit ich
+wei&szlig; - ein richtiger Minicomputer, der mit dem PC &uuml;ber die serielle
+Schnittstelle verbunden wird und so die Simulation von Assembler- und C-Programmen
+in Echtzeit (mit echten Portzugriffen) unterst&uuml;tzt. Mit diesem Emulator
+kann man sogar 6805-Chips, die statt ROM einen EPROM-Bereich haben, programmieren.
+<br><a NAME="k"></a>
+<br><b>Gibt es schon Erfahrungen zum Erstellen eines neuen Betriebssystems
+mittels EPROM-68HC05-Kontroller?</b>
+<br>Ich habe bisher noch keinen Versuch unternommen, ein eigenes Betriebssystem
+zu entwerfen. Vor einigen Wochen habe ich aber eine mail von einem Anwender
+bekommen, der sich einen In-Circuit Emulator von Motorola zugelegt hat.
+Mit diesem Emulator kann man die Chips auch programmieren. Der Anwender
+will mit einem MC68HC705B16 eine "eigene" C-Control-Version entwerfen.
+Leider weiss ich nicht, wie weit er schon ist. Der MC68HC705B16 ist - soweit
+ich weiss - nicht voll kompatibel zum MC68HC05B6! Er hat mehr RAM und einige
+Adressen sind vertauscht. Genaueres kannst Du aber im <a href="http://mot-sps.com/mcu/documentation/pdf/b6r4.pdf">6805-Manual</a>
+von Motorola nachlesen.
+<br><a NAME="x"></a>
+<br><b>Wo gibt es die fehlenden Dateien des C-Control-Betriebssystem-Quellcodes?</b>
+<br>So direkt kann ich da leider nicht weiterhelfen, da ich keinen passenden
+C-Compiler besitze. Aber &uuml;bernimm doch einfach Teile meines ROM-Listing
+im Assemblerformat. Diese m&uuml;&szlig;ten dem Original-Quellcode relativ
+problemlos hinzugef&uuml;gt werden k&ouml;nnen. Falls es klappt bitte unbedingt
+als ZIP-Archiv zu mir oder zu einer anderen C-Control-Site schicken!
+<br><a NAME="l"></a>
+<br><b>Ich habe Probleme beim Anschlu&szlig; der Hardware XYZ an meine
+C-Control. Kannst Du mir helfen?</b>
+<br>Normalerweise helfe ich nat&uuml;rlich gern, doch bitte beachte, da&szlig;
+ich selbst nur eine einfache M-Unit ohne jegliche "Extra-Hardware" wie
+Tastatur, LC-Display oder &auml;hnlichem besitze. Au&szlig;erdem enth&auml;lt
+meine "C-Control intern"-Sammlung in erster Linie Information zur Software
+der C-Control; also zum Betriebssystem, zur Assemblerprogrammierung und
+zu Tricks &amp; Tips bei der Programmerstellung. F&uuml;r Hardware-Fragen
+bin ich daher nicht der richtige Ansprechpartner. Da wendest Du Dich am
+besten an die <a href="http://www.allround.de/CControlhelp">C-Control-Help-Site</a>
+von Thomas Trepper.
+<br><a NAME="u"></a>
+<br><b>Hilfe! Ich habe die Quellcodes meiner Programme verloren. Gibt es
+eine M&ouml;glichkeit, die Programme, die sich augenblicklich in der C-Control
+befinden, zum PC zur&uuml;ckzu&uuml;bertragen?</b>
+<br>Es gibt spezielle Befehle, die &uuml;ber die RS232-Schnittstelle gesendet
+werden k&ouml;nnen und die die C-Control veranlassen, die aktuellen Inhalte
+des internen und des externen EEPROMs zum PC zu &uuml;bertragen. Freue
+Dich aber nicht zu fr&uuml;h: Der C-Control-Compiler kompiliert ein BASIC-Programm
+in sogenannte Token, die nachdem sie zur Unit &uuml;bertragen wurden, von
+dieser ausgef&uuml;hrt werden. Es ist zwar m&ouml;glich, diese Token wieder
+zum PC zur&uuml;ckzu&uuml;bertragen, doch sind diese Token nichts weiter
+als Zahlen (ich bin darauf in meiner C-Control-Sammlung in der Datei CCBASTOK.TXT
+eingegangen), also kein lesbarer Text. Zwar kannst Du hingehen und jede
+einzelne Zahl wieder in einen lesbaren CCBASIC-Befehl &uuml;bersetzen,
+doch wird das bei einem l&auml;ngeren Programm ganz sch&ouml;n lange dauern.
+Vielleicht kannst Du Dir ja einen "R&uuml;ck-compiler" selber schreiben?
+Das w&auml;re eine gute Sache, ich selbst bin leider noch nicht dazu gekommen.
+<br>Bei einem Assemblerprogramm sieht die Sache &uuml;brigens etwas besser
+aus: Zur "R&uuml;ck-Compilierung" eines Maschinenspracheprogramms stehen
+Disassembler zur Verf&uuml;gung. Ich empfehle den IDI05 - liegt meiner
+Sammlung bei.
+<br>Wie Du die CCBASIC-Token, die im seriellen EEPROM stehen, und das Maschinenspracheprogramm
+aus dem internen EEPROM wieder zum PC &uuml;bertragen kannst steht in meiner
+Sammlung (siehe BEFEHLE.TXT). Dazu sendest Du einen bestimmten Code (eine
+Zahl) zur Unit, wenn diese im IDLE-Loop ist. Das machst Du am Besten mit
+dem Programm TERMINAL.EXE. Es protokolliert alles mit, was Du sendest und
+was die Unit daraufhin zum PC &uuml;bertr&auml;gt. Lies dazu einfach das
+Manual TERMINAL.MAN.
+<br><a NAME="v"></a>
+<br><b>Wie kann ich in BASIC am einfachsten detektieren, ob ein g&uuml;ltiges
+DCF77-Signal empfangen wird?</b>
+<br>Mit dem untenstehenden Programm kann das C-Control-Statusregister abgefragt
+werden. Das Register liegt an Adresse $7b und enth&auml;lt zwei Bits, die
+zu diesem Zweck von Interesse sind: Bit 0 gibt an, ob in diesem Moment
+ein g&uuml;ltiges Zeitsignal empfangen wird und Bit 4 ist gesetzt, wenn
+die C-Control-Systemzeit wenigstens einmal vom DCF77-Signal oder &uuml;ber
+die RS232-Schnittstelle gestellt wurde. Wenn nur Bit 4 gesetzt ist, kann
+davon ausgegangen werden, da&szlig; die Systemzeit die richtige Ortszeit
+enth&auml;lt (wenn auch eventuell mit einigen Sekunden Abweichung).
+<br>Durch eine kleine &Auml;nderung im Programm kann &uuml;brigens jedes
+beliebige Byte im RAM ab Adresse 1 abgefragt werden. Dazu mu&szlig; man
+nur den Wert in der Tabelle "ccstatustab" um&auml;ndern: 11*256+Adresse-1.
+So k&ouml;nnte man also f&uuml;r jede Adresse, die man auslesen m&ouml;chte,
+eine eigene BASIC-Subroutine erstellen.
+<br>&nbsp;
+<table CELLSPACING=0 CELLPADDING=10 COLS=1 WIDTH="100%" BGCOLOR="#FFFFCC" >
+<tr>
+<td>
+<pre>if (ccstatus and 1) then print "Es wird ein gueltiges DCF77-Signal empfangen."
+if (ccstatus and 16) then print "Die Systemzeit wurde mindestens einmal gestellt."
+if (ccstatus and 32) then print "Der Slowmodus ist aktiv."
+end
+
+#ccstatus
+&nbsp; table ccstatustab
+&nbsp;&nbsp;&nbsp; 2938 '11*256+$7b-1
+&nbsp; tabend
+return</pre>
+</td>
+</tr>
+</table>
+<a NAME="w"></a>
+<br><b>Gibt es irgendwo unbenutzten Speicher im RAM?</b>
+<br>Jawohl, so weit wie ich bisher die "Innereien" der C-Control untersucht
+habe gibt es folgende M&ouml;glichkeiten, etwas mehr RAM-Speicher als die
+24 User-Bytes herauszukitzeln: Es gibt ein Byte an der Adresse $dc, dieses
+wird anscheinend von keiner Betriebssystemroutine verwendet. In Assemblerprogrammen
+k&ouml;nnen einige unbenutzte Bits des Statusregisters (an Adresse $7b)
+und die diversen tempor&auml;ren Bereiche (siehe ADRESSEN.TXT) eingesetzt
+werden. Bei letzterem mu&szlig; dann allerdings vor dem Aufruf einer Betriebssystemroutine
+&uuml;berpr&uuml;ft werden, ob die Routine den tempor&auml;ren Bereich
+nicht ebenfalls benutzt. Das kann am schnellsten im ROM-Listing kontrolliert
+werden (siehe "used"-Sektion im Header jeder Betriebssystemroutine). Wer
+kein Maschinenspracheprogramm mit vielen Unterprogrammaufrufen benutzt,
+kann ein St&uuml;ck des Hardwarestacks (ab Adresse $e5 aufw&auml;rts) zur
+Datenspeicherung nutzen. Das RAND-Word auf Adresse $9f kann mi&szlig;braucht
+werden, wenn keine Zufallszahlen ben&ouml;tigt werden. Wenn der TCAP1-Pin
+auf ein festes Potential gelegt wird (an dem Pin h&auml;ngt sonst ein DCF77-Empf&auml;nger),
+k&ouml;nnen s&auml;mtliche DCF77-Buffer benutzt werden. Es ist au&szlig;erdem
+denkbar, einige Interrupts des Betriebssystems einfach auszuschalten (siehe
+Manual zum 68HC05-Mikrokontroller und ROM-Listing) oder durch eigene Assembler-Interruptroutinen
+zu ersetzen. Dadurch w&uuml;rde ein gro&szlig;er Teil des RAMs frei. Zum
+Beispiel k&ouml;nnte man den SCI ausschalten und so den RS232-Buffer f&uuml;r
+eigene Zwecke mi&szlig;brauchen. Der Empfang &uuml;ber die serielle Schnittstelle
+ist dann theoretisch immer noch m&ouml;glich - allerdings ungebuffert.
+Hardcore-User schalten den TIMERCMP- Interrupt aus, oder ersetzen die entsprechenden
+Betriebssysteminterruptroutinen, und haben so ein wirklich gro&szlig;es
+St&uuml;ck des RAMs zur freien Verf&uuml;gung - siehe ADRESSEN.TXT.
+<br><a NAME="anderemc"></a>
+<br><b>Gibt es andere Mikrokontroller mit mehr RAM, mehr Ports, mehr Interrupts,
+Multitasking, Grafik, usw.?</b>
+<br>Wie waere es denn, wenn Du fuer umfangreichere Projekte einen PC einsetzt?
+So ein alter 386'er mit 40 MHz kann problemlos ohne Tastatur, Monitor,
+Grafikkarte, Festplatte, CD-LW, Gehaeuse und aehnlichem betrieben werden.
+Das Motherboard mit Speicher gibt's gebraucht fast fuer umsonst. Man braucht&nbsp;
+nur noch ein Netzteil, eine I/O-Karte und ein Diskettenlaufwerk; eventuell
+kann das Laufwerk sogar durch eine EEPROM-Disk oder eine Netzwerkkarte
+ersetzt werden. Der Vorteil ist der, dass dann Programme ganz problemlos
+unter DOS entwickelt werden koennten - egal, ob in BASIC, C, Pascal oder
+sonst einer Sprache. Das Freeware-Angebot ist riesig - selbst das Betriebssystem
+(z.B. OpenDOS, FreeDOS) gibt's f&uuml;r umsonst. Ausserdem koennen selbstentwickelte
+Karten in den ISA-Bus gesteckt werden.
+<br><a NAME="o"></a>
+<br><b>Willst Du Deiner Sammlung einige von mir geschriebene Infotexte
+hinzuf&uuml;gen?</b>
+<br>Klar. Immer her damit! Nat&uuml;rlich werde ich Dich als Autor nennen.
+<br><a NAME="p"></a>
+<br><b>Ich habe eigene Software zur C-Control entwickelt.&nbsp; M&ouml;chtest
+Du sie Deiner Sammlung hinzuf&uuml;gen?</b>
+<br>Wenn es sich um BASIC- oder Assemblerprogramme f&uuml;r die C-Control
+handelt, dann sollten diese m&ouml;glichst &uuml;bersichtlich, &uuml;berschaubar
+und gut dokumentiert sein, so da&szlig; auch Newbies etwas damit anfangen
+k&ouml;nnen, denn schlie&szlig;lich hat meine Infosammlung den Charakter
+eines Lehrbuches. Hilfsprogramme f&uuml;r die C-Control, die auf dem PC
+laufen (z.B. eigener Kompiler, Maschinensprache-Simulator, BASIC-Detokensierer,
+o.&auml;.), sollten m&ouml;glichst in einer Sprache verfa&szlig;t sein,
+in der die Executables nicht zu gro&szlig; sind, oder Du schickst mir den
+Quellcode des Programms zu. Ansonsten w&uuml;rde das ZIP-Archiv mit der
+Sammlung n&auml;mlich unertr&auml;glich gro&szlig;!
+<br><a NAME="aa"></a>
+<br><b>D&uuml;rfen die Informationen und Programme in Deiner Sammlung kostenlos
+genutzt werden?</b>
+<br>Jeder Nutzer der Sammlung sollte sich an der Weiterentwicklung beteidigen.
+Das kann beispielweise durch Verfassen eigener
+<br>Beitr&auml;ge f&uuml;r diese Informationssammlung geschehen. Es ist
+aber auch m&ouml;glich, den Autor durch Zusenden eines kleinen Geldbetrags
+zu unterst&uuml;tzen.Von dieser Regelung ausgenommen sind die beiden Disassembler
+DI05.EXE und IDI05.EXE, sowie der Assembler AS05.EXE. Weitere Information
+hierzu befindet sich in der Textdatei REGISTER.TXT.
+<br><a NAME="m"></a>
+<br><b>Was gibt es Neues von der C-Control-2?</b>
+<br>Ich bin leider kein "Insider" in Sachen CC-2. Ich kenne auch nur die
+Informationen und Termine, die im CC-2-Forum der C-Control-Help-Site bekanntgegeben
+werden.
+<br><a NAME="n"></a>
+<br><b>Wen kann ich noch fragen?</b>
+<br>Wenn Du ein Problem hast, bei dem Du nicht weiter wei&szlig;t und das
+so schnell wie m&ouml;glich behoben werden mu&szlig;, dann stelle doch
+eine Anfrage in das <a href="http://f10.parsimony.net/forum15236">CC-1-Forum</a>.
+Es ist zur Zeit das am besten besuchte Forum zur C-Control. Aber beachte,
+da&szlig; Du Dein Problem ausreichend genau beschreiben mu&szlig;t! Mitunter
+helfen auch alte Forums-Postings weiter. Diese k&ouml;nnen auf&nbsp; der
+C-Control-Help-Site als ZIP-Archiv heruntergeladen werden.
+<br>&nbsp;
+<p><i>Alles gelesen und immer noch Fragen? Dann <a href="mailto:dharlos@web.de">schreib
+mir eine e-mail</a> und hoffe, da&szlig; ich mich relativ schnell bei Dir
+melde!</i>
+<br>&nbsp;
+<br>&nbsp;
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,129 @@
+
+Befehle die ueber die RS232-Schnittstelle gesendet werden koennen:
+==================================================================
+
+Waehrend der C-Control/BASIC-Minicomputer in der "IDLE-LOOP" verharrt
+(das ist im Betriebssystem der Bereich von Adresse $969 bis $989), ueberprueft
+das Betriebssystem einerseits den Startjumper und andererseits, ob ein Zeichen
+ueber die serielle Schnittstelle empfangen wurde. Falls der Startjumper
+gesetzt ist, wird das BASIC-Programm im seriellen EEPROM gestartet. Falls
+aber ein Zeichen ueber die RS232-Schnittstelle empfangen wurde, wird dieses
+als "Befehl" interpretiert. Ueber diese Befehle wird z.B. das BASIC-Programm
+in das externe, serielle EEPROM uebertragen oder es kann die Versionsnummer
+des C-Control/BASIC-Chips abgefragt werden.
+
+Um beispielsweise die Versionsnummer abzufragen muss der ASCII-Code Nr. 1
+ueber die serielle Schnittstelle uebertragen werden waehrend sich der
+Mikrokontroller in der IDLE-LOOP aufhaelt. In einem Terminalprogramm, das
+unter DOS benutzt wird, muss dazu waehrend die linke ALT-Taste gedrueckt
+gehalten wird, im Ziffernblock die Nummer des gewuenschten ASCII-Codes
+eingegeben (hier: einfach Taste 1 druecken) und anschliessend die ALT-Taste
+losgelassen werden.
+
+Jedes zu programmierende Byte, das zum Mikrokontroller gesendet wird, wird von
+diesem quittiert, indem es nach dem Empfang und dem Programmieren zum Sende-
+rechner zurueckgesendet wird. Der Senderechner kann am Echo des Minicomputers
+erkennen, ob die Daten fehlerfrei uebertragen wurden.
+
+
+Uebersicht ueber alle z.Z. unterstuetzten Befehle:
+==================================================
+
+   1  = Einschaltmeldung, bzw. Versionsnummer abfragen
+
+     Die Ausgabe des Mikrokontrollers als Hex-Dump:
+
+     0000  43 43 54 52 4c 2d 42 41 53 49 43 20 56 65 72 73  CCTRL-BASIC Vers
+     0010  69 6f 6e 20 31 2e 31 20 28 32 30 2e 31 32 2e 39  ion 1.1 (20.12.9
+     0020  36 29 0d                                         6).
+
+   2  = Programmierung eines BASIC-Programms ins externe, serielle EEPROM
+
+     Nachdem der ASCII-Code 2 gesendet wurde muessen in zwei folgenden
+     Bytes die Anzahl der zu programmierenden Bytes (binaerkodiert)
+     zum Mikrokontroller uebertragen werden. Anschliessend folgen die
+     einzelnen Bytes des BASIC-Programms.
+
+   3  = ASCII-Dump des BASIC-Programms im externen, seriellen EEPROM
+
+     Der C-Control/BASIC-Chip quittiert das Senden des ASCII-Codes 3 indem
+     er unmittelbar danach die Groesse des BASIC-Programms ASCII-kodiert
+     mit einem darauffolgenden RETURN (ASCII-Code 13) und danach das BASIC-
+     Programm Byte fuer Byte uebertraegt.
+
+     Beispiel: Ausgabe des Kontrollers, nachdem der ASCII-Code 3 ueber-
+               tragen wurde (hier als Hex-Dump dargestellt)
+
+     0000  37 38 0d 1f 48 61 6c 6c 6f 2c 20 64 75 20 64 6f  78..Hallo, du do
+     0010  6f 66 65 72 20 55 73 65 72 21 20 48 69 65 72 20  ofer User! Hier
+     0020  69 73 74 20 64 65 69 6e 20 4d 43 36 38 48 43 30  ist dein MC68HC0
+     0030  35 42 36 20 4d 69 6b 72 6f 63 6f 6e 74 72 6f 6c  5B6 Mikrocontrol
+     0040  6c 65 72 21 00 1f 0d 0a 00 14 00 0a 02 03 00 04  ler!............
+     0050  ff                                               ˇ
+
+   8  = Programmierung des internen EEPROMs (Adresse $101 bis $1ff)
+
+     Nachdem der ASCII-Code 8 gesendet wurde muss in dem folgenden
+     Byte die Anzahl der zu programmierenden Bytes zur Unit uebertragen
+     werden. Anschliessend folgen die einzelnen Bytes, die in das interne
+     EEPROM uebertragen werden sollen.
+
+   9  = ASCII-Dump des internen EEPROMs (Adresse $101 bis $1ff)
+
+     Durch das Senden des ASCII-Codes 9 sendet die Unit den Inhalt des
+     internen EEPROMs, in dem die "Systembytes" stehen, also das letzte
+     uebertragene Maschinenspracheprogramm.
+
+     Beispiel: Ausgabe des Kontrollers, nachdem der ASCII-Code 9 ueber-
+               tragen wurde (hier als Hex-Dump dargestellt)
+
+     0000  a6 ff b7 05 a6 01 b7 a3 a6 0e b7 52 81 3d a3 27  ¶ˇ∑.¶.∑£¶.∑RÅ=£'
+     0010  08 3f a3 a6 01 b7 01 3f dc 3c a2 b6 a2 be a1 d1  .?£¶.∑.?‹<¢∂¢æ°—
+     0020  01 2c 25 04 3f a2 ad 23 a6 01 81 06 05 04 03 03  .,%.?¢≠#¶.Å.....
+     0030  02 02 02 01 01 01 01 01 01 01 01 01 01 01 01 01  ................
+     0040  01 01 01 01 02 02 02 03 03 04 05 b6 dc 27 19 b6  ...........∂‹'.∂
+     0050  01 a5 01 27 0c b6 a1 4c a1 20 25 01 4f b7 a1 20  .•.'.∂°L° %.O∑°
+     0060  07 34 01 a6 01 b7 dc 81 b6 01 a5 80 26 e1 38 01  .4.¶.∑‹Å∂.•Ä&·8.
+     0070  a6 00 b7 dc 81 ff ff ff ff ff ff ff ff ff ff ff  ¶.∑‹Åˇˇˇˇˇˇˇˇˇˇˇ
+     0080  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+     0090  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+     00a0  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+     00b0  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+     00c0  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+     00d0  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+     00e0  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+     00f0  ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff     ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+
+   13 = Word-Dump der Datei im externen, seriellen EEPROM
+
+     Wenn der ASCII-Code 13 gesendet wurde (was man auch durch Druecken
+     der RETURN-Taste bewerkstelligen kann) uebertraegt der Kontroller
+     zunaechst die Groesse der EEPROM-Datendatei (in Byte) ASCII-kodiert
+     und mit einem anschliessenden RETURN ueber den seriellen Port. Danach
+     folgen die Werte die im EEPROM abgespeichert sind (im gleichen
+     Uebertragungsprotokoll). Leider ist die Betriebssystemroutine, die fuer
+     die Ausgabe des Word-Dumps zustaendig ist, leicht buggy: Es fehlt die
+     Abbruchbedingung, so dass nicht nur die Datendatei sondern gleich der
+     gesamte EEPROM-Inhalt uebertragen wird. Immerhin kommt man auf diese
+     Art und Weise recht einfach zu einem Dump des gesamten EEPROMs! Der
+     Kontroller muss nach dem Ausfuehren resettet werden um die Uebertragung
+     zu stoppen.
+
+   14 = Stellen der internen Uhr
+
+     Mit dieser Funktion kann die interne Uhr des Mikrokontrollers ueber
+     die serielle Schnittstelle gestellt werden. Die Uhrzeit wird in
+     sieben Bytes uebertragen: Zuerst die Sekunden, dann die Minuten,
+     die Stunden, der Wochentag, der Kalendertag, der Monat und zum
+     Schluss das Jahr.
+
+
+-----------------------------------------------------------------------------
+Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+-----------------------------------------------------------------------------

@@ -1,0 +1,64 @@
+CCTOKBAS.EXE - Version 0.2002.02.09.2117 - freeware
+Autor: Dietmar Harlos (dharlos@web.de)
+
+Mit diesem MS-DOS-Programm koennen tokensierte Programme des C-Control-
+Mikrokontrollers in lesbaren BASIC-Quellcode umgewandelt (detokensiert)
+werden.
+
+Damit lassen sich Programme, deren Quellcode verloren gegangen ist, wieder
+in lesbaren BASIC-Code konvertieren; vorausgesetzt, es ist eine vom CCBASIC-
+Compiler fuer DOS erstellte DAT-Datei vorhanden, oder das zu uebersetzende
+Programm befindet sich noch im Speicher der C-Control.
+
+Als besonderen Bonus lassen sich mit Hilfe des Decompilers sogar
+C-Control/Plus-Programme in CCBASIC-Programme umwandeln! Ausserdem erzeugt
+das Tool eine detaillierte Liste aller verwendeten Variablen und deren Lage
+im User-RAM. Damit kann man Problemen wegen Ueberschneidungen leichter
+aus dem Wege gehen.
+
+Das Tool kann DAT-Dateien vom CCBASIC-Compiler fuer DOS lesen oder auch eine
+direkte Verbindung zur C-Control aufnehmen und das im Speicher der C-Control
+stehende Programm ueber die RS232-Schnittstelle einlesen und verarbeiten.
+Letzteres sollte sowohl unter reinem DOS, als auch in der DOS-Box und im
+MS-DOS-Modus von Windows 95/98/Me funktionieren.
+
+Bedienung:
+
+Zuerst sollte man das ZIP-Archiv, in dem sich der Decompiler befindet, in
+ein beliebiges Verzeichnis entpacken. Das kann man z.B. mit Winzip machen.
+Die weitere Bedienung des Programms findet am DOS-Prompt statt. Darum
+muss man unter Windows die "MS-DOS-Eingabeaufforderung" starten und in das
+Verzeichnis wechseln, in dem sich der Decompiler befindet. Wenn der Compiler
+z.B. in das Verzeichnis "C:\TEMP\CCTOKBAS" entpackt wurde, gibt man am DOS-
+Prompt "cd c:\temp\cctokbas" gefolgt von Return (Eingabetaste) ein.
+
+Wenn man nun eine DAT-Datei vom CCBASIC-Compiler uebersetzten moechte,
+startet man das Programm durch Eingabe von "CCTOKBAS datei.dat". Wenn man
+dagegen das Programm, das sich augenblicklich im Speicher der C-Control
+befindet, uebersetzen moechte, gibt man z.B. "CCTOKBAS 2" ein, wenn die
+C-Control ueber COM2 mit dem PC verbunden ist.
+
+Die Ausgabedatei hat die Endung "BA0", um Verwechslungen mit einer evt. eben-
+falls vorhandenen BASIC-Datei aus dem Wege zu gehen. Zusaetzlich legt der
+Decompiler eine Datei namens CCTOKBAS.BIN an. Diese enthaelt die Token des
+BASIC-Codes und kann bei Bedarf in einem Hexeditor untersucht werden.
+
+Zu beachten:
+
+Damit der Decompiler Tabellen erkennen kann, muss fuer jede Tabelle
+wenigstens ein LOOKTAB-Befehl im BASIC-Code vorhanden sein und vor der
+Tabelle stehen.
+
+Der CCBASIC-Compiler fuegt an jedes kompilierte Programm ein END-Token (255)
+an. Bei Tabellen, die ganz am Ende des Programms stehen, fuehrt das dazu,
+dass ein Eintrag zuviel in der Tabelle steht.
+
+Der Decompiler kann in der derzeitigen Version nicht erkennen, ob Parameter
+beim SYS-Befehl uebergeben werden. Ich werde versuchen, dieses Manko in der
+naechsten veroeffentlichten Version zu beheben.
+
+
+Viel Spass beim C-Controllern!
+
+Dietmar Harlos.
+

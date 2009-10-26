@@ -1,0 +1,92 @@
+0       $15B7  ignoriert, 1 Byte lang
+1       $15B8  intern, Rechenstack loeschen
+2       $15BB  PAUSE
+3 w     $15CB  GOTO, ELSE
+4 w     $15E0  IF .. THEN      hole das letzte Word vom Stack und springe zur Adresse w, falls das Word gleich 0 ist
+5 w     $169D  GOSUB
+6       $16A6  RETURN
+7       $1A0B  RETURN INTERRUPT
+8 w     $170A  SYS
+9 b     $1714  SLOWMODE
+10 b    $1720  intern, push data from bitport b to stack
+11 b    $172B  intern, push data from byteport b to stack
+12      $1736  intern, push data from wordport to stack
+13 b    $1740  intern, store Top-Of-Stack to bitport b
+14 b    $174B  intern, store Top-Of-Stack to byteport b
+15      $1756  intern, store Top-Of-Stack to wordport
+16 b    $1761  intern, push data from ad-port b to stack
+17 b    $176F  intern, store Top-Of-Stack to da-port b
+18      $15B7  ignoriert, 1 Byte lang
+19      $15B7  ignoriert, 1 Byte lang
+20 w    $1796  intern, push wordvalue w to stack
+21 b    $17A0  intern, push bitvar b to stack
+22 b    $17A7  intern, push bytevar b to stack
+23 b    $17AE  intern, push wordvar b to stack
+24 b    $17B5  intern, store Top-Of-Stack to bitvar b
+25 b    $17BC  intern, store Top-Of-Stack to bytevar b
+26 b    $17C3  intern, store Top-Of-Stack to wordvar b
+27 w    $17CA  LOOKTAB         hole die Nummer des zu lesenden Eintrags vom Stack und speichere anschliessend das Word von Adresse w + Eintrag auf dem Stack
+28 b    $1806  intern, push internal var b to stack
+29 b    $1881  intern, store Top-Of-Stack to internal var b
+30      $18D4  PRINT number
+31 s    $18DF  PRINT string
+32      $18ED  PUT
+33      $18F2  RXD
+34      $18F9  GET
+35      $1915  INPUT
+36 b    $1900  HANDSHAKE
+37      $190E  CTS
+38      $15B7  ignoriert, 1 Byte lang
+39      $15B7  ignoriert, 1 Byte lang
+40      $12B6  NOT
+41      $12C3  AND
+42      $12D2  NAND
+43      $12D6  OR
+44      $12E5  NOR
+45      $12E9  XOR
+46      $12F8  SHL
+47      $1316  SHR
+48      $1442  RANDOMIZE
+49      $1468  RAND
+50      $1334  intern, (unary -) negate last word on stack
+51      $1342  intern, (+) add last two words on stack & push result to stack
+52      $1351  intern, (-) subtract last word on stack from last-but-one word & push result
+53      $1360  intern, (*) multiply last two words on stack & push result
+54      $137E  intern, (/) divide last-but-one word on stack by last word & push result
+55      $139C  MOD
+56      $13BA  ABS
+57      $13E8  SQR
+58      $1484  MAX
+59      $14A4  MIN
+60      $14C4  intern, (>) test if last-but-one word is bigger than last word & push result
+61      $1510  intern, (>=) test if last-but-one word is bigger/equal last word & push result
+62      $14EA  intern, (<) test if last-but-one word is lower than last word & push result
+63      $1536  intern, (<=) test if last-but-one word is lower/equal to last word & push result
+64      $155C  intern, (=) test if last two words on stack are equal & push result
+65      $1579  intern, (<>) test if last two words are not equal & push result
+66      $13CC  SGN
+67      $15B7  ignoriert, 1 Byte lang
+68      $15B7  ignoriert, 1 Byte lang
+69      $15B7  ignoriert, 1 Byte lang
+70 b    $197C
+70 1           OPEN# FOR READ
+70 2           OPEN# FOR WRITE
+70 3           OPEN# FOR APPEND
+70 4           CLOSE#
+70 5           PRINT#
+70 6           INPUT#
+71      $19D8  EOF
+72 b    $19DF  BAUD
+73 w    $19E6  INTERRUPT     w an Adresse $b9,$ba schreiben
+74 b w  $161F  intern, fuer FOR..NEXT-Schleifen: Vergleiche Word auf dem Stack mit der Bytevariablen b, falls beide gleich sind springe nach w
+75 b w  $1628  intern, fuer FOR..NEXT-Schleifen: Vergleiche Word auf dem Stack mit der Wordvariablen b, falls beide gleich sind springe nach w
+76 b w  $1631  intern, fuer FOR..NEXT-Schleifen: Addiere zur Bytevariablen b das letzte Word auf dem Stack und springe zur EEPROM-Adresse w
+77 b w  $1640  intern, fuer FOR..NEXT-Schleifen: Addiere zur Wordvariablen b das letzte Word auf dem Stack und springe zur EEPROM-Adresse w
+78      $15B7  ignoriert, 1 Byte lang
+79      $15B7  ignoriert, 1 Byte lang
+80 b    $177A  TOG
+81 b    $1781  PULSE
+82 b    $1788  DEACT bitport b
+83 b    $178F  DEACT byteport b
+84      $0A82  DEACT wordport
+255            END

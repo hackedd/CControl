@@ -1,0 +1,124 @@
+
+ ----------------------------------------------------------------------------
+            Infos zum CCBASIC-Chip im Internet (Stand: Juni 2000)            
+ ----------------------------------------------------------------------------
+
+ Diese Links stammen groesstenteils von der C-Control Info-Site von Mark
+ Haemmerling. Marks wirklich gut gemachte Software-, Hardware- und
+ Informations-Site zum Mikrocontroller-System von Conrad Electronic ist unter
+ der URL "http://c-control.purespace.de" zu erreichen und enthaelt neben
+ vielen Links, Tips und Programmen zum C-Control-System auch einige Bilder
+ (sogar in 3D!).
+
+
+                  Adressen von Internetseiten zur C-Control
+                  -----------------------------------------
+
+            Die offizielle C-Control Seite von Conrad Electronic:
+        (hier kann man sich ueber die Unit informieren und die neuste
+                      Programmiersoftware herunterladen)
+
+                           http://www.c-control.de
+
+                                 ..ooOOOoo..
+
+     Das Forum "C-Control / Elektronik im Haushalt" von Conrad Electronic
+             (hier gibt's Fragen und Antworten von Endanwendern)
+
+           http://www.conrad.de/nav/frames/f_sat_forum_conrad.html
+
+                                 ..ooOOOoo..
+
+                    Gute nichtoffizielle C-Control Seiten:
+         (viele Informationen, Programme, Schaltplaene, und und und)
+
+                        http://c-control.purespace.de
+                     http://www.allround.de/CControlhelp
+                    http://home.t-online.de/home/vanbasten
+                   http://www.geocities.com/ccontrolintern
+
+                                 ..ooOOOoo..
+
+                       Informationsforen zum C-Control:
+             (hier gibt's Fragen und Antworten von Endanwendern)
+
+                     http://f10.parsimony.net/forum15236
+                    http://www.f5.parsimony.net/forum5614
+
+                                 ..ooOOOoo..
+
+                  Das Lallus-Projekt vom WDR Computer Club:
+   (Telefonanlage mit Sprachausgabe; basiert auf der C-Control/BASIC-Unit)
+
+                   http://www.wdr.de/tv/computerclub/lallus
+
+                                 ..ooOOOoo..
+
+                      Die Quellcodes zum Betriebssystem
+     (von Conrad Electronic, in C programmiert, teilweise unvollstaendig)
+
+           http://www.allround.de/CControlhelp/files/quelltexte.zip
+
+                                 ..ooOOOoo..
+
+                            Die Funk-Uhr Homepage
+                      (sehr gute Seite zum DCF77-Signal)
+
+                         http://www.heret.de/funkuhr
+
+
+
+                Links zu Herstellern der verwendeten Bauteile
+                ---------------------------------------------
+
+    http://www.mot.com          Motorola (Hersteller des Mikrokontrollers)
+    http://www.microchip.com    Microchip (tw. Hersteller des EEPROMs)
+    http://www.st.com           SGS Thomson (tw. Hersteller des EEPROMs)
+    http://www.maxim-ic.com     Maxim (tw. Hersteller des MAX232)
+    http://www.ti.com           Texas Instruments (tw. Reset-Baustein)
+
+
+                  Datenblatt zum Mikrokontroller MC68HC05B6:
+              http://mot-sps.com/mcu/documentation/pdf/b6r4.pdf
+
+
+                         Datenblatt zum 24C65-EEPROM:
+      http://www.microchip.com/10/Datasheet/Memory/IC/64to128/24C65.htm
+        es gibt auch noch das wesentlich umfangreichere Manual namens
+                21058g.pdf auf der C-Control-intern-Homepage.
+
+
+                 Datenblatt zum MAX232 (RS232-Pegelwandler):
+                     http://209.1.238.250/arpdf/1798.pdf
+
+
+                   Datenblatt zum TL7757 (Reset-Baustein):
+       http://www.ti.com/sc/docs/psheets/abstract/datasht/slvs041d.htm
+
+
+
+                              Software zum 6805
+                              -----------------
+
+   http://www.simtelnet.com       ein paar Assembler fuer die 6805'er CPU
+   http://www.mot.com             ein relativ schwacher Assembler
+   http://www.bytecraft.com       C-Compiler fuer DOS ("C6805")
+   http://www.cosmic-us.com       COSMIC C-Compiler und ZAP-Simulator
+   http://www.tec-i.com           WASM05 und WTT05 - mit guter Onlinehilfe
+   http://www.introl.com          Introl-COntroller Development Environment
+
+ Es gibt noch mehr Software fuer den 6805, schliesslich ist der Chip sehr
+ weit verbreitet. Die meisten C-Compiler koennen im CCBASIC-Chip allerdings
+ nicht benutzt werden, da sie zuviel Speicher benoetigen.
+
+
+
+ Diese Linkliste ist natuerlich laengst nicht vollstaendig. Es gibt im
+ Internet hunderte, wenn nicht Tausende von Seiten zum MC68HC05 und zum C-
+ Control-Mikrokontrollersystem. Einfach 'mal bei einer Suchmaschine (z.B.
+ "http://www.lycos.de") ein paar Schluesselwoerter eingeben.
+
+ Wer mich auf gute Internetseiten oder auf nicht mehr funktionierende URLs
+ hinweisen moechte, kann mir eine e-mail an "dharlos@web.de" schicken. Ich
+ freue mich auch ueber jede andere (positive) Rueckmeldung!
+

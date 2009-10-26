@@ -1,0 +1,143 @@
+
+ ----------------------------------------------------------------------------
+                 Informationen zum MC68HC05B6 Mikrokontroller                
+ ----------------------------------------------------------------------------
+
+ Der C-Control-Einplatinencomputer basiert zum Grossteil auf dem MC68HC05B6
+ Mikrokontroller von der Firma Motorola. Conrad Electronic hat fuer diesen
+ Chip ein eigenes Betriebssystem (inklusive BASIC-Interpreter) geschrieben,
+ von Motorola in das ROM brennen lassen und diesen Chip anschliessend
+ zusammen mit einem Quarz und einem seriellen EEPROM auf eine Platine
+ geloetet, und fertig war der C-Control-Einplatinencomputer.
+
+ Der MC68HC05B6 Mikrokontroller ist eigentlich schon ein eigenstaendiges
+ Computersystem, vorausgesetzt man programmiert ihn in Assembler (oder in der
+ Programmiersprache C). Er enthaelt RAM, EEPROM, DA- und AD-Wandler, digitale
+ Ein- und Ausgaenge, ein Timer System, eine serielle Schnittstelle und
+ natuerlich eine CPU.
+
+ Ueber diese CPU ("6805") moechte ich an dieser Stelle einige Informationen
+ geben, die sie (und ihre Assemblersprache) mit anderen CPUs vergleicht.
+ Leser, die schon einmal in einer anderen Assemblersprache programmiert
+ haben, sollen so recht schnell einen Ueberblick ueber die Vor- und Nachteile
+ dieser CPU bekommen.
+
+
+ ----------------------------------------------------------------------------
+                               Die 6805'er CPU                               
+ ----------------------------------------------------------------------------
+
+ Die 6805'er CPU ist ein relativ einfacher Baustein. Ihr Assemblerbefehlssatz
+ und die Art, wie sie auf Adressen zugreift, hat gewisse Aehnlichkeiten zu
+ der 6502'er und der 6800'er CPU von Motorola. Trotzdem besitzt sie nicht den
+ Leistungsumfang dieser CPUs.
+
+ Wer die CPU mit einem Z80 oder einer 80x86'er vergleicht, wird bedeutende
+ Unterschiede finden: Sie besitzt nur zwei Register, die zudem jeweils nur
+ eine Breite von acht Bit (ein Byte) haben. Auf die ersten 256 Byte des
+ Speichers kann ganz besonders leicht zugegriffen werden. Dieser Bereich wird
+ auch als "Zeropage" bezeichnet. Es gibt sogar Assemblerbefehle, denen als
+ Parameter nur Daten uebergeben werden koennen, die in diesen 256 Byte liegen
+ muessen. Genaugenommen existiert nicht einmal die Moeglichkeit, 16-Bit-
+ Adressen zu verwenden (ausser beim Extended Direct Adressierungsmodi). Aus
+ diesem Grund wird auf Daten ausserhalb der Zeropage haeufig mit Hilfe
+ kleiner Maschinenspracheprogramme zugegriffen, die waehrend der Laufzeit im
+ RAM generiert werden muessen.
+
+ Ports, RAM, ROM und EEPROM teilen sich einen Adressraum. Es gibt also,
+ anders als beim Z80 oder 80x86, keine Ports die per INPUT/OUTPUT-Befehl
+ abgefragt werden muessen.
+
+ Beim MC68HC05B6 liegen sowohl die Ports als auch das RAM innerhalb der
+ Zeropage. Der Portbereich startet bei Adresse $0 und endet bei $1f. Das RAM
+ beginnt bei Adresse $50 und endet bei $ff. Im RAM liegt auch der Stack, der
+ aber nur zum Speichern der Ruecksprungadresse bei einem Unterprogrammaufruf
+ verwendet werden kann. Es ist nicht moeglich, Parameter oder Registerinhalte
+ auf dem Stack zwischenzuspeichern!
+
+ Da die Zeropage, wie gesagt, schon anderweitig belegt ist, werden die
+ Adressen der Routinen, die bei einem Interrupt aufgerufen werden, ganz am
+ Ende des Adressraums (ab Adresse $1ff2 im ROM) gespeichert, nicht am Anfang,
+ so wie beim Z80 oder 80x86.
+
+ Z80 oder 80x86'er Programmierern wird zudem auffallen, das 16-Bit-Werte von
+ dieser CPU im Big Endian (und nicht im Little Endian) Format gespeichert
+ werden. Das heisst, Words werden mit dem hoechstwertigen Byte beginnend im
+ Speicher abgelegt.
+
+ Alles im allem betrachtet, ist die Programmierung des 6805 nicht sehr
+ kompliziert, was wohl daran liegt, dass diese CPU eben nur zwei Register
+ besitzt, die zudem nur acht Bit lang sind. Man kommt gar nicht drum herum
+ fast jede benoetigte Byte-, und sowieso jede Wordvariable im Arbeitsspeicher
+ (RAM) zwischenzuspeichern.
+
+ Der Nachteil davon ist natuerlich, dass Assemblerprogramme im allgemeinen
+ etwas laenger geraten als vergleichbare fuer andere CPUs.
+
+ Genauere Informationen zum Mikrokontroller und zum Befehlssatz der CPU kann
+ dem Manual zum MC68HC05 von Motorola, der Datei ASSEMBLE.TXT, den
+ Beispielprogrammen in dieser Sammlung, sowie dem ROM-Listing entnommen
+ werden.
+
+
+ ----------------------------------------------------------------------------
+               Technische Daten des MC68HC05B6 Mikrokontrollers              
+ ----------------------------------------------------------------------------
+
+ Hier folgt eine kurze Uebersicht ueber alle Features, die ein MC68HC05B6
+ Mikrokontroller besitzt. Weitere Informationen bitte im Manual von Motorola
+ nachlesen.
+
+    þ 68HC05 CPU
+    
+    þ 2MHz Internal Operation Frequency at 5 volt
+    
+    þ 5,936 bytes ROM
+    
+    þ 176 bytes RAM
+    
+    þ 256 bytes of Byte Eraseable EEPROM
+    
+    þ Timer System
+        16-bit Timer with Two Input Captures and Two Output Compare
+        Two Pulse Width Modulation Channels can be used as D/A Converters
+        Computer Operating Properly Watchdog Timer
+    
+    þ 8 Channel Analog to Digital Converter (ADC)
+    
+    þ 24 Bidirectional I/O Lines and 8 Input Only Lines
+    
+    þ On-Chip Oscillator with Crystal/Ceramic Resonator
+    
+    þ Serial Communications
+        Asynchronous Serial Communications Interface with
+        Synchronous Master Transmit Capability (SCI+)
+    
+    þ Fully Static Operation
+    
+    þ Power Saving STOP and WAIT Modes
+    
+    þ Selectable Sensitivity on IRQ Interrupt
+        Edge and Level Sensitive or Edge Sensitive Only
+    
+    þ Comprehensive Development Support
+        Cost Effective Real-Time In-Circuit Emulator (MMEVS)
+        High Performance Real-Time In-Circuit Emulator (MMDS)
+        Broad 3rd Party Software and Hardware Support
+    
+    þ Package Options
+        56 Pin Shrink Dual Inline Package (SDIP)
+        52 Lead Plastic-Leaded Chip Carrier (PLCC)
+        64 Lead Quad Flat Pack (QFP)
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------
+

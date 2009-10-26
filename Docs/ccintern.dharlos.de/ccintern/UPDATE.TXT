@@ -1,0 +1,57 @@
+
+            ÛÛ   ÛÛ              ÛÛ           ÛÛ
+            ÛÛ   ÛÛ ÜÜÜÜÜÜ   ÜÜÜÜÛÛ  ÜÜÜÜÜ  ÜÜÛÛÜÜ  ÜÜÜÜÜ   ÜÜÜÜÜ
+            ÛÛ   ÛÛ ÛÛ   ÛÛ ÛÛ   ÛÛ  ÜÜÜÜÛÛ   ÛÛ   ÛÛÜÜÜÛÛ ßÛÜÜ ßß
+            ÛÛ   ÛÛ ÛÛÜÜÜÛß ÛÛ   ÛÛ ÛÛ   ÛÛ   ÛÛ   ÛÛ   ÜÜ ÜÜ ßßÛÜ
+             ßßßßß  ÛÛ       ßßßßßß  ßßßßßß   ßßß   ßßßßß   ßßßßß
+                    ßß
+
+ Der Inhalt der Dateien in diesem Archiv unterliegt einem staendigen Wandel.
+ In dieser Liste ist aufgefuehrt, was sich von einer Version zur naechsten
+ jeweils veraendert hat.
+
+
+ Version 1.2 vom 21.07.2000
+ ==========================
+
+ Die Version 1.2 meiner Sammlung wurde sehr stark erweitert. Viele Beitraege
+ kamen hinzu und aus einer grossen Anzahl von Dateien wurden Rechtschreib-
+ und Logikfehler entfernt. Dank Friedhelm Boehl ist die Sammlung um zwei
+ Beitraege reicher geworden.
+
+ Hier die Aufstellung der wichtigsten Umgestaltungen:
+
+ ş NEU: die "Frequently Asked Question"-Liste (FAQ.HTM)
+ ş NEU: Mysterioese Probleme nach dem Neuprogrammieren der Unit (BUGS.TXT)
+ ş NEU: Speicherplatzzuweisung durch den CCBASIC-Compiler (BUGS.TXT)
+ ş NEU: Lesen und Schreiben von beliebigen RAM-Speicherstellen (TIPSUTRI.TXT)
+ ş NEU: Unit bei gesetztem Start-Jumper neu programmieren (TIPSUTRI.TXT)
+ ş NEU: Unit per Software resetten (TIPSUTRI.TXT)
+ ş NEU: Beispiel, wie man BASIC in Assembler umschreibt (KARTEBAS.BAS)
+ ş NEU: DCF-77-Simulator von Friedhelm Boehl (DCF77SIM.ZIP)
+ ş NEU: Unit bei gesetztem Start-Jumper neu programmieren (NEUPROG.ZIP)
+ ş NEU: ein einfaches Uebungsprojekt fuer IDI05 (LAUFLICH.BIN)
+ ş NEU: Ueberlegungen zum Neustart der Unit ueber RS232 (FUTURE.TXT)
+ ş NEU: Die Weiterentwicklung der C-Control: Die C-Control 2 (FUTURE.TXT)
+
+ ş ASSEMBLE.TXT: im Assemblerkurs werden nun auch die Bitbefehle erklaert
+ ş BUGS.TXT: diverse Beitraege (z.B. zum Wochentagsregister) umgeschrieben
+ ş INTERNET.TXT: Links zu den Manuals aktualisiert
+ ş IDI05.EXE: kleine Fehler aus dem "intelligenten" Disassembler entfernt
+ ş REGISTER.TXT: meine Bankverbindung hatte sich geaendert
+
+
+ Version 1.1 vom 02.12.1999
+ ==========================
+
+ Es wurden einige kleine Rechtschreib- und Logikfehler entfernt. Ausserdem
+ wurden die Dateien TIPSUTRI.TXT, BUGS.TXT, FUTURE.TXT, INTERRUP.TXT,
+ CPROG.BAT, CPROG.C, BEISPIEL.BAT, ADRESSEN.TXT und CCBASROM.TXT erweitert.
+
+
+ Version 1.0 vom 26.11.1999
+ ==========================
+
+ Das war die erste vollstaendige Version meiner "C-Control-intern"-
+ Informationssammlung, die ich im Internet zum Download angeboten habe.
+

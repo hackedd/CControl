@@ -1,0 +1,22 @@
+
+#     LINK COMMAND FILE FOR COSMIC C VERSION 4.1J
+
+#     Fuer jedes zu compilierende C-Programm muss ein eigenes Link Command
+#     File (*.lcf) angelegt werden. Hier wird dem Compiler die Speicher-
+#     belegung der Ziel-CPU und die Pfade von hinzuzulinkenden Dateien und
+#     Bibliotheken mitgeteilt.
+
++seg .text -b 0x101 -n .text            # program start address
++seg .const -a .text                    # constants follow code
++seg .bsct -b 0x50 -m 0x100             # zero page start address
++seg .ubsct -n iram                     # uninitialized zero page
++seg .share -a iram -is                 # shared segment
++seg .const -b 0x1ff4                   # vectors start address
+
+#     ACHTUNG!
+#     Der folgende Dateiname (*.o) und die darauffolgenden Pfade muessen
+#     eventuell noch angepasst werden.
+
+cprog.o
+c:/utils/cosmic/cxeval/lib/libi.h05     # C library (if needed)
+c:/utils/cosmic/cxeval/lib/libm.h05     # machine library

@@ -1,0 +1,54 @@
+' Dieses BASIC-Programm wurde mit Hilfe des CCBASIC-Decompilers von Dietmar
+' Harlos aus der Datei C:\DOCUME~1\PAUL\BUREAU~1\C-CONT~1\CCINTE~1.DE\CCTOKBAS\CCTOKBAS.BIN erstellt.
+
+define bytevar0 byte[1]  'r/w
+define bytevar1 byte[2]  'r/w
+define bytevar2 byte[3]  'r/w
+
+define bitport0 port[1]  'w
+define bitport1 port[2]  'w
+define bitport2 port[3]  'r
+define bitport3 port[4]  'r
+
+
+bitport1=0
+bitport0=0
+#adr14
+PRINT
+PRINT "Bitte Karte einlegen"
+WAIT bitport3=0
+PAUSE 10
+bitport0=ON
+PULSE bitport1
+bitport0=0
+FOR bytevar0=0 TO 255
+  IF (bytevar0 MOD 16)<>0 THEN GOTO adr104
+  PRINT
+  bytevar2=bytevar0
+  GOSUB adr230
+  PRINT ":";
+#adr104
+  bytevar2=0
+  FOR bytevar1=0 TO 7
+    IF bitport2 THEN bytevar2=(bytevar2 SHL 1) OR 1 ELSE bytevar2=bytevar2 SHL 1
+    PULSE bitport1
+  NEXT bytevar1
+  PRINT " ";
+  GOSUB adr230
+NEXT bytevar0
+PRINT
+PRINT
+PRINT "Bitte Karte entnehmen"
+WAIT bitport3=ON
+PAUSE 10
+GOTO adr14
+END
+
+#adr230
+PUT 36
+IF (bytevar2 SHR 4)>9 THEN PUT (bytevar2 SHR 4)+87 ELSE PUT (bytevar2 SHR 4)+48
+IF (bytevar2 AND 15)>9 THEN PUT (bytevar2 AND 15)+87 ELSE PUT (bytevar2 AND 15)+48
+RETURN
+
+END
+

@@ -1,0 +1,434 @@
+
+ ----------------------------------------------------------------------------
+                    Bugs im C-Control/BASIC-Betriebssystem                   
+ ----------------------------------------------------------------------------
+
+ Wie jedes groessere Computerprogramm, so enthaelt auch das Betriebssystem
+ des C-Control/BASIC-Chips eine Handvoll "Designprobleme" (sprich: Bugs).
+ Beim Untersuchen und Kommentieren des Betriebssystems und dem Lesen der drei
+ Informationsforen zum C-Control bin ich bisher auf die im folgenden
+ beschriebenen Ungereimtheiten gestossen.
+
+
+ ----------------------------------------------------------------------------
+       Fehler mit ON..GOSUB bei Verwendung einer BASIC-Interruptroutine      
+ ----------------------------------------------------------------------------
+
+ Der Programmierer des C-Control/BASIC-Betriebssystems hat die Funktionen zum
+ Handling des Rechenstacks etwas zu gut optimiert. Um Ausfuehrungszeit zu
+ sparen, existiert keine Funktion die den Rechenstack wirklich vollstaendig
+ leert. Vielmehr bleibt nach einer Rechenoperation das letzte Rechenergebnis
+ immer auf dem Stack stehen (als "Top-Of-Stack Word" an Adresse $91 und $92),
+ was an sich noch nicht schlimm ist. Probleme tauchen erst auf, wenn in einem
+ Programm eine BASIC-Interruptroutine (gibt es nur bei der M-Unit) verwendet
+ wird. Fast jede noch so einfach gehaltene Interruptroutine benutzt die vom
+ Betriebssystem bereitgestellten Funktionen zum Zwischenspeichern von Worten
+ auf dem Rechenstack und hinterlaesst so den Stack unaufgeraeumt.
+
+ Da das Hauptprogramm nach Abarbeitung eines beliebigen BASIC-Befehls durch
+ die Interruptroutine unterbrochen werden kann, koennen alle Berechnungen,
+ die das Hauptprogramm mit dem Stack durchfuehrt und die durch einen
+ Interrupt unterbrochen werden, zu einem falschen Ergebnis fuehren.
+
+ Vermutlich liest man deshalb in den verschiedenen Informationsforen zum C-
+ Control Minicomputer immer wieder von Fehlern, die in den BASIC-
+ Befehlskombinationen ON..GOSUB und ON..GOTO enthalten sein sollen und
+ bewirken, dass falsche oder gar keine Sprungverzweigungen ausgefuehrt
+ werden. Diese beiden Befehle sind naemlich besonders anfaellig fuer diese
+ Art Stackfehler.
+
+ Ein moeglicher Workaround zur Vermeidung des Fehlers koennte sein, eine
+ Assemblerroutine zu programmieren, die am Ende der BASIC-Interruptroutine
+ aufgerufen wird und den Stack wieder in Ordnung bringt. Dazu muesste zu
+ Beginn der Interruptroutine der Stackinhalt in einem freien Speicherbereich
+ zwischengespeichert werden. Eleganter (aber mit mehr Denkarbeit verbunden)
+ ist es, einfach nach jedem Zugriff auf den Stack innerhalb der
+ Interruptroutine das letzte Word fehlerfrei vom Stack zu entfernt. Dazu
+ muesste der Adressbereich von $93 bis $9e nach $91 bis $9c kopiert werden.
+ Hierfuer sind aber genaue Kenntnisse des Programms und des Stackhandlings
+ des Betriebssystems und des Compilers noetig.
+
+ Das das letzte Verfahren wirklich funktioniert (ich bin selber erstaunt ;-)
+ kann anhand der Programme ONGOSUB.BAS und ONGOSUB.ASM ueberprueft werden.
+
+
+ ----------------------------------------------------------------------------
+                        Fehler in der Divisionsroutine                       
+ ----------------------------------------------------------------------------
+
+ Es gibt einen Fehler in der Divisionsroutine, der bewirkt, dass Divisionen
+ nur dann fehlerfrei durchgefuehrt werden, wenn der Divident Werte im Bereich
+ von -32767 bis 32767 und der Divisor Werte im Bereich von 0 bis 32767
+ annimmt. Die Zahl -32768 ist fuer den Dividenten genauso tabu wie negative
+ Zahlen fuer den Divisor.
+
+ Falls der Divident trotzdem die Zahl -32768 annimmt, fuehrt das zu recht
+ seltsamen, unbrauchbaren Ergebnissen. Falls der Divisor negativ wird, so ist
+ das Divisionsergebnis immer null, da das Vorzeichen der Zahl ignoriert wird,
+ und so der Divisor aus Sicht der Divisionsroutine im Bereich zwischen 32768
+ und 65535 liegt.
+
+ Ebenfalls betroffen von diesem Fehler ist die Modulofunktion und die Routine
+ zur Ausgabe einer Zahl ueber die serielle Schnittstelle (z.B. PRINT zahl).
+ Die Zahl -32768 wird als -P513 ueber die RS232-Schnittstelle ausgegeben.
+
+
+ ----------------------------------------------------------------------------
+                 Das leidige Problem mit dem Wochentag (DOW)                 
+ ----------------------------------------------------------------------------
+
+ Die Wochentagsvariable (DOW) ist ein Problemkind in der C-Control.
+ Genaugenommen wirken sich gleich drei Fehler des Betriebssystems auf das
+ DOW-Register aus. Alle diese Fehler lassen sich jedoch auf einfache Art und
+ Weise beseitigen, indem in jedem BASIC-Programm, dass auf den Wochentag
+ angewiesen ist, die IF-Abfrage "IF DOW > 6 THEN DOW = 0" vor JEDEM Auslesen
+ des DOW-Registers eingefuegt wird.
+
+ Diese DOW-Korrektur muss sowohl mit als auch ohne angeschlossenen DCF77-
+ Empfaenger durchgefuehrt werden.
+
+ Die Korrektur behebt einerseits den Bug, dass das DOW-Register von 0 bis 7
+ (statt von 0 bis 6) gezaehlt wird, als auch den Umstand, dass der Wochentag
+ im DCF77-Signal anders als in der C-Control ueblich kodiert wird. In der C-
+ Control ist der Sonntag durch eine "0" kodiert, im DCF77-Signal ist es eine
+ "7". Alle anderen Tage sind gleich. Da das Betriebssystem der C-Control den
+ DCF77-Wochentag ohne Korrektur uebernimmt, hat das DOW-Register mit und ohne
+ angeschlossenen Zeitempfaenger eine andere Kodierung!
+
+ Ein weiteres Problem steckt in der sogenannten "Minuten-Inkrement-
+ Bedingung": Mit angeschlossenem DCF77-Empfaenger vergleicht das
+ Betriebssystem immer zwei hintereinander empfangene Zeittelegramme
+ miteinander, bevor es die interne Uhr nach der DCF77-Zeit stellt. Damit das
+ Zeitsignal als gueltig erkannt wird, duerfen sich die beiden Zeittelegramme
+ nur im Minutenwert voneinander unterscheiden. Am Anfang einer Stunde ist
+ diese Bedingung aber verletzt, so dass das Signal irrtuemlicherweise als
+ falsch angesehen wird. Durch diesen Umstand (und dem falschen Zaehlen von 0
+ bis 7) steht im DOW-Register an jedem Montag in der ersten Minute nach
+ Mitternacht die im DCF77-Signal undefinierte Zahl "0".
+
+ Martin Foerster, der Entwickler des C-Control-Betriebssystem, schreibt
+ uebrigens in dem Buch "C-Control Anwendungen" (erschienen im Franzis-
+ Verlag), dass die fehlerhafte DCF77-Erkennung zum Beginn einer Stunde ein
+ notwendiges Uebel ist.
+
+ Bei genauerer Betrachtung des DCF77-Protokolles stellt man jedoch fest, dass
+ mit Hilfe der Paritaetsbits sehr viel eleganter getestet werden koennte, ob
+ das Zeitsignal gueltig ist oder nicht. Durch diese Art der Ueberpruefung
+ koennte man sich auch den zweiten Buffer fuer das Zeittelegramm sparen und
+ der Anwender haette immerhin sechs Byte des ohnehin knappen Arbeitsspeichers
+ mehr zur freien Verfuegung.
+
+ Wer mehr Informationen zum DCF77-Signal benoetigt, kann in der Textdatei
+ DCF77.TXT weiterlesen.
+
+
+ ----------------------------------------------------------------------------
+                     Falsche Berechnung des Schaltjahres                     
+ ----------------------------------------------------------------------------
+
+ Der Code zur Ermittlung eines Schaltjahres hat einen Bug der bewirkt, dass
+ der Mikrokontroller ab dem 28. Februar 2004 keine Schaltjahre mehr erkennt.
+ Der verwendete (fehlerhafte) Algorithmus blieb vom Entwickler des
+ Betriebssystems wahrscheinlich deshalb unbemerkt, weil das aus damaliger
+ Sicht naechste Schaltjahr (das Jahr 2000) richtig erkannt wurde.
+
+ Am 29. Februar 2004 (und danach alle vier Jahre) muss das interne Datum von
+ Hand korrigiert werden; es sei denn, es ist ein DCF77-Empfaenger an der Unit
+ angeschlossen.
+
+       Wer ein neues Betriebssystem schreiben moechte kann die naechste,
+           kuerzere Berechnungsroutine an passender Stelle verwenden:
+
+        schaltjahrtest:
+          lda $90              ; Jahr laden
+          and #3               ; ist das Jahr ohne Rest durch 4 teilbar?
+          bne keinschaltjahr   ; falls nein, dann kein Schaltjahr
+          lda #29              ; Anzahl der Tage des
+          sta $e3              ; aktuellen Monats auf 29 setzen
+        keinschaltjahr:
+
+
+ ----------------------------------------------------------------------------
+           Mysterioese Probleme nach dem Neuprogrammieren der Unit           
+ ----------------------------------------------------------------------------
+
+ Bei einer Unit, die (z.B. waehrend der Programmentwicklung) bei nicht
+ staendig gesetztem Start-Jumper betrieben wird, kann folgendes Problem
+ auftreten:
+
+ Wenn in einem Programm eine BASIC-IRQ-Routine mit dem INTERRUPT-Befehl
+ vereinbart wurde, dieses Programm beendet und direkt danach ein neues BASIC-
+ Programm zur Unit uebertragen wird, ist die BASIC-IRQ-Routine immer noch
+ aktiv. Das heisst, sobald bei der anschliessenden Programmausfuehrung ein
+ IRQ-Interrupt auftritt wird die Befehlsausfuehrung dort fortgesetzt, wo im
+ alten Programm die Unterroutine zur Bedienung des Interrupts stand. Es ist
+ moeglich, dass sich die Unit dabei aufhaengt.
+
+ Dieses Problem tritt nicht auf, wenn die Unit - wie in der
+ Bedienungsanleitung beschrieben - vor (wahlweise auch nach) dem Uebertragen
+ eines neuen Programms resettet wird.
+
+
+ ----------------------------------------------------------------------------
+    Automatische Speicherplatzzuweisung durch den C-Control/BASIC-Compiler   
+ ----------------------------------------------------------------------------
+
+ Wenn man mit "define" Variablen definiert, dann legt der BASIC-Compiler
+ diese im Speicher automatisch der Reihe nach an. Das aendert sich
+ seltsamerweise auch dann nicht, wenn zuvor bei einer Variablen ein Index
+ (z.B. "define byte [1]") angegeben wurde.
+
+             Demonstration fuer die doppelte Zuweisung des selben
+               Speicherplatzes an verschiedene BASIC-Variablen:
+
+                          define variable1 byte [2]
+                          define variable2 byte [3]
+                          define variable3 byte
+                          define variable4 byte
+
+ Dieses Programm definiert variable1 (liegt auf byte[2]) und variable2 (auf
+ byte[3]). Durch das naechste Define wird variable3 aber nicht - wie
+ vielleicht anzunehmen waere - auf byte[4] gelegt, sondern auf byte[1].
+ Danach wird's noch schlimmer: Ohne den Anwender davor zu warnen wandert
+ variable4 auf byte[2] und belegt damit den gleichen Speicherbereich wie
+ variable1. Wenn im Programm nun variable4 veraendert wird, aendert sich
+ ebenfalls der Inhalt von variable2. In diesem Fall versagt also die
+ automatische Speicherplatzzuweisung durch den C-Control-Compiler!
+
+ Bei saemtlichen Definitionen mit Index muss man also selbst dafuer sorgen,
+ dass sich keine Bereiche ueberlappen. Aus diesem Grund sollten alle
+ Variablen, die mit Index definiert werden an das Ende des Variablenspeichers
+ gelegt werden (z.B. "define letzte byte [24]"). Das Gesagte gilt natuerlich
+ auch fuer Bit- und Wordvariablen.
+
+ Trotzdem ist Vorsicht angeraten, denn wer sieht schon auf den ersten Blick,
+ dass z.B. "bit [182]", "byte [23]" und "word [12]" alle im gleichen
+ Speicherbereich liegen?
+
+
+ ----------------------------------------------------------------------------
+      Der Dump der Datendatei ueber die serielle Schnittstelle endet nie     
+ ----------------------------------------------------------------------------
+
+ Vielleicht liegt der Grund dafuer, dass die Funktionen des Betriebssystems
+ zur Ausgabe der aktuellen Inhalte des internen und des seriellen EEPROMs
+ weder im dem der Unit beiliegenden Handbuch noch in der Onlinehilfe
+ dokumentiert ist daran, dass eine der Funktionen einen Bug hat.
+
+ Wenn ueber die serielle Schnittstelle ein Byte vom PC zum Mikrokontroller
+ uebertragen wird, waehrend dieser in der "IDLE-LOOP" verharrt (das ist im
+ Betriebssystem der Bereich von Adresse $969 bis $989), so wird dieses Byte
+ als "Befehl" interpretiert. Ueber diese Befehle koennen unter anderem die
+ Inhalte des internen EEPROMs ("Systembytes"), das BASIC-Programm und die
+ Datendatei im seriellen EEPROM als Dump ueber die serielle Schnittstelle zum
+ PC uebertragen werden.
+
+ Leider ist die Betriebssystemroutine, die fuer die Ausgabe des Word-Dumps
+ der Datendatei im seriellen EEPROM zustaendig ist, fehlerhaft: Es fehlt die
+ Abbruchbedingung, so dass nicht nur die Datendatei sondern gleich der
+ gesamte EEPROM-Inhalt uebertragen wird. Immerhin kommt man auf diese Art und
+ Weise recht einfach zu einem Dump des gesamten EEPROMs. Der Kontroller muss
+ nach der Uebertragung des gewuenschten Speicherbereichs resettet werden um
+ die Uebertragung zu stoppen.
+
+ Weitere Informationen zu den Befehlsbyte stehen uebrigens in der Textdatei
+ BEFEHLE.TXT.
+
+
+ ----------------------------------------------------------------------------
+    Fehler im Aufrufmechanismus von selbstgeschriebenen Interruptroutinen    
+ ----------------------------------------------------------------------------
+
+ Wer den Timer Output Compare Interrupt dazu benutzen moechte, um eine
+ Assemblerroutine im 20 Millisekunden-Takt aufzurufen, wird auf einen Fehler
+ im Aufrufmechanismus des Betriebssystems stossen. Da dieser Interrupt fuer
+ zwei Aufgaben benutzt wird (zur Generierung des BEEP-Ausgangssignals und
+ fuer den 20 Millisekunden-Ticker des Betriebssystems), muss in einer
+ selbstgeschriebenen Interruptroutine anhand der Flags im Timer Status
+ Register zu Beginn abgefragt werden, durch welche Quelle der aktuelle
+ Interrupt ausgeloest wurde.
+
+ Falls er durch den BEEP-Compare ausgeloest wurde, wird gleich mittels "rts"
+ und einem Wert ungleich 0 im Akkumulator an das System zurueckgegeben, denn
+ diese Interruptquelle interessiert in dem Fall nicht. Wenn der Interrupt
+ aber durch den 20 Millisekunden-Compare ausgeloest wurde, wird erst nach
+ Abarbeitung der verschiedenen Aufgaben der selbstgeschriebenen
+ Assemblerroutine (wieder mit "rts" und einem Wert ungleich 0) an das
+ Betriebssystem zurueckgegeben.
+
+ Bei dieser Ablaufreihenfolge tritt aber in recht regelmaessigen Abstaenden
+ das Problem auf, dass zwischen der Abfrage der Interruptquelle zu Beginn der
+ Assemblerroutine und dem Ende der Routine ein BEEP-Interrupt ausgeloest
+ wird. In diesem Fall setzt der Mikrokontroller das entsprechende Flag im
+ Timer Status Register, loest aber keinen Interrupt aus (da ja bereits ein
+ Interrupt abgearbeitet wird).
+
+ Erst wenn nach der Abarbeitung der Assemblerroutine an das Betriebssystem
+ zurueckgegeben wird, prueft dieses, welche Quelle den Interrupt ausgeloest
+ hat und denkt, die Quelle war der BEEP-Compare, ruft dessen Standard-
+ Interrupt-Routine auf und setzt diesen zurueck. Da nun aber noch nicht der
+ 20ms-Compare zurueckgesetzt wurde, wird dieser sofort nach Ausfuehrung des
+ "rti"-Befehls erneut ausgeloest. In diesem Fall wird wiederum die
+ selbstgeschriebene Assemblerroutine aufgerufen und arbeitet erneut ihren
+ Code fuer den 20 Millisekunden-Interrupt ab. Dieser Code wird also (etwas)
+ haeufiger als alle 20 Millisekunden aufgerufen!!
+
+ Zur Umgehung des Problems muss in einer eigenen Interruptroutine (nach
+ Abarbeitung des 20-Millisekunden-Codeteils) die Standard-Ticker-
+ Interruptroutine des Betriebssystems per "jsr $e70" von Hand selbst
+ aufgerufen, und anschliessend mit dem Wert null im Akkumulator an das System
+ zurueckgegeben werden.
+
+ Von diesem Problem ist natuerlich nicht nur der Timer Output Compare sondern
+ in gleicher Weise auch der Timer Input Capture Interrupt betroffen.
+
+ Ich muss mich an dieser Stelle ganz besonders bei Wolfgang Diedrich
+ bedanken, der mich auf dieses Design-Problem im Betriebssystem aufmerksam
+ gemacht hat.
+
+ Informationen zu den Interrupts befinden sich uebrigens in der Textdatei
+ INTERRUP.TXT.
+
+
+ ----------------------------------------------------------------------------
+               Das interne EEPROM wird zu langsam programmiert               
+ ----------------------------------------------------------------------------
+
+ Eigentlich ist das kein richtiger Bug: Wenn ein Programm, das sowohl BASIC-
+ als auch Assemblercode enthaelt zum Mikrokontroller gesendet und von diesem
+ in das serielle und in das interne EEPROM programmiert wird, werden die
+ "Systembytes" nur sehr langsam in das interne EEPROM geschrieben.
+
+ Laut Manual zum MC68HC05B6 von Motorola muessen nach dem Loeschen und dem
+ Beschreiben einer Adresse des internen EEPROMs jeweils 10 Millisekunden
+ gewartet werden. Das Betriebssystem des C-Control/BASIC-Chips benutzt fuer
+ diesen Zweck eine kleine Verzoegerungsschleife, die aber statt der
+ benoetigten 10 Millisekunden eine Verzoegerung von ganzen 69 Millisekunden
+ produziert. Das Ergebnis ist, dass der Anwender beim Uebertragen von
+ laengeren Maschinenspracheprogrammen relativ lang warten muss. Wer ein neues
+ Betriebssystem und einen neuen C-Control/BASIC-Chip entwickeln moechte, kann
+ die zu grosse Zeitverzoegerung korrigieren.
+
+ Immerhin wird die zu grosse Verzoegerungszeit durch den Einbau eines
+ hoehergetakteten Quarzes verkuerzt. Somit steht einer Erhoehung des Taktes
+ von dieser Seite aus nichts entgegen.
+
+
+ ----------------------------------------------------------------------------
+                   "Falsche" Berechnungen mit Bytevariablen                  
+ ----------------------------------------------------------------------------
+
+ Der Grund fuer den folgenden "Fehler" liegt weder im Betriebssystem noch im
+ Compiler der C-Control. Bei Berechnungen und logischen Verknuepfungen prueft
+ das Betriebssystem grundsaetzlich nicht, ob das Ergebnis einer Berechnung
+ auch in dem Format vorliegt, das die Variable, der es zugewiesen wird,
+ benoetigt. Die Frage ist auch, ob (und wie) die C-Control solche
+ Bereichsueberschreitungen kenntlich machen soll.
+
+                Demonstration der Ueberschreitung des gueltigen
+                       Wertebereichs einer Bytevariablen:
+
+   define bytev byte
+   
+   bytev=not(0)       'ergibt 255, nicht -1 !!
+   
+   if bytev then print bytev;"<>0 ist wahr"
+   if not(bytev) then print not(bytev);"<>0 ist wahr"
+
+
+ ----------------------------------------------------------------------------
+                 Das Lesen vom I2C-Bus ist etwas zeitkritisch                
+ ----------------------------------------------------------------------------
+
+ Die Betriebssystemroutine zum Lesen eines Bytes von einem am I2C-Bus
+ angeschlossenen Slave ist etwas zeitkritisch und es kann deshalb
+ (insbesondere dann, wenn der Slave nicht schnell genug reagiert und/oder die
+ Taktrate der Unit durch einen anderen Quarz hoehergeschraubt wurde) zu
+ Uebertragungsfehlern kommen.
+
+ Laut Spezifikation im 24C65-Manual von Microchip benoetigt dieses EEPROM im
+ "Fastmode" nach einem SCL-Impuls mindestens 1.2 Mikrosekunden zum Anlegen
+ eines neuen Bits. Eigene Messungen haben sogar noch einen etwas hoeheren
+ Wert ergeben. Die Zeit die der Kontroller dem EEPROM laesst (max. 1.5
+ Mikrosekunden) ist also reichlich knapp bemessen. Besser waere es, wenn in
+ der Betriebssystemroutine zum Lesen eines Bytes (ab Adresse $86f im ROM) vor
+ jedem "ldx $00" ein "nop" stehen wuerde. In der Art wie die Routine jetzt
+ aufgebaut ist koennten u.U. ein paar Highbits als Lowbits erkannt werden,
+ denn zum jetzigen Lesezeitpunkt der SDA-Leitung liegt die Ausgangsspannung
+ des EEPROMs nur bei knapp 70% von VDD, was der Mikrokontroller laut
+ Motorola-Manual gerade so eben als Highzustand erkennt.
+
+ Wer ein neues Betriebssystem entwickeln moechte und etwas Platz fuer eigene
+ Betriebssystemroutinen schaffen will, kann saemtliche I2C-Routinen
+ platzoptimieren (vgl. I2C_OwnRead in HIGHENDU.ASM).
+
+ Die ermittelten Zeit- und Spannungswerte am I2C-Bus basieren auf eigenen
+ Messungen mittels einer Oszilloskopkarte und koennen nicht garantiert
+ werden, da Erfahrungswerte von anderen Usern fehlen.
+
+
+ ----------------------------------------------------------------------------
+                      Falsche Technische Daten im Manual                     
+ ----------------------------------------------------------------------------
+
+ Auch wenn auf der Verpackung, in der meine C-Control/BASIC M-Unit steckte,
+ steht, dass diese "so oft neu programmierbar [ist] wie sie wollen", haben
+ sowohl das im Mikrokontroller eingebaute interne EEPROM als auch das am I2C-
+ Bus angeschlossene 24C65-EEPROM nur eine begrenzte Lebensdauer. Jede
+ Speicherstelle im seriellen EEPROM kann 1.000.000 mal neu programmiert
+ werden, danach ist sie hinueber. Beim internen EEPROM, das die sogenannten
+ "Systembytes" aufnimmt, sieht es sogar noch schlimmer aus: Laut Motorola
+ haelt es nur 10.000 Programmierzyklen. Wenn also sehr haeufig Programme zur
+ Unit gesendet und in die EEPROMs programmiert werden, gehen diese kaputt.
+ Auch ein haeufiges Speichern in die Datendatei kann das serielle EEPROM
+ zerstoeren. Eigentlich muesste Conrad Electronic jedem Anwender, der ein
+ kaputtes EEPROM hat, dieses kostenlos ersetzen, denn der Werbespruch ist
+ eindeutig!
+
+ In den Manuals, aber auch auf den Internetseiten von Conrad Electronic zur
+ C-Control-Unit wird behauptet, dass diese mit 4 MHz Takt betrieben wird. Das
+ stimmt nur zum Teil. Der am Oszillatoreingang angeschlossene Quarz schwingt
+ in der Tat mit 4 MHz, doch dieser externe Takt wird intern halbiert, so dass
+ absolut alles, was der Mikrokontroller an Programmen ausfuehrt nur mit 2 MHz
+ getaktet wird.
+
+ Im Schaltbild meiner M-Unit (auf Seite 3 der Bedienungsanleitung) sind
+ einige Anschluesse vertauscht: Der BEEP-Ausgang liegt neben SDA und am Pin
+ der mit BEEP beschriftet ist liegt der TEST-Ausgang. Die
+ Anschlussbezeichnungen der A/D-Wandler sind vertauscht und die
+ Porteingaenge, die unten links innerhalb des Chips mit "PC7..PC0"
+ beschriftet sind muessen richtigerweise "PD7..PD0" heissen.
+
+
+ ----------------------------------------------------------------------------
+                     Ausmerzen der Bugs im Betriebssystem                    
+ ----------------------------------------------------------------------------
+
+ Nicht in jedem Fall gibt es fuer einen Fehler einen Workaround, doch wenn
+ mit Hilfe eines Mikrokontrollers der MC68HC05-Serie, der statt ROM einen
+ EPROM-Bereich (bzw. PROM-Bereich) besitzt, ein "eigener" C-Control/BASIC-
+ Chip entwickelt wird, koennen die Bugs des Betriebssystems ausgemerzt
+ werden. Diese EPROM-Mikrokontroller (MC68HC705B16, MC68HC705B16N und
+ MC68HC705B32) haben zusaetzlich mehr RAM und das EPROM ist groesser als das
+ ROM des MC68HC05B6. Deshalb koennen sogar zusaetzliche Features zum
+ Betriebssystem hinzugefuegt werden!
+
+ Zu beachten ist aber, dass diese Kontroller im Speicherlayout nicht voll
+ kompatibel zum MC68HC05B6 sind. Naehere Information zu den diversen
+ Mikrokontrollern der 68HC05-Serie befindet sich im Manual von Motorola.
+
+ Falls ein Leser dieses Textes Erfahrung im Umgang mit diesen EPROM-
+ Mikrokontrollern hat und/oder sein eigenes Betriebssystem in einen solchen
+ Kontroller gebrannt hat, soll er sich bitte bei mir melden. Ich selbst habe
+ noch keinen Versuch in dieser Richtung unternommen.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------

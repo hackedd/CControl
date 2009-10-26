@@ -1,0 +1,606 @@
+<html>
+<head>
+   <title>Download Area</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+
+<font size=-2>&nbsp;<br></font>
+<center><table BORDER=5 CELLSPACING=0 CELLPADDING=2 WIDTH="98%" BGCOLOR="#FFCC00" >
+<tr>
+<td ALIGN=CENTER><b><font face="Arial,Helvetica"><font color="#000000"><font size=+3>Download Area</font></font></font></b>
+<br><b><font face="Arial,Helvetica"><font color="#000000"><font size=-2>
+hier k&ouml;nnen allerlei n&uuml;tzliche Dinge heruntergeladen werden
+</font></font></font></b></td>
+</tr>
+</table></center>
+&nbsp;
+&nbsp;<br>
+
+<center><table BORDER CELLSPACING=0 CELLPADDING=4 WIDTH="95%" BGCOLOR="#FFCC99" >
+
+
+<TR>
+<TD align="CENTER"><A HREF="ccintern.zip"><img src="zip.gif" alt="CCINTERN.ZIP (362 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<font size="-2">&nbsp;<br></font>
+<font face="Arial,Helvetica" size=-1>
+CCINTERN.ZIP ist das Ziparchiv mit der <b>C-Control-intern-Infosammlung</b>. Enthalten ist das ROM-Listing, der
+Speicherbelegungsplan, Informationen über die Bugs im Betriebssystem,
+der Assembler AS05 inklusive Assemblerkurs, die Disassembler IDI05 und DI05,
+das Terminalprogramm und alle Beispielprogramme und Textdateien.
+Wer nicht alles aus dieser Sammlung benötigt, kann den Assembler und die
+beiden Disassembler weiter unten auch einzeln herunterladen. Das Zip-Archiv sollte inklusive
+Verzeichnisstruktur entpackt werden.
+<br><br>
+Nützliche Ergänzungen sind das ROM-Listing im HTML-Format, das Manual zum MC68HC05-Mikrokontroller und
+zum 24C65-EEPROM, der Originalquellcode des Betriebssystems und
+weitere Dinge hier auf dieser Site.
+Einige Sachen im Ziparchiv sind nicht mehr aktuell, aber dafür gibt es Neuigkeiten in den <a href="faq.htm" target="_blank">Frequently Asked Questions</a>.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="ccbasrom_html.zip"><img src="zip.gif" alt="ccbasrom_html.zip (65 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="romlisting">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Eine sinnvolle Ergänzung zum C-Control-intern-Archiv ist dieses <b>ROM-Listing der C-Control im HTML-Format</b>.
+Es ist möglich, mit Hilfe eines Internetbrowsers durch das ROM der C-Control zu "surfen", wodurch die Vorgänge im
+Betriebssystem erheblich leichter durchschaubar sind! Ein Klick auf die Adresse einer unbekannten Variablen
+oder Firmwareroutine genügt, um sofort über deren Aufgaben im Bilde zu sein. Es ist auch feststellbar, welche 
+Systemroutinen auf eine bestimmte RAM-Variable oder auf einen Port zugreifen. Zurück kommt man in jedem Fall über den "Back"-, bzw. "Zurück"-Button des Browsers. Der Komfortzuwachs gegenüber der Text-Version ist enorm! 
+<br><br>
+Gestartet werden sollte sinnvollerweise am Ende des ROM-Listings, denn dort befinden sich die Adressen der Firmwareroutinen, die bei einem Interrupt oder nach einem Reset aufgerufen werden. Man kommt so sehr schnell ans Ziel und kann bei Bedarf Teile des Betriebssystems in eigene Assemblerprogramme übernehmen. 
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="doside.zip"><img src="zip.gif" alt="DOSIDE.ZIP (308 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="doside">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Dieses ZIP-Archiv enthält die leicht <b>erweiterte integrierte Entwicklungsumgebung (IDE) für DOS</b>.
+Die IDE wurde dermaßen modifziert, daß der "Runtime error 200", der bei schnellen Rechnern oftmals auftritt, nicht mehr erscheint.
+Darüberhinaus ist es nun möglich, in BASIC-Programmen mehr als 24 Byte Variablenspeicher zu verwenden (siehe <a href="#mehrvars">mehrvars.zip</a>) und Assemblerprogramme in der IDE zu entwickeln. Sogar Syntaxhighlighting wird jetzt in Assemblerprogrammen unterstützt. Auch ein besseres Terminalprogramm wurde in die IDE integriert. Und damit gleich mit der IDE gearbeitet werden kann, wurden sowohl die Originalbeispielprogramme von Conrad Electronic, als auch ein paar Beispiele aus der C-Control-intern-Sammlung hinzugefügt.
+<br><br>
+Die IDE ist unter DOS und unter Windows 95/98 (in der Eingabeaufforderung und im DOS-Modus) lauffähig und hat den
+Vorteil, daß sie gegenüber der Windows-IDE in Teilbereichen mehr Komfort bietet.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="http://om.dharlos.de/downloads/ocbas100.zip" ><img src="zipneu.gif" alt="OCBAS100.ZIP (249 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="ocbas">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Dieser BASIC-Dialekt ist die Weiterentwicklung von CCBASIC. <b>Open-Control/BASIC</b> ist 100% syntaxkompatibel zu CCBASIC, unterstützt aber viele zusätzliche Features wie WHILE..WEND, REPEAT..UNTIL, mehrzeiliges als auch einzeiliges IF..THEN, Funktionen, Subroutinen und INCLUDE-Dateien. Außerdem wurden die Fehler von CCBASIC beseitigt. Unter anderem erscheinen nun Warnungen, falls Variablen, Ports, symbolische Konstanten oder Labels wie reservierte Wörter (PRINT, MIN, MAX, PUSH, POP, etc.) heißen. Tabellen lassen sich optional im Byteformat erstellen und können Zeichenketten enthalten. Der Compiler wurde komplett neu entwickelt, es wurde also kein Sourcecode vom CCBASIC-Compiler (siehe unten) übernommen.
+<br><br>
+OCBASIC ist die offizielle Programmiersprache der Open-Control-Kontroller (z.Z. Open-Micro, Open-Mini und Open-Midi). Deshalb nutzt der Compiler die neuen Tokenbefehle dieser Kontroller, um Programme um typisch 20% in der Größe zu reduzieren. Mit Hilfe der Option "CCBAS" ist es aber auch möglich, mit dem Compiler Programme zu erstellen, die auf der Original-C-Control lauffähig sind. Die neuen Befehle DBNZ, ADD, SUB und REMOVETOS, als auch neue interne Variablen und Zeigeroperationen dürfen in diesem Fall aber nicht verwendet werden. Der Compiler besitzt sogar einen integrierten Assembler, der aber ebenfalls nur auf den OM-Kontrollern nutzbar ist.
+<br><br>
+Der Compiler besteht aus der Datei OCBAS.EXE, die sich in beliebige integrierte Entwicklungsumgebungen (IDEs), wie zum Beispiel die DOS-IDE oder ConTEXT anstelle von CCBAS.EXE einbinden läßt. Der Compiler hat eine ausführliche Betatestphase durchlaufen, wurde anhand vieler Beispielprogramme überprüft und kann Programme bis 64 KB Größe fehlerfrei übersetzen. Auf der <a href="http://om.dharlos.de" target=_top>offiziellen Infosite zur OM</a> ist eine ausführliche Dokumentation zur Programmierung der OM unter OCBASIC erhältlich. Dort gibt es auch die aktuelle Version des Compilers.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="ccbasparser_v1_1.zip" ><img src="zip.gif" alt="CCBASPARSER_V1_1.ZIP (78 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="parser">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Mit Hilfe des <b>C-Control/BASIC-Parsers</b> können in CCBASIC-Programmen mehrzeilige, verschachtelte
+IF-Abfragen verwendet werden. Außerdem meldet der Parser in einigen Fällen,
+in denen der C-Control/BASIC-Compiler von Conrad Electronic (CCBAS.EXE)
+ohne Warnung fehlerhaften Code erzeugen würde, einen Fehler. Unter anderem wird
+überprüft, ob alle deklarierten Variablen in das User-RAM passen. Darüber
+hinaus werden alle deklarierten Variablen in einer MAP-Datei aufgelistet,
+wodurch z.B. Überschneidungen sofort ersichtlich sind. Auch Lücken im
+User-RAM werden gefunden.
+<br><br>
+Der Parser kann problemlos in die C-Control-Entwicklungsumgebung für DOS
+(siehe <a href="#doside">DOS-IDE</a>) anstelle des Compilers CCBAS.EXE eingebunden werden.
+Bei jedem Compiliervorgang innerhalb der Entwicklungsumgebung wird dann
+zunächst der Parser aufgerufen, der automatisch den Compiler
+startet.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="mehrvars2.zip" ><img src="zip.gif" alt="MEHRVARS2.ZIP (58 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="mehrvars">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+In diesem ZIP-Archiv ist ein gepatchter CCBASIC-Compiler für DOS (CCBAS.EXE) enthalten,
+mit dem in BASIC-Programmen <b>mehr als die üblichen 24 Byte- oder 12 Wordvariablen</b> 
+verwendet werden können. Die neuen Variablen werden in einem Speicherbereich abgelegt,
+der auch vom Betriebssystem benutzt wird, deshalb sind bei Verwendung der Variablen
+bestimmte Dinge zu beachten. Es sollte aber in (fast) jedem Anwendungsfall möglich sein,
+rund 12 Byte- oder 6 Wordvariablen zusätzlich "herauszuholen".
+<br><br>
+Bitte die beiliegende HTML-Seite INFO.HTM erst komplett durchlesen, bevor die neuen
+Variablen verwendet werden!
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="ontimer.zip" ><img src="zip.gif" alt="ONTIMER.ZIP (5 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="ontimer">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Bei vielen Anwendern lag bisher die Interruptprogrammierung in CCBASIC brach, da nur bei der
+M-Unit, aber nicht bei der Main-Unit und der Station der IRQ-Pin herausgefuehrt ist.
+Ohne Hardwareeingriff waren bei diesen deshalb die Befehle INTERRUPT
+und RETURN INTERRUPT völlig nutzlos.
+Das nebenstehende ZIP-Archiv enthält darum ein Assemblermodul, mit dem die aus anderen
+BASIC-Dialekten bekannte <b>ON TIMER GOSUB-Funktion</b> nachgebildet werden kann.
+Damit unterbricht eine aktivierte Interruptroutine das Hauptprogramm in
+periodischen Zeitabständen. Diese Fähigkeit wird manchmal
+sogar als Multitasking, bzw. Multithreading bezeichnet und stand bisher nur
+Assembler-Profis zur Verfügung.
+<br><br>
+Allerdings gilt es für die Interruptprogrammierung in BASIC eine weitere Hürde zu
+überwinden: Die Interruptroutine und das Hauptprogramm teilen sich den Rechenstack.
+Da das Betriebssystem der C-Control kein echtes POP kennt, führte jede Stackbenutzung
+in der Interruptroutine zu Rechenfehlern im Hauptprogramm.
+Es gab bereits einen Workaround zur Umgehung dieses Problems in der C-Control-intern-Infosammlung,
+doch war dessen Nutzung kompliziert.
+Das neue Verfahren bietet dagegen eine <b>komfortable Behebung des Stackproblems</b>:
+Hauptprogramm und Interruptroutine verfuegen praktisch jeweils über einen
+eigenen Stack. Der Anwender braucht sich um Stacküberläufe oder Stackfehler keine Gedanken mehr zu machen.
+Allerdings wird hierfür unter anderem der DCF-77-Buffer belegt, so daß DCF-77 nicht mehr
+benutzt werden kann. Zu diesem Nachteil werden aber einige Empfehlungen gegeben.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="ccbas2mt.zip" ><img src="zip.gif" alt="CCBAS2MT.ZIP (12 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="ccbas2mt">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Während mit Hilfe der Interruptprogrammierung nur ganze Subroutinen in einem bestimmten Zeitrythmus aufgerufen und
+abgearbeitet werden können, ist mittlerweile auch <b>echtes Multitasking auf der C-Control-1 (!)</b> möglich. Ein in CCBASIC erstelltes Programm enthält zwei Threads, die quasi-parallel ausgeführt werden. Hierdurch erschließen sich ganz neue Anwendungsgebiete, die bisher der CC2 vorbehalten waren. Die Multitaskingprogrammierung auf der C-Control-1 ist sehr einfach möglich. Nur wenige Dinge müssen beachtet werden. Dem ZIP-Archiv liegen einige Beispielprogramme bei, die demonstrieren, wie der neue Multitasking-Interpreter aufgerufen und die beiden Threads gestartet werden müssen. Außerdem ist eine kurze Anleitung im HTML-Format enthalten.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="CountUp!_RC2.ZIP" ><img src="zip.gif" alt="CountUp!_RC2.ZIP (43 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="countup">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Das nebenstehende Archiv enthält das sogenannte <b>CountUp!-Modul</b> und ist der erste Bestandteil eines vom Autor als POWER!UP bezeichneten Projekts. Dieses Projekt hat das Ziel, die Handhabung der C-Control-1 Version 1.1 noch bequemer und leistungsfähiger zu machen. Das Modul unterstützt das komfortable Neuprogrammieren der C-Control bei gesetztem Autostart-Jumper und hält zusätzlich die Anzahl der Uploads von CCBASIC- und Assembler-Programmen und die Anzahl der Programmstarts fest.
+<br><br>
+Bei der Installation wird das Modul an das Ende des externen EEPROMs geschrieben und verbleibt dort. Dieser Bereich kann von der normalen Windows-IDE nicht genutzt werden, deshalb besteht nur beim Speichern in die EEPROM-Datei die Gefahr, daß das Modul überschrieben wird. In eigenen CCBASIC-Programmen lassen sich die Funktionen des Moduls sehr einfach nutzen. Dazu ist das Beispiel PLDTEST2.BAS im Archiv enthalten. Als Bonus wird sogar das wahlfreie Lesen und Schreiben im externen EEPROM ermöglicht.
+<br><br>
+Die beiliegende Dokumentation stellt das Modul kurz vor. Zusätzlich werden in <i>CCAutoload.rtf</i> verschiedene Vorläufer der Entwicklung beschrieben, die ebenfalls eine Neuprogrammierung der C-Control bei gesetztem Autostart-Jumper ermöglichen.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER">
+<A HREF="fastbas.zip"><img src="zip.gif" alt="FASTBAS.ZIP (3 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="fastbas">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Ganz ohne Hardwaremodifikationen lassen sich <b>BASIC-Programme um rund 12% beschleunigen</b>!
+Benötigt wird nur ein SYS-Befehl im BASIC-Programm und 30 Byte des internen EEPROMs.
+Neben der schnelleren BASIC-Befehlsausführung gibt es noch den Vorteil, daß
+zwei Einträge des Hardwarestacks eingespart werden. Das bedeutet vier Byte Variablenspeicher,
+wenn der, in der erweiterten DOS-IDE enthaltene, gepatchte CCBASIC-Compiler benutzt wird!
+Das keine BASIC-IRQ-Routine unterstützt wird, läßt sich dagegen gut verschmerzen. Diese
+konnte ohnehin nur mit trickreicher Programmierung verwendet werden.
+<br><br>
+Wer noch mehr Geschwindigkeit benötigt, kann zum echten BASIC-Compiler (<a href="#ccbas2mc">CCBAS2MC</a>) greifen.
+Damit lassen sich BASIC-Programme in Assemblercode umwandeln.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="ccbas2mc.zip" ><img src="zip.gif" alt="CCBAS2MC.ZIP (70 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="ccbas2mc">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Mit diesem <b>echten BASIC-Compiler (CCBAS2MC)</b> kann ein BASIC-Programm 
+in echten Maschinencode umgewandelt werden. Das erzeugte Kompilat ist bis
+zu 250 mal schneller als die interpretierte Variante! Das kompilierte
+BASIC-Programm wird im internen EEPROM gespeichert und darf daher (leider)
+nicht allzu groß sein. Dieser Compiler kann also immer dann sinnvoll
+eingesetzt werden, wenn ein kleines Programmsegment eines BASIC-Programms
+beschleunigt werden soll.
+<br><br>
+Zum fehlerfreien Kompilieren werden der Standard-BASIC-Compiler (CCBAS.EXE)
+und der AS05-Assembler (AS05.EXE) benötigt. Beide Programme liegen
+der <a href="#doside">DOS-IDE</a> bei, welche weiter oben heruntergeladen werden kann.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="cctokbas_freeware.zip" ><img src="zip.gif" alt="cctokbas_freeware.zip (79 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="decompiler">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Tokensierte Programme des C-Control-Mikrokontrollers lassen sich mit diesem <b>C-Control-Decompiler</b>
+in lesbaren CCBASIC-Quellcode umwandeln (detokensieren).
+Damit lassen sich Programme, deren Quellcode verloren gegangen ist, wieder
+in lesbaren BASIC-Code konvertieren.
+Als besonderen Bonus lassen sich mit Hilfe des Decompilers sogar
+C-Control/PLUS-Programme in CCBASIC-Quellcode umwandeln!
+Außerdem wird eine detaillierte Liste aller verwendeten Variablen und deren
+Lage im User-RAM erstellt. Dadurch ist sofort ersichtlich, ob mehrere Variablen
+den gleichen Speicherbereich belegen.
+<br><br>
+Die neue Version 3.1 bietet deutliche Erleichterungen gegenüber den Vorgängerversionen
+beim Übersetzen von C-Control/PLUS nach C-Control/BASIC.
+Die meisten CCPLUS-Programme lassen sich nun ohne manuelle Nachbearbeitung konvertieren.
+Für die Datenübertragung unter neueren Windows-Versionen liegt ein Extra-Programm bei.
+Auch die Dokumentation wurde überarbeitet und die 
+Einschränkungen der Freeware-Version wurden gelockert.
+Da die neue Version außerdem einige Bugs der Vorgängerversion behebt, erhalten alle
+registrierten Anwender des Decompilers auf Anfrage ein Gratis-Update!
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+<TR>
+<TD align="CENTER"><A HREF="ausleseschutz.zip" ><img src="zipneu.gif" alt="ausleseschutz.zip (32 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="ausleseschutz">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+In dieser Anleitung wird detailliert beschrieben, wie sich der <b>Ausleseschutz auf der C-Control 1.1</b> aktivieren läßt. Nach dem Aktivieren ist das Programm in der C-Control weiterhin normal ausführbar, aber vor dem Auslesen geschützt und kann deshalb unter anderem nicht mehr mittels CCTOKBAS dekompiliert werden.
+<br><br>
+Zur Durchführung der Prozedur wird keine spezielle Software benötigt, sondern alle Schritte lassen sich mit einem einfachen Terminal-Programm über die serielle Schnittstelle durchführen. Es müssen einige Tasten gedrückt werden, um Kommandos zur C-Control zu senden, wenn sich diese in der sogenannten Idle-Loop befindet. Dem ZIP-Archiv liegt ein passendes Terminal-Programm bei, das über eine PIF-Datei gestartet werden kann.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+<TR>
+<TD align="CENTER"><A HREF="9thbit.zip" ><img src="zip.gif" alt="9thbit.zip (3 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="9thbit">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Dieses Assemblermodul ermöglicht
+<b>Parity oder ein zusätzliches Stopbit an der 
+seriellen Schnittstelle</b>.
+Der Empfang geht sehr einfach, da das Betriebssystem das empfangene 9. Bit
+einfach ignoriert. Es kann aber bei Bedarf vom Anwender abgefragt und ausgewertet
+werden. Dafür ist es allerdings erforderlich, daß der Sender ausreichend
+langsam, also Byte-für-Byte, sendet.
+Das Senden ist nicht ganz so einfach, da das 9. Bit vor dem Senden eines
+Bytes vom Anwender passend gesetzt werden muß. Dazu muß zum Beispiel die
+Parität berechnet werden, wie im beiliegenden BASIC-Programm
+gezeigt wird.
+<br><br>
+Wen es stört, einen Teil des internen EEPROMs für das Assemblermodul
+zu opfern, kann die Funktionen auch mit Hilfe von temporär auf dem Rechenstack abgelegten
+Maschinenspracheprogrammen nachbilden. Wie das
+geht, steht in der C-Control-intern-Sammlung.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+<TR> 
+<TD align="CENTER"><A HREF="c-control_uebertakten.zip" ><img src="zip.gif" alt="c-control_uebertakten.zip (20 kB)" border=0 width="42" height="42" hspace=10></A></TD> 
+<TD> 
+<a name="uebertakten">
+<font size="-2"> <br></font></a>
+<font face="Arial,Helvetica" size=-1> 
+Bisher gab es nur einen Patch, um die Zeitfunktionen bei 12 MHz Takt zu korrigieren. Doch
+<a href="mailto:giso.wittig@global-comserv.de">Giso Wittig</a> hat sich die Mühe gemacht,
+<b>Patches für 8, 12, 16 und 20 MHz Takt</b> zu erstellen, um die interne Echtzeituhr und das DCF77-Signal
+trotz Übertaktung in der richtigen Geschwindigkeit laufen zu lassen.
+<br><br>
+Das ZIP-Archiv enthält zwar nur eine Anpassung für 8 MHz Takt, doch Giso erklärt in der Dokumentation ausführlich,
+wie man auch höhere Takte anpassen kann. Dazu wird kaum Assemblererfahrung benötig, da die Programme sehr gut
+kommentiert sind. Es gibt zwei verschiedene Wege, die Zeitfunktionen zu korrigieren. Zu beiden Varianten gibt es den
+entsprechenden Sourcecode. Außerdem kann man wählen zwischen einer Version die SLOWMODE OFF unterstützt oder nicht.
+Letztere Version belegt weniger Speicher im internen EEPROM.
+</font><br><font size="-2"> <br></font></TD> 
+</TR> 
+
+
+<TR> 
+<TD align="CENTER"><A HREF="turboasm.zip" ><img src="zip.gif" alt="TURBOASM.ZIP (25 kB)" border=0 width="42" height="42" hspace=10></A></TD> 
+<TD> 
+<a name="turbo">
+<font size="-2"> <br></font></a>
+<font face="Arial,Helvetica" size=-1> 
+Wer seine C-Control übertaktet hat, wird sich wundern, warum die interne Uhr der C-Control zu schnell läuft und der
+DCF77-Empfang nicht mehr funktioniert. Genau zu diesem Zweck hat Conrad Electronic bereits vor einiger Zeit einen
+Betriebssystempatch veröffentlicht, mit dem man die <b>Zeitfunktionen bei 12 MHz Takt korrigieren</b> kann. Der Patch
+besteht aus einem kurzen Assemblerprogramm und muß in das interne EEPROM geladen und gestartet werden. Zusätzlich ist ein
+Downloadprogramm für die DOS-IDE enthalten, das auf dreifache Übertragungsgeschwindigkeit eingestellt ist.
+<br><br>
+Früher konnte man dieses nützliche ZIP-Archiv auf der C-Control-Help-Site von Thomas Trepper herunterladen. Leider
+weiß ich nicht, weshalb er diese Datei seit einiger Zeit nicht mehr anbietet.
+</font><br><font size="-2"> <br></font></TD> 
+</TR> 
+
+
+<TR>
+<TD align="CENTER"><A HREF="idi05.zip" ><img src="zip.gif" alt="IDI05.ZIP (142 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="idi05">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+IDI05 ist ein <b>Disassembler</b>, mit dem ein Maschinenspracheprogramm, das für
+eine 6805'er CPU geschrieben wurde, vollständig disassembliert werden kann.
+Im günstigsten Fall wird der Disassembler gestartet und erstellt ausgehend
+von einigen Startadressen
+selbstständig ein disassembliertes Listing des Maschinenspracheprogramms
+inklusive Speicherbelegungsplan ("cross reference list"). Zusätzlich
+ist im ZIP-Archiv ein einfacher Disassembler (DI05) enthalten, mit dessen
+Hilfe das zu disassemblierende Programm interaktiv untersucht werden kann.
+<br><br>
+Die beiden Disassembler sind für jeden 6805'er Microcontroller zu gebrauchen - nicht nur
+für die C-Control!
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="s2bin.zip" ><img src="zip.gif" alt="S2BIN.ZIP (8 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="s2bin">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Sehr nützlich beim Einsatz der beiden Disassembler DI05 und IDI05 ist dieses kleine Tool, das
+<b>S19-Dateien ins Binärformat konvertieren</b> kann, denn leider sind die beiden
+Disassembler nicht in der Lage, das S19-Format einzulesen. Nützlich ist das Programm aber auch,
+wenn der Inhalt von S19-Dateien mittels Hexeditor untersucht werden soll.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="as05.zip" ><img src="zipneu.gif" alt="AS05.ZIP (65 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="as05">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+AS05 ist ein einfacher <b>Freeware-Assembler</b> von der Firma Kingswood Software,
+mit dem sehr gut Programme innerhalb einer Entwicklungsumgebung wie
+der DOS-IDE entwickelt werden können. Die IDE kann so konfiguriert werden,
+daß der Assembler durch einen Tastendruck startet und das gerade
+editierte Programm übersetzt. In diesem ZIP-Archiv liegt nicht nur der
+Assembler mit Beschreibung bei, sondern auch eine neue Tokendatei, mit
+der auch bei Assemblerprogrammen
+Syntaxhighlighting unterstützt wird. Außerdem ist der Einführungskurs
+und Tips zur Simulation von Maschinenspracheprogrammen mittels COSMIC-C und ZAP
+enthalten. Auch auf das Programmieren der C-Control-Unit mit der
+Programmiersprache C wird kurz eingegangen.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="c3c.zip" ><img src="zip.gif" alt="c3c.zip (92 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="c3c">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Ein sehr interessantes Projekt war der <b>C3C-Compiler für C-Control</b> von <a href="mailto:mve@globalserv.de">Marc van Endert</a>.
+Mit diesem Compiler wird die Programmierung der C-Control-1 in der Programmiersprache C ermöglicht. Zwar wird der
+C-Quellcode "nur" in C-Control-Tokens umgesetzt, die Ausführungsgeschwindigkeit ist also nicht höher als in CCBASIC,
+aber der Compiler macht Schluß mit der 24-Byte-Speichergrenze für Variablen und den umständlichen Dateifunktionen:
+Variablen, Arrays und Zeichenketten können im externen EEPROM abgelegt werden. Außerdem wird der lesende und schreibende
+Zugriff auf Tabellenelemente ermöglicht. Die Nutzung von lokalen Variablen und Funktionsparametern führt
+darüber hinaus zu leichter lesbaren Programmen. Auch C-Control-Systeme mit erhöhter Taktfrequenz oder erweitertem
+EEPROM-Speicher können programmiert werden.<br><br>
+Aus Zeitgründen entwickelt Marc den Compiler nicht mehr weiter und liefert auch keinen Support. Bei Fragen zum Compiler
+sollte daher in das <a href="http://ccintern.dharlos.de/forumindex.html" target="_blank">Forum</a> gepostet werden. Der I2C-Bus ist bisher nur rudimentär implementiert, außerdem beansprucht der
+Compiler einen Teil des internen EEPROMs, so daß für eigene Assemblerprogramme 186 Byte weniger Speicher zur Verfügung
+steht.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="c3c_asm_mod.zip" ><img src="zip.gif" alt="c3c_asm_mod.zip (5 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="c3c_asm_mod">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Ein Nachteil vom C3C ist, daß der Compiler ein großes Stück des internen EEPROMs für die Laufzeitunterstützung beansprucht,
+wenn Variablen der Speicherklassen <i>static</i> oder <i>eeprom</i> verwendet werden oder aus einem anderen Grund
+auf den I2C-Bus zugegriffen werden muß. Deshalb bleibt nur
+wenig Platz für eigene Assemblerprogramme. Das hier angegebene <b>modifizierte Assemblermodul für C3C</b> wurde
+in dieser Hinsicht optimiert und es werden statt 186 Byte nur noch 144 Byte des internen EEPROMs belegt.
+<br><br>
+Eventuell können durch Modifizieren des Assemblermoduls weitere Bytes eingespart werden.
+Falls im C3C-Programm kein Zugriff auf das EEPROM oder den I2C-Bus
+stattfindet, können einzelnen Routinen natürlich auch durch eine
+Pseudo-Routine, die nur ein RTS enthält, ersetzt werden.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR> 
+<TD align="CENTER"><A HREF="ccontrolSDK-0.1.tgz" ><img src="zip.gif" alt="ccontrolSDK-0.1.tgz (64 kB)" border=0 width="42" height="42" hspace=10></A></TD> 
+<TD> 
+<a name="linuxtools">
+<font size="-2"> <br></font></a>
+<font face="Arial,Helvetica" size=-1> 
+
+Auf dieses ZIP-Archiv hat eine große Zahl von Linux-Begeisterten bestimmt sehnsüchtig gewartet. 
+<a href="mailto:diman.todorov@chello.at">Diman Todorov</a> hat die Quelltexte des C-Control/BASIC-Compilers so modifiziert, daß sie mit GCC
+kompiliert werden können. Aber damit nicht genug: Diman hat eine ganze
+<b>C-Control Toolsammlung für Linux</b> erstellt. Enthalten ist der portierte CCBASIC-Compiler, ein Upload-/Downloadprogramm, das die Programme zur CC-Unit überträgt, und der etwas modifizierte
+freie Assembler von Motorola für die 68HC05! Die Toolsammlung liegt in der neueren Version vom 24. Juli 2001 vor, die auch
+unter <a href="http://freshmeat.net/projects/cctrlin" target="_blank">dieser URL</a> heruntergeladen werden kann und muß vor dem Gebrauch mit
+GCC kompiliert werden.
+<br><br> 
+Diman: <i>...das ganze ist jedoch noch ziemlich unausgereift. Es funktioniert, aber bitte
+keine ZU hohen Ansprüche stellen ;-)</i>
+<br><br> 
+Da bei einigen Anwendern Probleme auftauchten und Diman seine Toolsammlung nicht mehr weiterentwickelt, ist Chris Ruehl dabei,
+das Linux-SDK zu überarbeiten. Diese neuste Version ist auch kompatibel zu den aktuellen Distributionen von Red-Hat und SuSE.
+Chris hat eine eigene  <a href="http://cartmen.dnsalias.org/ccsdk" target="_blank">Homepage für das Linux-SDK</a> eingerichtet.
+</font><br><font size="-2"> <br></font></TD> 
+</TR> 
+
+
+<TR>
+<TD align="CENTER"><A HREF="ccbasbig.zip" ><img src="zip.gif" alt="CCBASBIG.ZIP (142 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="ccbasbig">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Im diesem ZIP-Archiv ist ein <b>BASIC-Kompiler für 32-kB-EEPROMs</b> enthalten.
+Mit ihm ist es möglich, Programme  bis zu einer Größe von maximal
+32000 Byte zu kompilieren. Der Original-Kompiler von Conrad-Electronic unterstützt nur Programme bis zu einer Größe von
+maximal 8100 Byte. Sinn macht der neue Kompiler natürlich nur, wenn das Standard-24C65-EEPROM
+durch ein größeres ersetzt wurde.
+<br><br>
+Seit einiger Zeit kann
+auf <a href="http://www.idel-online.de" target="_blank">Idel´s Homepage</a> eine
+leicht veränderte DLL für die Windows-IDE heruntergeladen werden.
+Mit dieser DLL ist es ebenfalls möglich, Programme größer 8 Kilobyte
+zu kompilieren. <br><br>
+Unter der Windows-IDE besteht generell das Problem, daß der
+Kompiler zusätzliche Token in das BASIC-Programm einfügt, damit
+es vom Simulator ausgeführt werden kann. Diese "unsichtbaren" Token
+führen häufig dazu, daß nur Programme bis etwa 5 bis 6 Kilobyte Größe
+kompiliert werden können. Diese Beschränkung existiert bei Idels neuer
+DLL natürlich nicht mehr, so daß es durchaus Sinn macht, die DLL auch
+dann einzusetzen, wenn sich auf der Unit nur das Standard-8-KB-EEPROM
+befindet!
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="ccupload.zip" ><img src="zip.gif" alt="ccupload.zip (49 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="ccupload">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Mit diesem <b>Upload-Tool</b> kann das CCBASIC- oder CCPLUS-Programm, das sich zur Zeit
+in der C-Control befindet, über die serielle Schnittstelle ausgelesen und
+in Binärform in einer DAT-Datei gespeichert werden. Mit Hilfe des von Conrad Electronic
+entwickelten Programmladers CCDL.EXE kann diese DAT-Datei anschießend in eine andere
+C-Control übertragen werden. Auf diese Weise ist das Kopieren von Programmen möglich,
+auch wenn der Quellcode oder die Original-DAT-Datei nicht
+greifbar sind.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR>
+<TD align="CENTER"><A HREF="Sublink_V1_01.zip" ><img src="zip.gif" alt="Sublink_V1_01.zip (232 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="swupdti92">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Wer einen TI92-Taschenrechner von Texas Instruments besitzt, hat sicher Verwendung für das nebenstehende Programmpaket von
+<a href="mailto:mak.kleist@gmx.de">Marko Kleistner</a>. Es wurde erstellt, um <b>mobile Softwareupdates</b> bei einer C-Control-1
+durchzuführen. Ein auf dem PC compiliertes C-Control-Programm kann im TI gespeichert und unterwegs an eine C-Control
+gesendet werden. Ebenso lassen sich Daten der C-Control mittels Taschenrechner in einen PC zurücktransferieren.
+<br><br>
+Dem Programmpaket liegt eine ausführliche Infodatei im Word-Format und alle benötigten DLLs bei.
+
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+<TR> 
+<TD align="CENTER"><A HREF="cccompsrc.zip" ><img src="zip.gif" alt="CCCOMPSRC.ZIP (27 kB)" border=0 width="42" height="42" hspace=10></A></TD> 
+<TD> 
+<a name="cccompsrc">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1> 
+Dieses ZIP-Archiv stammt direkt von Martin Förster, dem Entwickler der C-Control-1.
+Es enthält den <b>Original-Source-Code des C-Control/BASIC-Compilers</b>.
+Mit Hilfe des Source-Code sollte es kein Problem darstellen, den Compiler auf ein anderes
+Computersystem oder Betriebssystem (z.B. Linux) zu portieren. Auch einer eigenen Anpassung
+und Erweiterung sind Tür und Tor geöffnet. Beispielsweise kann mit Hilfe eines
+MC68HC705B16-Mikrokontrollers ein <a href="http://www.geocities.com/ccbasrom" target="_blank">eigenes C-Control-Betriebssystem</a> entwickelt werden, das
+zusätzliche BASIC-Token unterstützt, mit denen beispielsweise auf den I2C-Bus oder auf das
+Extra-RAM des Mikrokontrollers zugegriffen werden kann.
+<br><br> 
+Martin Förster: <i>Sie werden in den Quellen einige "böse" Dinge finden! Ich selbst distanziere mich von diesen Jugendsünden ;-)
+Die Ursprünge des Projektes stammen aus den frühen 90er Jahren. Mit der Zeit sind einige "dirty hacks" dazugekommen.
+Der Compiler ist inzwischen auch nicht mehr Stand der Technik. Ich habe mich jedoch aus dem Thema C-Control I vollständig
+zurückgezogen und werde nichts mehr daran ändern. Wenn Sie wollen, können Sie die Quellen modifizieren und einen eigenen
+Compiler veröffentlichen.</i>
+</font><br><font size="-2">&nbsp;<br></font></TD> 
+</TR> 
+ 
+
+<TR>
+<TD align="CENTER"><A HREF="csources.zip"><img src="zip.gif" alt="csources.zip (30 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="original">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+In die Sammlung jedes ernsthaften C-Control-Anwenders gehört auch der <b>Originalquellcode
+des Betriebssystems</b> von Conrad Electronic.
+Er hat im Vergleich zu meinem ROM-Listing den Vorteil, daß die
+Aufgaben vieler Betriebssystemroutinen im Original-C-Quellcode sehr viel leichter
+verständlich sind. Die Darstellung des eigentlichen Programmcodes
+ist in der Programmiersprache C bereits durch die dort möglichen
+Einrückungen bei Schleifen und IF-Abfragen sehr viel übersichtlicher
+als im Assemblerformat.
+<br><br>
+Dafür fehlt im Originalquellcode jegliche Art von Dokumentation und es
+fehlen natürlich die Sourcecodes zu den zum Original-Compiler
+gehörenden Berechnungsroutinen und zu den Pseudobefehlen zur 16-Bit-Adressierung.
+Außerdem wird auch nicht auf die Bootstrap-Routine ("Self-Check-ROM I") von Motorola eingegangen.
+Alles im allem betrachtet steht mit dem Quellcode von Conrad also nur ein
+Teil (und gewissermaßen eine Vorstufe) des gesamten ROM-Inhalts des C-Control/BASIC-Chips
+zur Verfügung. Vom C-Compiler produzierte Fehler
+können so gar nicht gefunden werden.
+<br><br>
+<font color="#FF0000">HINWEIS</font>: Dieses Archiv stammt direkt von Martin Förster, dem Entwickler der C-Control-1,
+und sollte alle zum Kompilieren benötigten Dateien enthalten. In der bisherigen Version fehlten einige Quelldateien.
+Zum Kompilieren wird allerdings ein spezieller, recht teurer Compiler benötigt.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+ 
+
+<TR>
+<TD align="CENTER"><A HREF="msdostools.zip"><img src="zip.gif" alt="msdostools.zip (670 kB)" border=0 width="42" height="42" hspace=10></A></TD>
+<TD>
+<a name="msdostools">
+<font size="-2">&nbsp;<br></font></a>
+<font face="Arial,Helvetica" size=-1>
+Das nebenstehende ZIP-Archiv enthält <b>nützliche Tools für MS-DOS</b>. Es handelt sich um die sogenannten
+Supplemental Tools von Microsoft. Also jene Programme, die Microsoft beim Wechsel von MS-DOS 6.22 zu MS-DOS 7.x,
+welches in Windows 95 und höheren Windowsversionen enthalten ist, nicht integriert hat. Ich habe die wichtigsten
+Dateien aus dieser Programmsammlung
+im vorliegenden ZIP-Archiv zusammengestellt. Interessant ist unter anderem der BASIC-Interpreter QBASIC und die Hilfe zu
+allen DOS-Befehlen bis MS-DOS 6.22. 
+<br><br>
+Nach dem Herunterladen und Entpacken des Archivs muß <i>info.htm</i> im Webbrowser geladen werden. Die Dateien
+<i>README.TXT</i> und <i>LICENSE.TXT</i> stammen von Microsoft und enthalten zusätzliche Informationen.
+</font><br><font size="-2">&nbsp;<br></font></TD>
+</TR>
+
+
+
+
+</TABLE></CENTER>
+
+
+<!--#geoguide-->
+
+
+</Body>
+</Html>

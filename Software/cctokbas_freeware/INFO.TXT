@@ -1,0 +1,413 @@
+[Eingeschraenkte TEXT-Version fuer DOS - Verwenden Sie bitte das HTML-Manual]
+
+
+                                CCTOKBAS 3.1
+                        Decompiler fÅr C-Control/BASIC
+                              und C-Control/PLUS
+
+                               20. August 2004
+
+                            Autor: Dietmar Harlos
+
+Einleitung
+
+Mit dem CCTOKBAS-Decompiler kînnen tokensierte Programme der C-Control-Mikro-
+kontroller in lesbaren BASIC-Quellcode umgewandelt (detokensiert) werden. Auf
+diese Weise lassen sich C-Control/BASIC-Programme, deren Quellcode verloren
+gegangen ist, wieder in lesbaren BASIC-Code zurÅckÅbersetzen. Als besonderen
+Bonus lassen sich mit Hilfe des Decompilers sogar C-Control/PLUS-Programme in
+C-Control/BASIC-Programme umwandeln. Au·erdem wird eine detaillierte Liste
+aller verwendeten Variablen und deren Lage im User-RAM erstellt. Dadurch ist
+sofort ersichtlich, ob mehrere Variablen den gleichen Speicherbereich belegen.
+
+Der Decompiler kann DAT-Dateien vom C-Control/BASIC-Compiler fÅr DOS oder vom
+C-Control/PLUS-Compiler temporÑr angelegte CODE.TXT-Dateien lesen oder eine
+direkte Verbindung zur C-Control aufnehmen und das im Speicher der C-Control
+stehende Programm Åber die RS232-Schnittstelle einlesen und verarbeiten.
+Letzteres sollte sowohl unter reinem DOS, als auch in der DOS-Box und im
+MS-DOS-Modus aller Windows-Versionen funktionieren.
+
+UnterstÅtzt werden die C-Control-Mikrokontroller der Version 1.1 in allen
+Varianten (M-Unit, Main-Unit und Station). Der vom Decompiler erstellte
+Quellcode ist zur Version 1.7 des C-Control/BASIC-Compilers kompatibel. Unter
+Windows wird die Version 1.33 der C-Control/BASIC-Entwicklungsumgebung
+benîtigt.
+
+Bedienung
+
+Zuerst sollte der Inhalt des ZIP-Archivs, in dem sich der Decompiler
+befindet, in ein beliebiges Verzeichnis entpackt werden. Das kann zum
+Beispiel mit Winzip geschehen. Um einen Eindruck davon zu vermitteln, wie der
+Decompiler zu benutzen ist, liegen dem ZIP-Archiv drei Beispiel-DAT-Dateien
+bei. Das erste Beispiel (DEMO1.DAT) liest Daten von einer Chipkarte (dafÅr
+ist natÅrlich eine entsprechende Kontakteinrichtung erforderlich), das zweite
+Beispiel (DEMO2.DAT) gibt Åber die serielle Schnittstelle nach einer
+BegrÅ·ung die aktuelle Zeit aus, bis eine Taste im Terminalprogramm gedrÅckt
+wird, und das dritte Beispiel (DEMO3.DAT) enthÑlt eine gro·e Tabelle und
+spielt Musik Åber einen am BEEP-Ausgang der C-Control angeschlossenen
+Piezo-Schallwandler.
+
+öbersetzt werden die Demo-Programme folgenderma·en. Unter Windows wird in das
+Verzeichnis des Decompilers gewechselt und das beiliegende DEMO.PIF
+gestartet. Eventuell wird die Endung "PIF" nicht angezeigt, sondern nur
+"DEMO". Nach dem Starten îffnet sich ein Fenster mit MS-DOS-Logo und einigen
+Meldungen des Decompilers. Der Dekompiliervorgang ist bereits abgeschlossen
+und im Verzeichnis wurde eine neue Datei namens DEMO1.BAX erstellt. Diese
+enthÑlt den aus der DEMO1.DAT-Datei erstellten Quellcode und kann nun in der
+C-Control/BASIC-Entwicklungsumgebung geladen, untersucht und kompiliert
+werden.
+
+Um weitere C-Control-Programme zu Åbersetzen kann die DEMO.PIF-Datei editiert
+werden. Fortgeschrittene Anwender werden den Decompiler sicher lieber am
+sogenannten DOS-Prompt bedienen wollen. Um die PIF-Datei zu editieren, wird
+die rechte Maustaste gedrÅckt, wÑhrend die Datei markiert ist. Im nun
+erscheinenden KontextmenÅ wÑhlt man 'Eigenschaften' und es sollte sich ein
+neues Fenster mit den Reitern 'Allgemein', 'Programm', 'Schriftart', usw.
+îffnen. Je nach Windows-Version sieht dieses Fenster etwas anders aus. Auf
+dem Reiter 'Programm' befindet sich die entscheidende 'Befehlszeile'. Hier
+ist der DOS-Befehl eingetragen, der beim Starten der PIF-Datei ausgefÅhrt
+wird. Er kann beispielsweise in "CCTOKBAS.EXE demo2.dat" geÑndert und das
+Fenster mit 'Ok' geschlossen werden. Beim nÑchsten Starten der PIF-Datei wird
+nun das zweite Beispiel Åbersetzt.
+
+Die vom Decompiler erstellte Ausgabedatei hat die Endung "BAX", um
+Verwechslungen mit einer eventuell vorhandenen BASIC-Datei aus dem Wege zu
+gehen. Im Bedarfsfall kann der Anwender diese Endung spÑter in "BAS"
+umbenennen. ZusÑtzlich legt der Decompiler eine Datei namens CCTOKBAS.BIN an.
+Diese enthÑlt das zu Åbersetzende Programm im BinÑrcode, also aufgebaut aus
+den verschiedenen C-Control-Tokenbefehlen wie sie der Decompiler als Eingabe
+erhÑlt, und kann vom fortgeschrittenen Anwender mit einem Hexeditor
+untersucht werden.
+
+Wenn man eine vom C-Control/BASIC-Compiler erstellte DAT-Datei Åbersetzen
+mîchte, mu· als Befehlszeile "CCTOKBAS.EXE datei.dat" Åbergeben werden. Wenn
+man dagegen das Programm, das sich augenblicklich im Speicher der C-Control
+befindet, Åbersetzen mîchte, gibt man "CCTOKBAS.EXE 2" ein, wenn die
+C-Control Åber die serielle Schnittstelle COM2 mit dem PC verbunden ist.
+Falls es sich bei dem Programm in der C-Control um ein CCPLUS-Programm
+handelt, mu· unbedingt der Parameter "-autoccplus" angehÑngt werden. In
+diesem Fall also "CCTOKBAS.EXE 2 -autoccplus".
+
+Wird der Decompiler unter neueren Windows-Versionen (XP, 2000) eingesetzt,
+kînnen auf einigen Computern Probleme bei der öbertragung Åber die serielle
+Schnittstelle auftreten. Um auch in diesen FÑllen eine DatenÅbertragung zu
+ermîglichen, habe ich dem ZIP-Archiv ein Programm namens CCUPLWIN beigelegt.
+Es wird mittels "CCUPLWIN.EXE 2" aufgerufen, falls die C-Control Åber COM2
+verbunden ist, und legt die empfangenen Daten in der Datei CCUPLOAD.DAT ab.
+Diese DAT-Datei kann anschlie·end, wie oben gezeigt, als Eingabe fÅr den
+Decompiler dienen. Falls es sich bei dem Programm in der C-Control um ein
+CCPLUS-Programm handelt, darf das "-autoccplus" beim Aufruf des Decompilers
+nicht vergessen werden.
+
+Eine vom C-Control/PLUS-Compiler temporÑr abgelegte CODE.TXT-Datei wird
+Åbersetzt, indem zunÑchst die CODE.TXT-Datei in das Verzeichnis des
+Decompilers kopiert und anschlie·end "CCTOKBAS.EXE code.txt -autoccplus"
+gestartet wird. Die CODE.TXT-Datei befindet sich im gleichen Verzeichnis wie
+die CPF-Datei des Programms, das zur Zeit in der PLUS-Entwicklungsumgebung
+bearbeitet wird. Jeder Kompiliervorgang aktualisiert die CODE.TXT-Datei.
+
+Kontrolle
+
+Ziel des Dekompilierungsvorganges ist es, einen CCBASIC-Quellcode zu
+erzeugen, mit dem ein Programm kompiliert werden kann, das sich exakt so
+verhÑlt wie das Ursprungskompilat. Um das zu ÅberprÅfen, mu· der neuerstellte
+Quellcode zunÑchst mit dem CCBASIC-Kompiler von Conrad Electronic kompiliert
+und in die C-Control Åbertragen werden. Treten dabei keine Fehler auf, mu·
+die vom Decompiler erstellte Datei CCTOKBAS.BIN in ORIGINAL.BIN umbenannt
+werden und danach das soeben in die C-Control Åbertragene Programm, wie oben
+beschrieben, Åber die serielle Schnittstelle ausgelesen und abermals
+dekompiliert werden. Die dadurch neuentstandene BIN-Datei wird mit der alten
+mittels folgendem Befehl verglichen: "FC.EXE /b CCTOKBAS.BIN ORIGINAL.BIN".
+Hierbei darf nur die Meldung "CCTOKBAS.BIN ist lÑnger als ORIGINAL.BIN"
+auftreten.
+
+Auf diese Weise wurden das Ursprungskompilat, das durch einen verloren
+gegangenen Quellcode oder durch ein CCPLUS-Programm erzeugt wurde, mit dem
+aus dem neuerstellten Quellcode generierten Kompilat verglichen. Wenn beide
+gleich sind, ist der Quellcode fehlerfrei. Diese einfache Kontrollmîglichkeit
+ist bei mittels Autoccplus-Funktion (siehe nÑchstes Kapitel) dekompilierten
+Programmen leider nicht mehr mîglich.
+
+öbersetzung von CCPLUS nach CCBASIC
+
+Der Informationsaustausch mit verschiedenen C-Control-Anwender hat gezeigt,
+da· diese den Decompiler in erster Linie einsetzen, um Programme, die in
+C-Control/PLUS erstellt wurden, in C-Control/BASIC-Quellcode zu Åbersetzen.
+Der Decompiler leistet bei dieser Konvertierungsarbeit wertvolle Hilfe,
+jedoch waren bis zur Version 2.02 des Decompilers oft umfangreiche manuelle
+Korrekturen am erstellten Quellcode notwendig. Das lag daran, da· CCPLUS
+einige Befehlskonstrukte verwendet, die in CCBASIC nicht existieren. Der
+Decompiler hat daher in solchen FÑllen auch keinen sinnvollen CCBASIC-Code
+erstellen kînnen. Beispielsweise existiert in BASIC kein echtes mehrzeiliges
+IF und in PLUS wird oft das spezielle Stackhandling der C-Control ausgenutzt,
+um Programme zu optimieren. In der neuen Version 3.0 des Decompilers bin ich
+der Bitte verschiedener Anwender nachgekommen und habe die automatische
+öbersetzung von CCPLUS nach CCBASIC weiter vereinfacht. Neu hinzugekommen ist
+die sogenannte Autoccplus-Funktion, die beim öbersetzen eines
+CCPLUS-Programms grundsÑtzlich aktiviert werden sollte. Dies geschieht, indem
+beim Starten des Decompilers am DOS-Prompt der Parameter "-autoccplus" mit
+Åbergeben wird.
+
+Die Autoccplus-Funktion sorgt dafÅr, da· zu BASIC inkompatible
+IF..THEN-Kombinationen automatisch kompatibel gemacht werden. Au·erdem wird
+das Stackproblem durch einen effizienten Workaround behoben. Leider werden
+die verÑnderten IFs etwas langsamer ausgefÅhrt und, was schwerer wiegt, es
+werden andere Tokenbefehle benutzt. Das hei·t, die Programme unterscheiden
+sich nun in ihrer tokensierten Form und es kann nicht mehr durch einen
+einfachen BinÑrvergleich kontrolliert werden, ob die Dekompilierung
+fehlerfrei durchgefÅhrt wurde. Aus diesem Grund sollte der neuerstellte
+BASIC-Quellcode kompiliert, in die C-Control Åbertragen und besonders
+grÅndlich ausgetestet werden.
+
+Leider ist auch die Autoccplus-Funktion kein Garant dafÅr, da· sinnvoller,
+kompilierbarer CCBASIC-Code erstellt wird. Es kînnen beispielsweise Zeilen
+entstehen, die zu lang fÅr den BASIC-Compiler sind. Diese mÅssen manuell
+aufgeteilt werden. Befehle wie "PRINT INPUT#" werden von CCPLUS (und von
+verschiedenen CCBASIC-Erweiterungen) verwendet und kînnen daher auch in der
+öbersetzung auftauchen. Hier ist eine Zerlegung in "INPUT# var : PRINT var"
+erforderlich. Im Einzelfall ist ein erfahrener Anwender erforderlich, der die
+notwendigen Anpassungen vornimmt. Deshalb gebe ich an dieser Stelle keine
+umfangreichen Konvertierungstips, sondern mîchte alle registrierten Anwender
+des Decompilers bitten, mich per E-mail anzuschreiben, falls der erstellte
+Quellcode nicht kompiliert werden kann. Wie unten angegeben ist diese Hilfe
+bei geringem Aufwand kostenlos.
+
+Mit dem Decompiler kann man dem CCPLUS-Kompiler Åbrigens sehr gut "in die
+Karten schauen". Das ist mitunter Ñu·erst nÅtzlich, denn Åber Fehler in
+diesem Compiler ist bisher kaum etwas bekannt. Ein mit dem Decompiler
+aufgedeckter Fehler in der Dokumentation ist, da· CCPLUS bei Verwendung des
+LCDs nicht nur die letzten 2, sondern die letzten 4 Byte des
+Variablenspeichers belegt.
+
+Den Quellcode verstehen
+
+Nachdem ein kompilierbarer BASIC-Quellcode vorliegt, sind noch nicht alle
+Probleme gelîst, sondern die eigentliche Arbeit beginnt erst. Da die
+Originalnamen aller Variablen, Ports und Label verlorengegangen sind, bedarf
+es einiger Stunden Arbeit, die verschiedenen Segmente des Programms zu
+erkennen und zu verstehen. Der Decompiler benennt die Variablen nach ihrer
+Lage im User-RAM und die Label nach ihrer Lage im Programm. Leider ist das
+nicht anders mîglich, denn bei dem Vorgang, den Conrad Electronic als
+"Kompilieren" bezeichnet, also dem öbersetzen eines Quellcodes oder eines
+CCPLUS-Programms in C-Control-Tokencode, gehen alle Namen verloren. In dem
+tokensierten Programmcode, den die C-Control ausfÅhrt, sind sie also nicht
+mehr vorhanden.
+
+Da in der Regel bekannt ist, an welche Sensoren und Aktoren die C-Control
+elektrisch angeschlossen ist, sollten zunÑchst die verschiedenen Ports
+sinnvoll benannt werden. Dann wird die Funktion der Subroutinen erkundet und
+deren Label sinnvoll umbenannt. Zum Schlu· folgen die Variablen. Zum
+Umbenennen ist Åbrigens die "Alles ersetzen"-Funktion in der
+C-Control/BASIC-Entwicklungsumgebung Ñu·erst nÅtzlich. CCPLUS verwenden fÅr
+das LCD, die Tastatur, die Datenaufzeichnung, etc. immer die gleichen
+Programm-Module, die allerdings bei jedem Programm an anderer Stelle stehen
+kînnen. Erst nach dieser Flei·arbeit sollten die gewÅnschten VerÑnderungen
+und Erweiterungen am Programm in Angriff genommen werden.
+
+Zu beachten
+
+Damit der Decompiler Tabellen erkennen kann, mu· fÅr jede Tabelle wenigstens
+ein LOOKTAB-Befehl im zu Åbersetzenden Programm vorhanden sein und vor der
+Tabelle stehen. Tabellen haben darÅberhinaus eine hîhere PrioritÑt als Code.
+Das hei·t, wenn sich Code und Tabelle Åberschneiden, wird nur die Tabelle
+ausgegeben.
+
+Der Decompiler fÅgt automatisch an jedes kompilierte Programm ein END-Token
+(255) an. Bei Tabellen, die ganz am Ende des Programms stehen, fÅhrt das
+hÑufig dazu, da· ein Eintrag zuviel in der Tabelle steht.
+
+Bei fehlerhaftem Code
+
+Es kann sein, da· das zu Åbersetzende Programm Fehler aufweist. Da der
+CCBASIC-Compiler von Conrad Electronic beim Kompilieren nur eine begrenzte
+Anzahl von Sicherheitsabfragen durchfÅhrt, kînnen damit problemlos Programme
+erstellt werden, die sich nicht vollstÑndig dekompilieren lassen. Auch ist es
+denkbar, da· das zu dekompilierende Programm eine Tabelle enthÑlt, zu der
+kein LOOKTAB existiert. In diesem Fall wird der Tabelleninhalt als BASIC-Code
+interpretiert, was natÅrlich zu Problemen fÅhrt. Der Decompiler gibt in
+solchen FÑllen eine Warnung aus, die im erzeugten Quellcode gefunden werden
+kann, indem nach "***" gesucht wird.
+
+Manche CCBASIC-Befehle bestehen aus mehreren Tokenbefehlen. Es handelt sich
+im wesentlichen um die Befehlskombinationen IF..THEN, IF..THEN..ELSE, BEEP,
+WAIT, FOR..NEXT und ON..GOTO/GOSUB. Der Decompiler versucht solche
+Befehlskombinationen zu erkennen und durch die entsprechenden BASIC-Befehle
+zu ersetzen. In fehlerhaften Programmen ist das nicht immer mîglich, so da·
+eventuell von Hand nachgebessert werden mu·.
+
+Warn- und Fehlermeldungen
+
+Der Decompiler markiert alle Stellen, an denen Fehler auftreten oder an denen
+eine Warnung sinnvoll erscheint durch ein "***" und einen Kommentartext. In
+bestimmten FÑllen kînnen diese Meldungen ignoriert werden. Meist weisen sie
+aber auf Fehler im zu dekompilierenden Programm hin. In der folgenden Tabelle
+versuche ich zu erklÑren, wie diese Hinweise zu deuten sind.
+
++------------------------------------+---------------------------------------+
+|      Warn- oder Fehlermeldung      |               ErklÑrung               |
++------------------------------------+---------------------------------------+
+| Unbekannte IF..THEN-Kombination    | Diese Fehlermeldung tritt in          |
+|                                    | Programmen, die in CCPLUS erstellt    |
+|                                    | wurden, hÑufig auf und ist durch      |
+|                                    | Aktivieren der Autoccplus-Funktion    |
+|                                    | zu beheben. Die Autoccplus-Funktion   |
+|                                    | sollte nur in Programmen die in       |
+|                                    | CCPLUS erstellt wurden aktiviert      |
+|                                    | werden.                               |
++------------------------------------+---------------------------------------+
+| In dieser Zeile tritt ein Stack    | Diese Fehlermeldung tritt in          |
+| Underflow (STACKUVL) auf           | Programmen, die in CCPLUS erstellt    |
+|                                    | wurden, hÑufig auf und ist durch      |
+|                                    | Aktivieren der Autoccplus-Funktion    |
+|                                    | zu beheben. Bei aktiver               |
+|                                    | Autoccplus-Funktion kann diese        |
+|                                    | Meldung ignoriert werden.             |
++------------------------------------+---------------------------------------+
+| Durch Autoccplus kompatibel        | Die Autoccplus-Funktion hat eine      |
+| gemachte IF..THEN-Kombination      | "unbekannte IF..THEN-Kombination"     |
+|                                    | automatisch zu CCBASIC kompatibel     |
+|                                    | gemacht.                              |
++------------------------------------+---------------------------------------+
+| Durch Autoccplus eingefuegt        | Kennzeichnet den von der              |
+|                                    | Autoccplus-Funktion verwendeten       |
+|                                    | Workaround zur Behebung des           |
+|                                    | Stack-Underflow-Problems in           |
+|                                    | CCPLUS-Programmen.                    |
++------------------------------------+---------------------------------------+
+| PUSH: Der Ausdruck oder Wert ...   | Diese Warnung kann auf einen Fehler   |
+| verursacht einen Stack Overflow,   | im ursprÅnglichen Programm            |
+| ... geht verloren.                 | hinweisen. Die Ressourcen der         |
+|                                    | C-Control, die fÅr Berechnungen       |
+|                                    | verwendet werden, sind erschîpft und  |
+|                                    | ein Wert oder Ausdruck geht           |
+|                                    | verloren. Es sollte kontrolliert      |
+|                                    | werden, ob die Berechnung in der      |
+|                                    | folgenden Quellcodezeile von der      |
+|                                    | C-Control fehlerfrei ausgefÅhrt wird. |
++------------------------------------+---------------------------------------+
+|                                    | Diese Fehlermeldungen sollten         |
+| Unbekannte FOR..NEXT-Kombination   | niemals auftreten. Vermutlich ist     |
++------------------------------------+ das zu dekompilierende Programm       |
+|                                    | fehlerhaft oder es wurde eine         |
+| STACKRESET: ... wurde auf den      | Tabelle als Code ausgewertet, da das  |
+| Stack geschoben, aber nicht        | zugehîrige LOOKTAB nicht gefunden     |
+| entfernt                           | werden konnte. Es ist auch denkbar,   |
+|                                    | da· das zugrundeliegende Programm     |
++------------------------------------+ unter Verwendung von                  |
+| Unbekannte Befehlskombination      | Programmiertricks erstellt wurde,     |
++------------------------------------+ die kein équivalent in der            |
+| Ungueltige Tokenkombination        | Standard-CCBASIC-Syntax besitzen.     |
++------------------------------------+ Wer bei der Behebung dieser Fehler    |
+| Ungueltiges Token                  | UnterstÅtzung benîtigt, kann mich     |
+|                                    | per E-mail anschreiben.               |
++------------------------------------+---------------------------------------+
+
+Verbesserungen bis Version 2.02
+
+Der Decompiler wurde gegenÅber der VorgÑngerversion stark erweitert. So wurde
+zum Beispiel das Stackhandling komplett Åberarbeitet. Stack Underflow und
+Stack Overflow werden detektiert. Der Decompiler erkennt dadurch fehlerhafte
+Befehlskombinationen wesentlich besser und gibt entsprechende Warnungen im
+erzeugten Quellcode aus. Auch zusammengesetzte Befehle werden dadurch
+sicherer erkannt.
+
+ZusÑtzlich gibt es nun eine Debug-Option, mit der der Decompiler veranla·t
+werden kann, die Åbersetzten Token als Kommentar mit in die Ausgabedatei zu
+Åbernehmen. Wenn diese Option aktiv ist, werden darÅberhinaus keine
+Tokenbefehle zusammengezogen. Unter Zuhilfenahme des BinÑrdumps der Token
+(CCTOKBAS.BIN) kînnen fehlerhafte Tokenkombinationen so leicht untersucht
+werden, da zu jedem Tokenbefehl die Adresse (bzw. der Offset im BinÑrdump)
+erscheint.
+
+Vom C-Control/PLUS-Compiler erstellte temporÑre CODE.TXT-Dateien und Token im
+eigenen BinÑrformat (CCTOKBAS.BIN) kînnen nun direkt eingelesen werden.
+
+Verbesserungen bis Version 3.1
+
+Es wurden wieder deutliche VerÑnderungen vorgenommen. Die deutlichste
+Verbesserung ist die neue Autoccplus-Funktion. Damit lassen sich nun die
+meisten CCPLUS-Programme ohne manuelle Nachbearbeitung nach CCBASIC
+Åbersetzen. Allerdings sollte die Autoccplus-Funktion nur bei
+CCPLUS-Programmen aktiviert werden. Bei CCBASIC-Programmen kînnte das
+verwendete Verfahren dazu fÅhren, da· Fehler im ursprÅnglichen Programm
+Åbersehen werden. Trotzdem tendiert der Decompiler wie seine
+VorgÑngerversionen dazu, seinen eingebauten Automatismus nur in wirklich
+sicheren FÑllen anzuwenden und im Zweifel besser eine Warnung zu viel als zu
+wenig auszugeben.
+
+Bis zur Version 2.02 traten einige Bugs auf, die nun behoben sind:
+PRINT-mit-String-Anweisungen, die von CCTOKBAS verwendete SchlÅsselwîrter im
+String enthalten, konnten zu Fehlinterpretationen fÅhren. PRINT mit Parameter
+und Semikolon gefolgt von PRINT ohne Parameter wurde immer zusammengezogen.
+Das fÅhrte zum Verschwinden von Labels, die zwischen diesen beiden Befehlen
+standen. Die Extension der Namen von BIN-Dateien wurde casesensitiv
+ausgewertet. RETURN mit Parameter wird jetzt erkannt und entsprechend
+ausgegeben.
+
+Bis Version 3.0 gab es Probleme mit IF-Abfragen, die aus mehreren
+Tokenbefehlen bestehende CCBASIC-Befehle im Anweisungsteil enthielten.
+Beispiele hierfÅr sind unter anderem "IF ... THEN WAIT ..." oder "IF ... THEN
+FOR ... TO ...". Solche Konstrukte erzeugten nicht kompilierbaren
+Zwischencode. In der Version 3.1 sind diese Fehler beseitigt, so da· ab jetzt
+jede gÅltige Standard-CCBASIC-Syntax anstandslos Åbersetzt werden sollte.
+
+Mehr öbersichtlichkeit im DOS-Fenster wurde dadurch erreicht, da· Pfadnamen
+nun, falls mîglich, unterdrÅckt werden. Auch entspricht die Numerierung in
+den Variablen- und Portnamen jetzt der Define-mit-Index-Konvention. Es kînnen
+jetzt praktisch beliebig lange Programme verarbeitet werden. In Warn- und
+Fehlermeldungen werden, soweit mîglich, immer die zugehîrigen Adressen
+angegeben. DarÅber hinaus wurde diese Dokumentation erheblich erweitert und
+verbessert.
+
+Da einige Anwender mit neueren Windows-Versionen Schwierigkeiten bei der
+Kommunikation mit der C-Control Åber die serielle Schnittstelle hatten, habe
+ich ein Extra-Programm fÅr die DatenÅbertragung unter Windows beigelegt. Es
+handelt sich um ein Console-Programm fÅr Win32. Ich bin gespannt, ob damit
+weniger Probleme auftreten, als mit dem eingebauten Terminalmodul des
+Decompilers. Au·erdem habe ich die Abfrage des Versionstrings der C-Control
+mit Hinblick auf die neue C-Control-Generation modifiziert.
+
+In der Demoversion werden nun 150 statt 100 Zeilen ausgegeben.
+
+EinschrÑnkungen
+
+Die BASIC-Befehlskombinationen ON..GOTO/GOSUB werden als einzelne IF-Abfragen
+erkannt. Das stellt allerdings kein Problem dar, da der Quellcode beim
+Kompilieren trotz dieser EinschrÑnkung exakt die gleichen Tokenbefehle
+erzeugt. Die diversen Erweiterungen der CCBASIC-Syntax (u.a. NETWORK-Befehle)
+lassen sich allerdings immer noch nicht in ihre ursprÅngliche Form
+zurÅckkompilieren.
+
+Der Decompiler unterstÅtzt keine langen Dateinamen (LFN), sondern wie der
+Compiler von Conrad Electronic nur 8.3-Dateinamen (SFN).
+
+Weitgehend ungetestet ist der Decompiler bisher im Zusammenspiel mit der
+neuen C-Control-1-Generation (Version 1.2, 2.0 und Micro). Die neuen Features
+der Controller werden Åber eine Umleitung der seriellen Schnittstelle
+angesprochen, weshalb der Decompiler diese als normale PRINT-, GET- und
+PUT-Befehle erkennt und, soweit ich feststellen konnte, sinnvollen Quellcode
+erzeugt.
+
+Es gibt eine Voll- und eine Freeware-Version des Decompilers. Die
+Freeware-Version ist gegenÅber der Vollversion eingeschrÑnkt, da sie nur die
+ersten 150 Zeilen des erzeugten Quelltextes ausgibt.
+
+Kontakt
+
+FÅr weitergehende Fragen bin ich jederzeit unter der E-mail-Adresse
+dharlos@web.de erreichbar. Falls der Decompiler ein Programm aus irgendeinem
+Grund nicht dekompilieren kann, stehe ich gerne hilfreich zur VerfÅgung.
+Dieser Service ist bei geringem Aufwand kostenlos. Bitte bei jeder Anfrage
+den BinÑrdump (CCTOKBAS.BIN) und die eventuell vorhandenen DAT- und
+BAX-Dateien mit einem Programm wie WinZIP packen und der E-mail als
+Attachment hinzufÅgen. Bitte die Dateien niemals einzeln, sondern immer als
+Archiv verschicken, da viele E-mail-Programme diese Daten sonst zerstîren!
+Die aktuellste Freewareversion des Decompilers und eine Menge weiterer Tools
+fÅr die C-Control kann auf meiner Internet-Site http://ccintern.dharlos.de
+heruntergeladen werden.
+
+
+Viel Spa· beim C-Controllern!
+
+Dietmar Harlos.
+

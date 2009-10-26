@@ -1,0 +1,502 @@
+
+≤≤≤≤≤≤≤≤≤≤±±±∞∞∞                                                     ∞∞∞±±±≤≤≤
+≤≤≤ ‹€ﬂﬂﬂ€‹         ‹€ﬂﬂﬂ€‹                    €€                     ﬂ€€  ≤≤≤
+≤≤≤ €€       ‹‹‹‹‹‹ €€      ‹€ﬂﬂﬂ€‹ €€ﬂﬂﬂ€‹  ﬂﬂ€€ﬂﬂ ﬂ€‹€ﬂ€€ ‹€ﬂﬂﬂ€‹    €€  ≤≤≤
+≤≤≤ €€   ‹‹         €€   ‹‹ €€   €€ €€   €€    €€    €€     €€   €€    €€  ≤≤≤
+≤≤≤  ﬂﬂﬂﬂﬂ           ﬂﬂﬂﬂﬂ   ﬂﬂﬂﬂﬂ  ﬂﬂ   ﬂﬂ    ﬂﬂﬂﬂ  ﬂﬂ      ﬂﬂﬂﬂﬂ    ﬂﬂﬂﬂ ≤≤≤
+≤≤≤≤≤≤±±±∞∞∞   ﬂﬂ              €€                               ∞∞∞±±±≤≤≤≤≤≤≤≤
+≤≤≤≤≤±±±∞∞∞  ﬂ€€   €€ﬂﬂﬂ€‹  ﬂﬂ€€ﬂﬂ  ‹€ﬂﬂﬂ€‹  ﬂ€‹€ﬂ€€  €€ﬂﬂﬂ€‹  ∞∞∞±±±≤≤≤≤≤≤≤≤≤
+≤≤≤≤±±±∞∞∞   €€   €€   €€    €€    €€ﬂﬂﬂﬂﬂ   €€      €€   €€  ∞∞∞±±±≤≤≤≤≤≤≤≤≤≤
+≤≤≤±±±∞∞∞  ﬂﬂﬂﬂﬂ ﬂﬂ   ﬂﬂ    ﬂﬂﬂﬂ   ﬂﬂﬂﬂﬂ    ﬂﬂ      ﬂﬂ   ﬂﬂ  ∞∞∞±±±≤≤≤≤≤≤≤≤≤≤≤
+
+ ----------------------------------------------------------------------------
+     INFOS UND TOOLS ZUM INNENLEBEN DES C-CONTROL-MIKROKONTROLLERSYSTEMS     
+ ----------------------------------------------------------------------------
+
+ Herzlich willkommen!
+
+ Diese Sammlung enthaelt Informationen, Tips und Programme zum von Conrad
+ Electronic entwickelten C-Control-Einplatinencomputersystem. Besonders
+ Programmierer die sich mit den Interna des Betriebssystems auseinandersetzen
+ wollen finden wichtige Informationen in dieser Sammlung.
+
+ Das besondere Highlight ist ein vollstaendiges, kommentiertes ROM-Listing
+ des Betriebssystems und eine vollstaendige Beschreibung des durch das
+ Betriebssystem belegten RAM-Speichers. Zusaetzlich habe ich einige Utilities
+ zum Assemblieren und Disassemblieren von Maschinencodeprogrammen beigefuegt.
+ Zum Beispiel ist ein "intelligenter" Disassembler fuer eine 6805'er CPU
+ enthalten, mit dem Maschinenspracheprogramme mittels Sprungverfolgung
+ inklusive Cross-Referenzliste disassembliert werden koennen. Dieses Programm
+ wurde auch zur Disassemblierung des Betriebssystems verwendet.
+
+ Die Textdatei, die Sie jetzt lesen, soll als "roter Faden" durch die
+ verschiedenen Dateien, die in meiner Sammlung enthalten sind, dienen. Hier
+ wird beschrieben, in welcher Reihenfolge die Textdateien in diesem ZIP-
+ Archiv gelesen und die Programme gestartet werden sollten, um auf diese
+ Weise einen guten Ueberblick ueber den Inhalt der Sammlung zu bekommen.
+
+
+ ----------------------------------------------------------------------------
+        Uebersicht ueber die in diesem ZIP-Archiv enthaltenen Dateien        
+ ----------------------------------------------------------------------------
+
+ Das ZIP-Archiv sollte inklusive Verzeichnisstruktur entpackt werden, damit
+ es zu keinen Ueberschneidungen wegen gleicher Dateinamen kommen kann.
+
+  CCINTERN.ZIP
+  |
+  +--FILEID.DIZ        Kurzbeschreibung dieses Projektes
+  +--INFO.TXT          diese Datei
+  +--UPDATE.TXT        Unterschiede zwischen den Versionen
+  +--REGISTER.TXT      Informationen zur Registrierung
+  |
+  +--TEXTE
+  |  +--MC68HC05.TXT   kurze Beschreibung zum MC68HC05B6-Mikrokontroller
+  |  +--CCBASROM.TXT   das kommentierte ROM-Listing
+  |  +--ADRESSEN.TXT   Speicherbelegungsplan der Ports, des RAMs, ROMs, ...
+  |  +--I2C.TXT        Kurzbeschreibung des verwendeten I2C-Busprotokolls
+  |  +--DCF77.TXT      Kurzbeschreibung des DCF77-Zeitsignals
+  |  +--CCBASTOK.TXT   Uebersicht ueber alle CCBASIC-Token
+  |  +--BEFEHLE.TXT    die vom Betriebssystem unterstuetzten RS232-Kommandos
+  |  +--INTERRUP.TXT   kleine Uebersicht ueber die verschiedenen Interrupts
+  |  +--BUGS.TXT       Informationen zu den Bugs im Betriebssystem
+  |  +--TIPSUTRI.TXT   Tips und Tricks zur Programmierung des CCBASIC-Chips
+  |  +--SYMBOLS.TXT    Symboltabelle aus CCBASIC.MAP nach Adressen sortiert
+  |  +--INTERNET.TXT   Infos zum CCBASIC-Chip und zum 6805'er im Internet
+  |  \--FUTURE.TXT     Verbesserungsvorschlaege fuer zukuenftige C-Controls
+  |
+  +--BEISPIEL
+  |  +--HIGHENDU.BAS   Verschieben des High-Endurance-Blocks vom EEPROM
+  |  +--HIGHENDU.ASM   zugehoeriger Assemblerquelltext
+  |  +--HIGHEDBW.GIF   Grafik der Signale auf dem I2C-Bus
+  |  +--ONGOSUB.BAS    Demonstration des ON..GOSUB-Fehlers
+  |  +--ONGOSUB.ASM    zugehoeriger Assemblerquelltext
+  |  +--DUMP.BAS       BASIC-Programm zum Auslesen des Speicher-Inhalts
+  |  +--KARTEBAS.BAS   Chip-Karten auslesen (in reinem BASIC)
+  |  +--KARTEASM.ASM   Chip-Karten auslesen (in reinem Assembler)
+  |  \--KARTEASM.BAS   gehoert zu KARTEASM.ASM
+  |
+  +--ASSEMBLE
+  |  +--CCE.TOK        neues Tokenfile - inklusive Assemblerbefehle
+  |  +--AS05.EXE       recht guter Assembler fuer die DOS-IDE
+  |  +--AS05.MAN       Manual zum Assembler von Kingswood Software
+  |  +--ASSEMBLE.TXT   Informationen zum Assembler und zu C-Compilern
+  |  +--CPROG.BAT      zum Kompilieren mit COSMIC-C; in Editor laden & lesen
+  |  +--CPROG.C        Beispiel; kompilieren und dann mit ZAP simulieren
+  |  \--CPROG.LCF      wird zum Kompilieren benoetigt; bitte erst editieren
+  |
+  +--DISASSEM
+  |  +--CCBASDMP.BIN   Binaerdatei des Speicherinhalts meines CCBASIC-Chips
+  |  +--DI05.EXE       einfacher Disassembler und Hex-Viewer fuer einen 6805
+  |  +--DI05.MNE       Mnemonicfile fuer DI05
+  |  +--IDI05.EXE      "intelligenter" Disassembler fuer eine 6805'er CPU
+  |  +--IDI05.MNE      Mnemonicfile fuer IDI05
+  |  +--IDI05.MAN      Manual zu IDI05
+  |  +--CCBASDMP.CFG   Konfigurationsfile fuer IDI05
+  |  +--BEISPIEL.BAT   ROM-Listing mittels IDI05 erstellen
+  |  +--LAUFLICH.BIN   Ein einfaches Uebungsprojekt fuer die Disassembler
+  |  \--REGISTER.TXT   wie man die beiden Disassembler _legal_ nutzen kann
+  |
+  +--TERMINAL
+  |  +--TERMINAL.EXE   verbessertes Terminal fuer die RS232-Schnittstelle
+  |  +--TERMINAL.MAN   kleine Bedienungsanleitung zu TERMINAL.EXE
+  |  \--TEST.BIN       Testdatei fuer TERMINAL.EXE; bitte TERMINAL.MAN lesen
+  |
+  +--TOOLS
+  |  \--DCF77SIM.ZIP   Programm zum Simulieren des DCF77-Zeitsignals
+  |
+  +--WORD_TXT
+  |  \--NEUPROG.ZIP    Unit bei gesetztem Startjumper neu programmieren
+  |
+  \--HTML
+     \--FAQ.HTM        die "Frequently Asked Question"-Liste
+
+
+ ----------------------------------------------------------------------------
+                              Was ist C-Control?                             
+ ----------------------------------------------------------------------------
+
+ C-Control ist ein sogenannter Einplatinencomputer, bestehend aus dem 8 Bit-
+ Mikrokontroller MC68HC05B6 von Motorola, einem 8 KByte grossen seriellen
+ EEPROM und einigen anderen Elementen. Entwickelt wurde er im Conrad
+ Technologie Centrum, trotzdem wurde er mehrfach von der Fachpresse gelobt
+ und ausgezeichnet. C-Control bietet die Moeglichkeit, besonders leicht und
+ relativ preiswert Systeme zum Messen, Steuern und Regeln von Geraeten jeder
+ Art aufzubauen.
+
+ Programmiert wird diese Einheit wahlweise im C-Control Basicdialekt oder
+ mittels einer grafischen Oberflaeche - C-Control Plus genannt. Die
+ Entwicklung von Basic-Programmen kann sowohl unter DOS, als auch unter
+ Windows 95, 98 und NT erfolgen. Die Plus-Entwicklung ist nur unter Windows
+ 95, 98 und NT moeglich. Die genannten Entwicklungsumgebungen sind kostenlos
+ vom Conrad-Server erhaeltlich. Die Windows-Versionen verfuegen ausserdem
+ ueber sehr gute Simulationsmoeglichkeiten, die eine Programmentwicklung auch
+ ohne C-Control Unit ermoeglichen.
+
+ Die C-Control Unit ist in drei verschiedenen Versionen erhaeltlich.
+ Besonders interessant ist die abgespeckte Variante namens M-Unit, da diese
+ ein sehr guenstiges Preis/Leistungs-Verhaeltnis bietet. Der nur 40 x 42 mm
+ grosse Minicomputer kostet zur Zeit (November 1999) unter 50 DM, wobei
+ einmalig der Programmieradapter fuer die RS232-Schnittstelle (unter 25 DM)
+ hinzukommt. Ausserdem erhaeltlich ist aber auch die urspruengliche Variante,
+ genannt Main-Unit, die sowohl in der Basic- als auch in der Plus-Version
+ erhaeltlich ist. Die M-Unit ("Mini-Unit") gibt es nur mit dem Basic-Chip,
+ der jedoch von den meisten Entwicklern ohnehin bevorzugt wird, denn die
+ Plus-Version der Unit kann nur mit der grafischen Oberflaeche programmiert
+ werden, waehrend die BASIC-Variante durch beide Entwicklungsumgebungen
+ unterstuetzt wird.
+
+ Die Befehlsausfuehrung der in BASIC und in der Plus-Programmiersprache
+ geschriebenen Programme ist recht langsam (etwa maximal 1000 Befehle pro
+ Sekunde), da das Programm waehrend der Ausfuehrung Byte-fuer-Byte ueber eine
+ I2C-Schnittstelle aus dem seriellen EEPROM geholt und interpretiert werden
+ muss. Aus diesem Grund gibt es auch die Moeglichkeit, zeitkritische Routinen
+ in Assembler zu programmieren.
+
+ Sowohl die BASIC-Software fuer Windows, als auch die fuer DOS enthaelt eine
+ recht komfortable IDE mit einem Editor der die Faehigkeit des
+ Syntaxhighlighting besitzt. In der DOS-Version gibt es zwar keinen
+ Simulator, doch dafuer kann ein Assembler recht komfortabel in die IDE
+ eingebunden werden.
+
+ Uebrigens gab es vor 1998 eine C-Control-Unit mit der Bezeichnung
+ "XCTRL96A". Leider habe ich keine andere Information ueber diese Version,
+ als dass diese nicht so leistungsfaehig sein soll wie die aktuelle.
+ Vermutlich wird dieser Chip auch nicht durch die Programme in dieser
+ Sammlung unterstuetzt.
+
+ Genauere Informationen zum Innenleben des Mikrokontrollers befindet sich in
+ der Datei MC68HC05.TXT.
+
+
+ ----------------------------------------------------------------------------
+               Der Grundstein dieser Sammlung: Das ROM-Listing               
+ ----------------------------------------------------------------------------
+
+ Wie bereits erwaehnt, ist das besondere Highlight dieser Sammlung das
+ kommentierte ROM-Listing. In ihm ist der gesamte ROM-Bereich eines C-
+ Control/BASIC-Chips inklusive Betriebssystem und BASIC-Interpreter
+ disassembliert und mit Kommentaren versehen worden.
+
+ Das ROM-Listing liegt im Assemblerformat vor, was fuer den engagierten
+ Programmierer, der Betriebssystemroutinen nutzen moechte, sehr viel mehr
+ Sinn macht als das im Quellcode von Conrad Electronic favorisierte C-Format.
+ Bekanntlich ist Assembler die einzige Sprache in der eine Programmierung auf
+ Betriebssystemebene beim C-Control-Chip Sinn macht. BASIC scheidet aufgrund
+ seiner niedrigen Verarbeitungsgeschwindigkeit und der unguenstigen
+ Parameteruebergabe beim SYS-Befehl von vornherein aus, und fuer die
+ Programmiersprache C gibt es kaum einen Compiler, der sich mit den 255
+ "Systembytes" des Mikrokontrollers zufriedengibt.
+
+ Um das ROM-Listing zu erstellen, habe ich auf meinem PC speziell fuer diesen
+ Zweck einen "intelligenten" Disassembler namens IDI05 programmiert, der
+ ausgehend von einigen Startadressen in der Lage ist, selbst groessere
+ Maschinenspracheprogramme fuer einen 6805-Prozessor selbststaendig zu
+ disassemblieren. Mit Hilfe dieses Disassemblers war es ueberhaupt erst
+ moeglich das ROM-Listing zu erstellen (zumindest haette es mit einem
+ "normalen" Disassembler sicherlich Monate gedauert).
+
+ Den Disassembler habe ich mit einem Dump des Speicherinhalts meines CCBASIC-
+ Chips "gefuettert", den ich vom Mikrokontroller mittels eines kleinen BASIC-
+ Programms ueber die serielle Schnittstelle zum PC uebertragen habe.
+
+ Das von IDI05 generierte Listing habe ich anschliessend untersucht und den
+ vom Disassembler automatisch hinzugefuegten Kommentar editiert. Zu jeder
+ Betriebssystemroutine wurde ein Kommentar-Header hinzugefuegt, der die
+ Funktion der entsprechenden Routine beschreibt.
+
+ Die meisten Routinen benoetigen, bzw. liefern einen Input oder Output in
+ einem der beiden Register der CPU oder in einem bestimmten Speicherbereich
+ des RAMs. Diese Information befindet sich in den meisten Faellen im Header.
+ Ausserdem ist angegeben, von welchem Punkt aus die entsprechende
+ Unterroutine aufgerufen wird. Dadurch wird es ermoeglicht, den Programmfluss
+ zurueckzuverfolgen.
+
+ Wenn die Betriebssystemroutinen in eigenen Assemblerprogrammen benutzt
+ werden sollen ist es nuetzlich zu wissen welche Speicherbereiche oder
+ Register durch die Routine veraendert werden koennen. Aus diesem Grund ist
+ auch diese Information im Header (unter "used") vorhanden.
+
+ Bisher hatte ich noch keine Lust alle Routinen bis ins kleinste Detail zu
+ kommentieren. Das trifft vor allem auf die Hauptroutinen der verschiedenen
+ BASIC-Befehle zu, doch diese Routinen sind ohnehin meist recht kurz und da
+ Conrad Electronic den Quellcode des Betriebssystems bereits vor einiger Zeit
+ veroeffentlicht hat, duerfte es nicht schwer fallen, die Funktion dieser
+ Routinen zu durchschauen.
+
+ Der groesste Teil des ROMs liegt auf jeden fall kommentiert vor. Falls
+ jemand Fehler findet oder Lust hat, fehlende Kommentare zu ergaenzen, soll
+ er mir bitte eine e-mail schicken. Ich fuege dann die entsprechenden Teile
+ ins Listing ein.
+
+ Wer ein eigenes ROM-Listing entwerfen moechte, sollte ins Verzeichnis
+ DISASSEM schauen. Dort befindet sich in der Datei CCBASDMP.BIN der binaere
+ Speicherdump meines CCBASIC-Chips. Der Dump kann am besten mit dem ebenfalls
+ in diesem Verzeichnis befindlichen einfachen Disassembler DI05.EXE
+ betrachtet werden. Das Programm enthaelt sowohl einen Disassembler, als auch
+ einen einfachen Hexviewer. Wie das Programm zu bedienen ist, steht im Manual
+ IDI05.MAN.
+
+ Der Quellcode des von Conrad Electronic in der Programmiersprache C
+ geschriebenen Betriebssystems kann im Internet kostenlos heruntergeladen
+ werden und ich empfehle jedem interessierten Nutzer dringend diesen
+ Quellcode, das Manual zum MC68HC05B6 Mikrokontroller von Motorola und die
+ anderen Textdateien im Verzeichnis TEXTE als zusaetzliche Lektuere zum ROM-
+ Listing, um die verschiedenen Teilbereiche des Betriebssystems leichter
+ durchschauen zu koennen. Wo das Manual und der Quellcode im Internet
+ heruntergeladen werden kann steht in INTERNET.TXT.
+
+
+ ----------------------------------------------------------------------------
+                      Die Dateien im Verzeichnis "TEXTE"                     
+ ----------------------------------------------------------------------------
+
+ Das ROM-Listing befindet sich in der Textdatei CCBASROM.TXT im Verzeichnis
+ TEXTE. Zusaetzlich habe ich, um die verschiedenen Aufgaben des
+ Betriebssystems leichter klar zu machen, einige Textdateien geschrieben, die
+ den I2C-Bus, das DCF77-Signal und die Aufgabe der verschiedenen Interrupts
+ kurz erklaeren. Ausserdem ist ein Speicherbelegungsplan, eine Liste der
+ unterstuetzten RS232-Kommandos und eine Liste aller BASIC-Token vorhanden.
+
+ Schliesslich sind in der Textdatei BUGS.TXT die bisher bekannten Bugs des
+ Betriebssystems beschrieben. Teilweise habe ich mir ueberlegt wie die Bugs
+ mit kleinen Programmen ("Workarounds") behoben werden koennen.
+
+ In der Datei TIPSUTRI.TXT stehen einige Tips und Tricks zur Programmierung
+ des C-Control/BASIC-Mikrokontrollers in BASIC und/oder Assembler und zu
+ anderen Themen.
+
+
+ ----------------------------------------------------------------------------
+                    Die Dateien im Verzeichnis "BEISPIELE"                   
+ ----------------------------------------------------------------------------
+
+ In diesem Verzeichnis befinden sich Assembler- und BASIC-Programme fuer die
+ BASIC-Version des C-Control-Mikrokontrollers. Eventuell sind die Programme
+ auch auf der Plus-Version anwendbar; das wurde aber noch nicht getestet.
+
+ Mit dem BASIC-Programm KARTEBAS.BAS kann der Inhalt von Chip-Karten (z.B.
+ Telefonkarten) ausgelesen und ueber die serielle Schnittstelle zum PC als
+ HEX-Dump uebertragen werden. Natuerlich wird dazu eine Chipkarten-
+ Kontaktiereinrichtung und etwas Loeterfahrung benoetigt. Das
+ Assemblerprogramm KARTEASM.ASM erfuellt exakt den gleichen Zweck und soll
+ als anschauliches Beispiel dienen, wie man ein bestehendes BASIC-Programm in
+ Assembler umschreibt. Das Assemblerprogramm benoetigt den BASIC-Lader
+ KARTEASM.BAS, um zur C-Control-Unit uebertragen zu werden.
+
+ Fuer Informationen zu Telefonkarten und zur erforderlichen Chipkarten-
+ Kontaktiereinrichtung bitte in KARTEBAS.BAS nachlesen.
+
+ Die restlichen Programme im Verzeichnis "BEISPIELE" sollten erst gestartet
+ werden, nachdem die Textdateien TIPSUTRI.TXT, bzw. BUGS.TXT gelesen wurden!
+
+ Beachten Sie bitten, dass zum Kompilieren aller BASIC-Programme in dieser
+ Sammlung eine aktuelle Version des CCBASIC-Compilers (mindestens 1.33)
+ benoetigt wird. Die jeweils aktuellsten Versionen saemtlicher
+ Entwicklungsumgebungen stehen im Internet auf der offiziellen C-Control-
+ Seite von Conrad Electronic kostenlos zum Download bereit.
+
+ Alle Assemblerprogramme in dieser Sammlung benoetigen den Freeware-Assembler
+ AS05.EXE von Frank A. Vorstenbosch. Das Programm liegt dieser Sammlung bei.
+
+
+ ----------------------------------------------------------------------------
+                    Die Dateien im Verzeichnis "ASSEMBLE"                    
+ ----------------------------------------------------------------------------
+
+ Hier befinden sich alle Programme, um die C-Control/BASIC-Unit unter der
+ DOS-IDE in Assembler zu programmieren. Fuer Anfaenger, die bisher noch nie
+ etwas mit Assembler zu tun hatten, habe ich in der Textdatei ASSEMBLE.TXT
+ einen kurzen Crash-Kurs zum Erlernen dieser Sprache geschrieben.
+
+ Ausserdem ist in der Textdatei beschrieben, wie der Assembler komfortabel in
+ die DOS-IDE eingebunden, Syntaxhighlighting auch bei Assemblerprogrammen
+ unterstuetzt, ein Simulator auf Assemblerebene und ein C-Compiler verwendet
+ werden koennen!
+
+
+ ----------------------------------------------------------------------------
+                    Die Dateien im Verzeichnis "DISASSEM"                    
+ ----------------------------------------------------------------------------
+
+ In diesem Verzeichnis befindet sich das Programmpaket zum "intelligenten"
+ Disassembler IDI05.EXE und dem "einfachen" Disassembler DI05.EXE. Die Datei
+ IDI05.MAN ist das Manual zu diesen Programmen und sollte vor der Verwendung
+ eines der Disassembler gelesen und/oder ausgedruckt werden.
+
+ Das C-Control/BASIC-Betriebssystem kann durch Aufruf der BAT-Datei
+ BEISPIEL.BAT automatisch in die Ausgabedatei CCBASDMP.OUT disassembliert
+ werden. Wenn Aenderungen am Format dieses Ausgabelistings vorgenommen werden
+ sollen, muss die Konfigurationsdatei CCBASDMP.CFG mit Hilfe eines einfachen
+ Texteditors (NOTEPAD.EXE oder EDIT.COM) angepasst und BEISPIEL.BAT erneut
+ aufgerufen werden.
+
+ Bitte beachten Sie, dass die beiden Disassembler legal nur dann benutzt
+ werden duerfen, wenn an den Autor der Programme eine (geringe)
+ Benutzungsgebuehr gezahlt wird. Informationen hierzu befinden sich in der
+ Textdatei REGISTER.TXT im Verzeichnis DISASSEM.
+
+
+ ----------------------------------------------------------------------------
+                          Das Verzeichnis "TERMINAL"                         
+ ----------------------------------------------------------------------------
+
+ In diesem Verzeichnis befindet sich ein einfaches Terminal-Programm namens
+ TERMINAL.EXE fuer die serielle Schnittstelle. Es wurde speziell fuer den
+ Einsatz mit der C-Control-Unit geschrieben und kann als Ersatz fuer
+ MINITERM.EXE in der DOS-IDE (CCE.EXE) benutzt werden. Es laeuft sowohl unter
+ reinem DOS, als auch in der DOS-Box unter Windows 95/98 und kann alle Daten
+ die zwischen PC und CCBASIC-Kontroller ausgetauscht werden in einer Datei
+ speichern.
+
+ Ausserdem bietet das Programm einen schnellen Start mit 600 Baud, was der
+ Uebertragungsgeschwindigkeit im SLOWMODE entspricht. Natuerlich werden auch
+ hoehere Uebertragungsgeschwindigkeiten unterstuetzt. Wenn das Programm mit
+ dem Parameter "/?" gestartet wird erscheint ein kurzer Hilfetext, in dem
+ saemtliche benutzbaren Parameter erklaert werden.
+
+ Fuer weitere Informationen sollte die Datei TERMINAL.MAN gelesen werden.
+
+
+ ----------------------------------------------------------------------------
+                           Das Verzeichnis "TOOLS"                           
+ ----------------------------------------------------------------------------
+
+ In diesem Verzeichnis befindet sich der DCF77-Simulator von Friedhelm Boehl.
+ Er ermoeglicht die Simulation des DCF77-Zeittelegramms mit Hilfe eines PCs.
+ Das Programm liegt im Sourcecode vor und benoetigt QBasic oder PowerBasic
+ zur Ausfuehrung.
+
+
+ ----------------------------------------------------------------------------
+                          Das Verzeichnis "WORD_TXT"                         
+ ----------------------------------------------------------------------------
+
+ Texte im Word-Format befinden sich in diesem Unterverzeichnis. Da ich selbst
+ nicht mit Word arbeite, stammen diese Texte von anderen Autoren.
+
+
+ ----------------------------------------------------------------------------
+                            Das Verzeichnis "HTML"                           
+ ----------------------------------------------------------------------------
+
+ Hier befindet sich die "Frequently Asked Question"-Liste zur C-Control-
+ intern-Sammlung. In der Liste sind einige Fragen aufgefuehrt, die mir Leser
+ per e-mail gestellt haben.
+
+ Zum Anzeigen wird ein Webbrowser wie Netscape, Internet Explorer oder Opera
+ benoetigt. Unter DOS gibt es den Browser Arachne.
+
+
+ ----------------------------------------------------------------------------
+       Vor- und Nachteile meines ROM-Listings gegenueber dem von Conrad
+                    Electronic veroeffentlichten Quellcode
+ ----------------------------------------------------------------------------
+
+ Wie ich bereits weiter oben in diesem Text schrieb, hat Conrad Electronic
+ die Original-Sourcecodelistings des Betriebssystems vor einiger Zeit im
+ Internet zum Download freigegeben. Auch im Buch "C-Control Anwendungen"
+ (erschienen im Franzis-Verlag, zu bestellen bei Conrad Electronic) wird ein
+ Teil des Betriebssystems anhand des Original-Quellcodes erklaert. Das
+ Betriebssystem ist uebrigens zum groessten Teil in der Programmiersprache C
+ geschrieben.
+
+ Leider fehlen beim von Conrad Electronic veroeffentlichten Quellcode einige
+ Codesegmente. Wer versucht, die Programmlistings zu kompilieren wird
+ einerseits feststellen, dass die Dateien I2C.AS und TIMING.C fehlen.
+ Zusaetzlich fehlen natuerlich die Sourcecodes zu den zum Original-Compiler
+ gehoerenden Berechnungsroutinen und zu den Pseudobefehlen zur 16-Bit-
+ Adressierung. Ausserdem wird auch nicht auf die Bootstrap-Routine ("Self-
+ Check-ROM I") von Motorola eingegangen.
+
+ Alles im allem betrachtet, steht mit dem Quellcode von Conrad also nur ein
+ Teil (und gewissermassen eine Vorstufe) des gesamten ROM-Inhalts des C-
+ Control/BASIC-Chips zur Verfuegung. Eventuelle Fehler im C-Compiler oder in
+ den fehlenden Dateien koennen so gar nicht gefunden werden.
+
+ Ein weiterer Nachteil der Original-Quellcodesammlung ist das voellige Fehlen
+ jeder Art von Dokumentation. Zwar ist das meiste einleuchtend, wenn man sich
+ mit dem Betriebssystem laengere Zeit auseinandersetzt, doch die Belegung der
+ verschiedenen Adressen des RAM-Bereichs durch das Betriebssystem
+ beispielsweise kann man hoechstens anhand der Symbolnamen in der vom
+ Compiler generierten Datei CCBASIC.MAP erraten. Leider laesst sich anhand
+ der Namen der Symbole nicht immer auf deren Sinn und Zweck schliessen.
+
+ Ein Vorteil (der aber auch gleichzeitig einen Nachteil dargestellt) ist,
+ dass mein ROM-Listing im Assemblerformat vorliegt. Das ist zwar recht
+ sinnvoll, da nun auch die Betriebssystemroutinen in Assembler und nicht mehr
+ in der Hochsprache C vorliegen, doch viele Routinen sind im C-Quellcode sehr
+ viel leichter verstaendlich und auch uebersichtlicher. Um sowohl den
+ Originalquellcode als auch mein ROM-Listing bei der Betriebssystemanalyse
+ benutzen zu koennen, habe ich der Datei SYMBOLS.TXT die "Adressen" im ROM-
+ Listing mit den "Symbolen" des Quellcodes gegenuebergestellt und eine
+ Kurzbeschreibung der jeweiligen Adresse hinzugefuegt.
+
+ Ein Vorteil meines ROM-Listings ist schliesslich noch, das mit diesem recht
+ gut die Assemblersprache der 6805'er CPU erlernt werden kann. Ich hatte, bis
+ ich meine M-Unit vor rund vier Monaten (am 15. Juli 1999) bei Conrad
+ Electronic gekauft habe, noch nie in meinem Leben mit dieser CPU gearbeitet,
+ geschweige denn ein Assemblerprogramm auf dieser CPU geschrieben. Den ersten
+ Abend verbrachte ich damit, einen Assembler zu finden, in dem die Mnemonic
+ der CPU beschrieben wurde. Anhand dieser Mnemonic-Liste habe ich dann recht
+ schnell die beiden Disassembler geschrieben, und (da man ja neugierig ist)
+ begonnen, das Betriebssystem meiner Unit zu disassemblieren und zu
+ kommentieren. Auch die Belegung der Ports, des RAMs und des EEPROMs habe ich
+ zuerst einzig anhand dieses disassemblierten ROM-Listings zu bestimmen
+ versucht. Erst spaeter kam das Manual von Motorola und noch spaeter der
+ Quellcode von Conrad Electronic hinzu. Auch vom I2C-Bus und vom DCF77-Signal
+ hatte ich vor vier Monaten noch keine Ahnung.
+
+ Was die Assemblersprache betrifft, so habe ich zwar immer noch nicht alle
+ Befehle der CPU im Kopf, doch mittlerweile habe ich eine Vorstellung davon,
+ wie die Mnemonic aufgebaut ist und welche Adressierungsmodi moeglich sind.
+ Letzteres ist sehr viel sinnvoller als das sture Auswendiglernen der Syntax,
+ denn die kann man in Tabellen jederzeit nachschlagen.
+
+
+ ----------------------------------------------------------------------------
+                             Copyright / Credits                             
+ ----------------------------------------------------------------------------
+
+ Das Copyright aller Dateien in diesem ZIP-Archiv (mit Ausnahme des
+ Assemblers) liegt bei Dietmar Harlos. Diese Dateien duerfen nicht ohne meine
+ Genehmigung in irgendeiner Weise veraendert und dann weitergegeben werden.
+ Der Assembler wurde von Frank A. Vorstenbosch von der Firma Kingswood
+ Software entwickelt. Die Bedingungen unter denen dieses Programm
+ weitergegeben werden darf stehen in der Datei AS05.MAN. Das Copyright des C-
+ Control/BASIC-Betriebssystem liegt bei Martin Foerster vom Conrad Electronic
+ Technologie Centrum. Die Weitergabe des Dumps des C-Control/BASIC-
+ Speicherinhaltes (CCBASDMP.BIN) geschieht mit freundlicher Genehmigung der
+ Technischen Kundenbetreuung von Conrad Electronic. Das Copyright des
+ Quellcodes zum "Self-Check-ROM I" liegt bei Motorola. Der Originaltext der
+ Beschreibung zum DCF77-Signal stammt aus dem Conrad Electronic Hauptkatalog
+ 1991, Seite 51 und Teile der Beschreibung "Was ist C-Control" entstammen der
+ C-Control Info-Site von Mark Haemmerling.
+
+
+ ----------------------------------------------------------------------------
+                                 Rechtliches                                 
+ ----------------------------------------------------------------------------
+
+ Alle in dieser Sammlung enthaltenen Schaltungen, Verfahren und Programme
+ werden ohne Ruecksicht auf die Patentlage veroeffentlicht. Warennamen werden
+ ohne Gewaehrleistung der freien Verwendbarkeit benutzt. Bei der
+ Zusammenstellung von Texten und Abbildungen wurde mit grosser Sorgfalt
+ vorgegangen. Trotzdem kann die Fehlerfreiheit nicht garantiert werden. Der
+ Herausgeber kann fuer fehlerhafte Angaben und deren Folgen weder eine
+ juristische Verantwortung noch irgendeine andere Haftung uebernehmen. Fuer
+ Verbesserungsvorschlaege und Hinweise auf Fehler ist der Herausgeber
+ dankbar.
+
+ Die kommerzielle Nutzung irgendeiner Information, eines Verfahrens oder
+ eines Programms dieser Sammlung erfordert die Genehmigung des Autors, bzw.
+ des Lizenzinhabers!
+
+
+                        __                          _    ,          _
+                       /  )     _/_                ' )  /          //
+                      /  / o _  /  ____  __.  __    /--/ __.  __  // _____
+                   ()/__/_<_</_<__/ / /_(_/|_/ (   /  (_(_/|_/ (_</_(_) \_)__
+
+                  (Dietmar Harlos, Student der Elektrotechnik, Uni Paderborn)
+                                (meine e-mail Adresse lautet: dharlos@web.de)

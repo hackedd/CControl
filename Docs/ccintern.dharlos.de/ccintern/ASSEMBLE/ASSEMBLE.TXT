@@ -1,0 +1,571 @@
+
+ ----------------------------------------------------------------------------
+     Assembler, Maschinensprachesimulatoren und C-Compiler fuer C-Control    
+ ----------------------------------------------------------------------------
+
+ In dieser Textdatei wird beschrieben, wie ein C-Control/BASIC-Chip am
+ leichtesten (und fuer fast umsonst) in Assembler und in C programmiert
+ werden kann. Fuer Einsteiger in die Assemblersprache gibt es jetzt aber erst
+ einmal einen Einfuehrungskurs.
+
+
+ ----------------------------------------------------------------------------
+             Die Assemblersprache des 6805 fuer absolute Newbies             
+ ----------------------------------------------------------------------------
+
+ Um das Listing des Betriebssystems zu verstehen und um die Faehigkeiten des
+ Mikrokontrollersystems voll auszunutzen ist es sinnvoll die Assemblersprache
+ zu beherrschen. Aus diesem Grund moechte ich in dieser Rubrik allen Leuten,
+ die bisher noch nie etwas mit der Assemblersprache und mit systemnaher
+ Programmierung zu tun hatten, eine kleine Einfuehrung zum Erlernen dieser
+ nuetzlichen Sprache geben. Ich gehe davon aus, dass die Bedienung der DOS-
+ IDE und das Programmieren des CCBASIC-Chips in BASIC keine Probleme
+ bereitet.
+
+ Ein Mikrokontroller wie der CCBASIC-Chip besteht intern aus vielen
+ Baugruppen: I/O-Ports, A/D-, D/A-Wandler, die serielle Schnittstelle und
+ Timer sorgen fuer eine Verbindung zur Aussenwelt; RAM, ROM und EEPROM dienen
+ zum Speichern von Daten (Zahlen). Zum Steuern des Datenflusses zwischen
+ diesen Baugruppen wird eine CPU benoetigt.
+
+ Die dem CCBASIC-Chip zugrundeliegende CPU ("6805") ist ein relativ einfacher
+ Baustein. Wem das etwas sagt: Die CPU in diesem System besitzt weniger
+ Register und weniger Befehle als die CPU die im guten alten C64 beheimatet
+ war (das war die 6502'er CPU, ebenfalls von Motorola hergestellt).
+
+ Zum Speichern von Daten innerhalb der CPU werden Register benutzt. Die 6805
+ besitzt nur zwei Register: den Akkumulator und das Index-Register. Beide
+ haben eine Breite von acht Bit, sie koennen somit jeweils nur ein Byte
+ speichern. Die Breite der Register ist von grosser Bedeutung, denn sie sind
+ in fast allen Aktionen, die eine CPU ausfuehren kann, verwickelt.
+
+ Gesteuert wird die CPU ueber ein sogenanntes Maschinenspracheprogramm. Wie
+ bei jeder Programmiersprache, so gibt es auch in der Maschinensprache
+ Befehle, die bestimmen was zu tun ist. Die Befehle in dieser Sprache
+ bestehen aber nur aus Zahlen die innerhalb des Adressraums der CPU abgelegt
+ werden. Wenn ein Programm ablaeuft holt die CPU einen Befehl (eine Zahl) aus
+ dem Speicher und fuehrt den Befehl aus. Mit dieser Befehlsausfuehrung wird
+ (bis auf wenige Ausnahmen) solange weitergemacht, bis jemand dem
+ Mikrokontroller den Strom 'abdreht.
+
+ Um ein Maschinenspracheprogramm zu schreiben muesste man nun also den
+ Speicher des Mikrokontrollers mit lauter Zahlen fuellen und diese Zahlen
+ anschliessend von der CPU ausfuehren lassen. Weil nun aber nicht jeder
+ Mensch die Zahlen saemtlicher Befehle im Kopf hat, wurde eine
+ Zwischensprache, die sogenannte Assemblersprache eingefuehrt, in der die
+ einzelnen Befehle der CPU nicht mehr durch Zahlen, sondern durch relativ
+ leicht verstaendliche englische Worte oder Abkuerzungen symbolisiert werden.
+ Zum Beispiel wird durch "lda $50" ein Befehl symbolisiert, mit dem ein Byte
+ von Adresse $50 (das $ steht fuer eine Hexadezimalzahl) aus dem
+ Arbeitsspeicher in das Akkumulator-Register der CPU geladen wird (engl.:
+ "Load Accumulator"). Fuer die CPU besteht dieser Befehl nach wie vor nur aus
+ Zahlen (naemlich $a6 und $50), so dass ein Assemblerprogramm erst in die
+ Zahlen, die die CPU versteht, uebersetzt werden muss bevor es ausgefuehrt
+ werden kann. Diese Umwandlungsarbeit wird durch einen sogenannten Assembler
+ vollzogen.
+
+ Der Begriff "Assembler" wird haeufig unterschiedlich benutzt. Fuer manche
+ ist Assembler das Programm zum Uebersetzen; fuer andere ist Assembler gleich
+ der Assemblersprache. Es sind also beide Definitionen gebraeuchlich.
+
+ Dieser Sammlung liegt ein Assembler bei. Er wurde von Frank A. Vorstenbosch
+ von der Firma Kingswood Software entwickelt. Um mit diesem Assembler eigene
+ Programme zu schreiben sollte das Assemblerprogramm mit dem Editor der DOS-
+ IDE geschrieben und danach assembliert, d.h. uebersetzt werden. Das
+ ausfuehrbare Maschinenspracheprogramm liegt dann bereits in dem vom CCBASIC-
+ Compiler benoetigten S19-Format vor.
+
+ Als einfaches, erstes Beispiel hier ein Programm mit dem der Inhalt einer
+ Bytevariablen veraendert werden kann. Um ein Maschinenspracheprogramm zum
+ CCBASIC-Chip zu uebertragen ist ein BASIC-Programm notwendig.
+
+
+                            Hier das BASIC-Programm:
+            (in der DOS-IDE eingeben und unter FIRST.BAS speichern)
+
+   define variable byte[1]  ' Bytevariable deklarieren
+
+   #start                   ' #start ist ein BASIC-Label
+
+   variable=123             ' der Variablen wird der Wert 123 zugewiesen
+   print variable           ' der Wert der Variablen wird ausgegeben
+   sys &h101                ' das Maschinenspracheprogramm wird aufgerufen
+   print variable           ' der Wert der Variablen wird wieder ausgegeben
+
+   syscode "first.s19"      ' assembliertes Programm einbinden
+
+
+                        Und hier das Assemblerprogramm:
+       (ebenfalls in der DOS-IDE eingeben und unter FIRST.ASM speichern)
+
+     org $101               ; das Maschinenspracheprogramm beginnt an
+                            ; Adresse $101 (erste EEPROM-Adresse)
+
+   start:                   ; start: ist ein Maschinensprache-Label
+
+     ldx #$a1               ; Index-Register mit dem Wert $a1 laden
+     lda #77                ; Akkumulator-Register mit dem Wert 77 laden
+     sta ,x                 ; Akkumulatorinhalt auf Adresse die im Index-
+                            ; Register steht speichern (auf Adresse $a1)
+     rts                    ; Ruecksprung zum BASIC (hinter den SYS-Befehl)
+
+
+ Bei der Eingabe des Assemblerprogramms muss beachtet werden, dass vor
+ "start:" KEIN Leerzeichen stehen darf. Vor jeder anderen Zeile MUSS ein
+ (oder mehrere) Leerzeichen stehen, denn alle Zeilen vor denen kein
+ Leerzeichen steht werden vom Assembler als Label angesehen (vgl. #start im
+ CCBASIC-Dialekt). Die beiden Label "start" im BASIC- als auch im
+ Assemblerprogramm dienen nur zur Verdeutlichung und koennen bei der Eingabe
+ auch weggelassen werden.
+
+ Bevor das BASIC-Programm kompiliert werden kann muss erst das Assembler-
+ Programm assembliert werden. Guenstigerweise kann das direkt aus der DOS-IDE
+ heraus geschehen. Dafuer muss allerdings erst der Assembler in der IDE
+ eingebunden werden. Wie das geht wird in dieser Textdatei weiter unten, bei
+ "Entwickeln von Assemblerprogrammen in der DOS-IDE" erklaert. Falls der
+ Assembler noch nicht in die IDE eingebunden wurde, bitte erst dort
+ weiterlesen.
+
+ Nun aber zurueck zu unserem ersten Beispiel. Nachdem das Assemblerprogramm
+ assembliert wurde, kann das BASIC-Programm wie ueblich kompiliert, und dann
+ zum CCBASIC-Chip uebertragen werden. Dabei wird das BASIC-Programm wie
+ ueblich in das serielle EEPROM programmiert. Das Maschinenspracheprogramm
+ (die "Systembytes") wird aber in ein anderes, internes EEPROM gespeichert.
+ Es liegt im normalen Adressraum zwischen Adresse $101 und $1ff.
+
+ Wenn unser Programm nun gestartet wird, uebertraegt der Mikrokontroller die
+ Werte 123 und 77 ueber die serielle Schnittstelle zum PC.
+
+ In dem Programm haben wir von der Tatsache Gebrauch gemacht, dass die 24
+ Byte, die dem BASIC-Programmierer zum Speichern von Variablen zur Verfuegung
+ stehen, im Speicher ab Adresse $a1 bis Adresse $b8 abgelegt sind. Immer wenn
+ ein Assemblerprogramm Werte von Speicherzellen aendert, die in diesem
+ Adressbereich liegen, hat das Auswirkungen auf BASIC-Variablen.
+
+ Maschinenspracheprogramme muessen immer auf diese Art und Weise in ein
+ BASIC-Programm eingebunden (mittels SYSCODE), aufgerufen (mit SYS) und
+ beendet (mit RTS) werden.
+
+ Das zweite Beispiel zeigt, wie ein Maschinenspracheprogramm ueber den
+ Rechenstack einen Wert an eine beliebige BASIC-Variable zurueckliefern kann.
+
+
+                            Hier das BASIC-Programm:
+            (in der DOS-IDE eingeben und unter SECOND.BAS speichern)
+
+   define variable word
+   
+   variable = rueckgabe
+   print variable
+   end
+   
+   syscode "second.s19"
+   
+   #rueckgabe
+     sys &h101
+   return
+
+
+                  Und hier das zugehoerige Assemblerprogramm:
+     (in der DOS-IDE eingeben, unter SECOND.ASM speichern und assemblieren)
+
+     org $101
+   
+   ergebnis:
+   
+     lda #$30      ;Akkumulator mit dem Wert $30 laden
+     sta $91       ;Akkuinhalt auf Speicherstelle $91 speichern
+     lda #$39      ;Akkumulator mit dem Wert $39 laden
+     sta $92       ;Akkuinhalt auf Speicherstelle $92 speichern
+   
+     rts
+
+
+ Um Rechenergebnisse zwischenzuspeichern benutzt der BASIC-Interpreter einen
+ Stack der bei Adresse $91 beginnt und bis $9e reicht. Es handelt sich um
+ einen sogenannten LIFO-Stack (Last In First Out), d.h. das Word das zuletzt
+ auf den Stack gespeichert (gepusht) wurde wird beim naechsten Laden zuerst
+ vom Stack heruntergeholt (gepoppt). Das zuletzt auf den Stack gepushte Word
+ wird haeufig auch als "Top-Of-Stack" bezeichnet und liegt beim CCBASIC-Chip
+ auf den Adressen $91 und $92. Bei der Wertzuweisung in Zeile 3 des BASIC-
+ Programms wird das "Top-Of-Stack"-Word vom Stack gepoppt und in der
+ Variablen abgespeichert, so dass ein Maschinenspracheprogramm einfach nur
+ den gewuenschten Rueckgabewert in den Adressen $91 und $92 ablegen muss.
+ Weitere Informationen zur Belegung anderer Speicherbereiche befinden sich
+ uebrigens in der Textdatei ADRESSEN.TXT.
+
+ Im naechsten Beispiel wollen wir zwei Zahlen miteinander addieren. Die
+ Zahlen muessen in dem fuer Wordvariablen ueblichen Wertebereich von -32768
+ bis 32768 liegen.
+
+ Um die gewuenschten Zahlen an das Assemblerprogramm zu uebergeben benutzen
+ wir den Rechenstack. Der SYS-Befehl unterstuetzt die Angabe von bis zu
+ sieben zusaetzlichen Parametern, die vor Aufruf der Assemblerroutine als
+ Zahlen auf den Stack gepusht werden. Innerhalb des Assemblerprogramms lassen
+ sich diese Werte dann einfach vom Rechenstack holen.
+
+                            Hier das BASIC-Programm:
+            (in der DOS-IDE eingeben und unter THIRD.BAS speichern)
+
+   define variable word
+   
+   variable = rueckgabe
+   print variable
+   end
+   
+   syscode "third.s19"
+   
+   #rueckgabe
+     sys &h101 505,606      ' erst den Wert 505 und dann 606 auf den Stack
+   return                   ' laden, anschliessend Assemblerprogramm aufrufen
+
+
+                  Und hier das zugehoerige Assemblerprogramm:
+     (in der DOS-IDE eingeben, unter THIRD.ASM speichern und assemblieren)
+
+     org $101
+   
+   addieren:
+   
+     lda $94                ; niederwertiges Byte der Zahl 505 holen
+     add $92                ; niederwertiges Byte der Zahl 606 hinzuaddieren
+     sta $92                ; und als Ergebnis auf den Stack schreiben
+     lda $93                ; hoeherwertiges Byte der Zahl 505 holen
+     adc $91                ; hoeherwertiges Byte der Zahl 606 hinzuaddieren,
+                            ; dabei Uebertrag aus letzter Addition beachten
+     sta $91                ; und wieder als Ergebnis auf den Stack schreiben
+   
+     rts
+
+
+ Uebrigens haben wir uns die Programmierung im obigen Beispiel unnoetig
+ kompliziert gemacht. Wir haben sozusagen "das Rad zweimal erfunden". Eine
+ grosse Anzahl von Funktionen zum Durchfuehren von Berechnungen mit
+ Wordwerten existiert innerhalb des Betriebssystems naemlich schon und
+ koennen von jedem Assemblerprogramm aus aufgerufen werden. Dazu ist
+ allerdings genaues Wissen ueber die Parametrisierung der Routinen
+ erforderlich.
+
+ Klar, diese einfachen Maschinenspracheprogramme hauen niemanden vom Hocker.
+ Das gleiche Ergebnis haette mit wesentlich weniger Aufwand in BASIC
+ programmiert werden koennen. Allerdings ist es in der Regel immer so, dass
+ Assemblerprogramme, die einen bestimmten Zweck erfuellen, laenger und
+ umstaendlicher zu programmieren sind als BASIC-Programme. Der Vorteil von
+ Maschinenspracheprogrammen liegt in der hoeheren Ausfuehrungsgeschwindigkeit
+ und dem Umstand, dass in dieser Sprache die Moeglichkeiten der CPU und aller
+ anderen Baugruppen im Mikrokontroller wirklich voll ausgeschoepft werden
+ kann.
+
+ In Maschinensprache kann zum Beispiel sehr viel einfacher auf die
+ verschiedenen I/O-, Kontroll- und Statusregister des Mikrokontrollers
+ zugriffen werden. Alle diese Register sind bei den 6805'ern "memory mapped";
+ d.h. sie koennen wie ganz normale RAM-Speicherstellen angesprochen werden.
+ Der PORTA (Port A data register) liegt z.B. an Adresse $0 und ist somit
+ genau ein Byte - oder acht Bit - breit. Jedes Bit an dieser Adresse
+ entspricht einem I/O-Pin ("Digitalport") von Port A. Zusaetzlich gibt es
+ noch an Adresse $4 das DDRA (Port A data direction register). In diesem
+ Richtungsregister gibt es zu jedem I/O-Digitalport ein zugehoeriges Bit, das
+ man loeschen oder setzen kann, je nachdem ob der entsprechende I/O-Pin auf
+ Eingang oder Ausgang geschaltet werden soll.
+
+ Der PORTA wird in der C-Control bereits vom Betriebssystem verwendet. Der
+ Port, der in BASIC als "Byteport [1]" bezeichnet wird, ist in Assembler
+ PORTB (an Adresse $1) und enthaelt die Digitalports "Port [1]" bis "Port
+ [8]". "Byteport [2]" ist PORTC (an Adresse $2) und enthaelt "Port [9]" bis
+ "Port [16]". Auch zu Port B und C gibt es Richtungsregister: DDRB an Adresse
+ $5 und DDRC an Adresse $6.
+
+ Der 6805 enthaelt in seinem Assembler-Befehlssatz 32 Kommandos, mit denen
+ sehr einfach auf beliebige Bits einer Speicherstelle zugegriffen werden
+ kann. Es gibt Befehle zum Setzen eines Bits ("bset"), zum Loeschen ("bclr")
+ und zum Testen, ob ein Bit gesetzt ("brset") oder geloescht ("brclr") ist.
+ Diese Befehle eignen sich perfekt, um auf einzelne Digitalports zuzugreifen.
+
+ Wer einmal die fuer den Zugriff auf Bitports zustaendigen Routinen des
+ Betriebssystems untersucht hat wird feststellen, dass diese Routinen sehr
+ langsam arbeiten. Es ist viel effektiver, in Maschinensprache auf Bitports
+ zuzugreifen!
+
+ Das folgende Beispiel verdeutlich dies. Es schaltet je einen Digitalport auf
+ Eingang und auf Ausgang und liefert den Zustand des auf Eingang geschalteten
+ Ports an BASIC zurueck.
+
+
+                            Hier das BASIC-Programm:
+            (in der DOS-IDE eingeben und unter FOURTH.BAS speichern)
+
+   print port2
+   end
+   
+   syscode "fourth.s19"
+   
+   #port2
+     sys &h101
+   return
+
+
+                        Und hier das Assemblerprogramm:
+     (in der DOS-IDE eingeben, unter FOURTH.ASM speichern und assemblieren)
+
+   PORTB equ $1              ; PORTB und DDRB sind Konstanten,
+   DDRB equ $5               ; d.h. statt $1 kann ab jetzt auch PORTB,
+                             ; und statt $5 DDRB geschrieben werden
+   
+     org $101
+   
+   bitbefehle:
+   
+     bset #0,DDRB            ; Bit 0 von DDRB setzen
+                             ; (dadurch wird Port [1] zum Ausgangspin)
+     bclr #1,DDRB            ; Bit 1 von DDRB loeschen
+                             ; (Port [2] wird zum Eingangspin)
+   
+     bset #0,PORTB           ; den ersten Pin von PORTB ("Port [1]")
+                             ; auf 5 Volt setzen
+     bclr #0,PORTB           ; ..und wieder auf 0 Volt setzen
+   
+     clr $91                 ; "Top-Of-Stack" auf Null setzen
+     clr $92                 ; (fuer Rueckgabe an BASIC)
+   
+     brclr #1,PORTB,isclear  ; nach isclear springen, wenn Bit 1
+                             ; von PORTB nicht gesetzt ist
+                             ; (d.h. wenn Port [2] OFF ist)
+   
+     dec $91                 ; sonst "Top-Of-Stack" auf -1 setzen
+     dec $92
+   
+   isclear:                  ; isclear ist ein Label (Sprungziel)
+     rts
+
+
+ Wenn gleich mehrere Digitalports auf einmal abgefragt werden sollen gibt es
+ eine effektivere Methode: Man kann den Inhalt von PORTB oder PORTC in den
+ Akkumulator laden und anschliessend "UND"-maskieren (mit dem Befehl AND),
+ und auf diese Weise feststellen, ob eine bestimmte Bitgruppe komplett
+ geloescht oder gesetzt ist. Falls einige Bits auf "high" und gleichzeitig
+ andere auf "low" getestet werden sollen, kann mit "Exclusiv-Oder" (EOR) der
+ Zustand der auf "low" abzufragenden Bits im Akku vor der Maskierung
+ invertiert werden.
+
+ Wie die restlichen Kontroll- und Statusregister des Mikrokontrollers
+ programmiert werden muessen, kann nicht Gegenstand dieses Einfuehrungskurses
+ sein. Fuer die meisten Standardfunktionen existiert bereits eine grosse
+ Anzahl von Betriebssystemroutinen, so dass eine Programmierung von Hand in
+ den meisten Faellen gluecklicherweise entfaellt. Wer seinen Mikrokontroller
+ hingegen bis zum Letzten ausreizen moechte, muss einen Blick in das Manual
+ zum 68HC05 werfen und selber programmieren.
+
+ Im fuenften und letzten Beispiel benutzen wir eine Betriebssystemroutine um
+ uns das Leben leichter zu machen. Das Maschinenspracheprogramm uebertraegt
+ eine ASCII-Codetabelle (von Zeichen 32 bis 127) ueber die serielle
+ Schnittstelle zum PC. Das Basicprogramm dient hier einzig und allein zum
+ Aufruf des Maschinenspracheprogramms.
+
+
+                            Hier das BASIC-Programm:
+            (in der DOS-IDE eingeben und unter FIFTH.BAS speichern)
+
+   sys &h101
+   syscode "fifth.s19"
+
+
+                        Und hier das Assemblerprogramm:
+     (in der DOS-IDE eingeben, unter FIFTH.ASM speichern und assemblieren)
+
+     org $101
+   
+   asciitabelle:
+   
+     lda #32                ; Akkumulator mit dem Wert 32 laden
+     sta $a1                ; Akku auf Speicherstelle $a1 speichern
+   loop:                    ; loop ist ein Label (hier ein Sprungziel)
+     tax                    ; Index-Register mit Akku-Inhalt laden
+     jsr $0c77              ; Inhalt des Index-Registers ueber die
+                            ; serielle Schnittstelle senden
+     inc $a1                ; Wert auf Adresse $a1 um eins erhoehen
+     lda $a1                ; Akku mit Inhalt der Adresse $a1 laden
+     cmp #127               ; vergleiche Akku-Inhalt mit der Zahl 127
+     bls loop               ; springe nach loop, wenn Akku-Inhalt
+                            ; kleiner oder gleich 127 ist, sonst mache
+                            ; mit dem naechsten Befehl nach "bls" weiter
+   
+     ldx #$0d               ; lade Index-Register mit dem Wert 13
+     jsr $0c77              ; und ueber serielle Schnittstelle senden
+     ldx #$0a               ; lade Index-Register mit dem Wert 10
+     jsr $0c77              ; und ueber serielle Schnittstelle senden
+   
+     rts
+
+
+ Dieses Beispiel enthaelt eine Schleife, vergleichbar mit einer BASIC-FOR-
+ NEXT-Schleife in der eine Bytevariable von 32 bis 127 hochgezaehlt wird. Der
+ Inhalt des Schleifenzaehlers wird mittels einer Betriebssystemroutine, die
+ an der Adresse $0c77 beginnt, ueber die serielle Schnittstelle (RS232)
+ ausgegeben. Die Routine benoetigt als Uebergabe im Index-Register den Wert
+ der ueber die RS232 als Byte ausgegeben werden soll. So oder aehnlich werden
+ die meisten Systemroutinen aufgerufen. Der "jsr"-Befehl entspricht ziemlich
+ genau dem "SYS"-Befehl im BASIC. Die Adressen und Aufrufparameter weiterer
+ Betriebssystemroutinen kann dem ROM-Listing (in der Textdatei CCBASROM.TXT)
+ entnommen werden.
+
+ Der "bls loop"-Befehl stellt, ebenso wie der im vorherigen Beispielprogramm
+ benutzte Befehl "brclr", eine echte Neuerung in unserem kleinen
+ Assemblerkurs dar. Waehrend alle bisher benutzten Befehle sequentiell (d.h.
+ der Reihe nach) ausgefuehrt wurden, ist es mit diesen Befehlen zum ersten
+ Mal moeglich, Programmbereiche in Abhaengigkeit einer Bedingung zu
+ ueberspringen oder wiederholt auszufuehren. Man spricht von bedingten
+ Sprungbefehlen, mit denen IF..THEN Abfragen realisiert werden koennen. Der
+ Befehlssatz der 6805'er CPU enthaelt insgesamt 30 dieser in fast jedem
+ Assemblerprogramm anzutreffenden Befehle. Die Befehle fragen uebrigens den
+ Zustand der sogenannten Flagregister ab. Nach dem Durchfuehren einer
+ Berechung oder eines Vergleichs werden die Flagregister von der CPU
+ automatisch gesetzt (siehe uebernaechstes Kapitel "Gute Uebersicht ueber
+ alle Assemblerbefehle der CPU" in dieser Textdatei).
+
+ Tja, und wenn man es genau betrachtet sind damit eigentlich die
+ grundlegendsten Themenbereiche zur Programmierung des CCBASIC-Chips in
+ Maschinensprache behandelt worden. Natuerlich war das nur eine kleine
+ Einfuehrung in diese Programmiersprache, doch wer Interesse hat kann sich ja
+ anhand der Beispielprogramme, des ROM-Listing oder der Datei DI05.MNE (dort
+ werden alle 256 Befehle des 6805 in englischer Sprache erklaert)
+ weiterbilden. Eigentlich ist die Programmierung des 6805 nicht sehr
+ kompliziert, was wohl auch daran liegt, dass diese CPU eben nur zwei
+ Register besitzt, die zudem nur acht Bit lang sind. Man kommt gar nicht drum
+ herum fast jede benoetigte Byte-, und sowieso jede Wordvariable im
+ Arbeitsspeicher (RAM) zwischenzuspeichern.
+
+ Weitere Informationen zur CPU und deren Besonderheiten - gerade im Vergleich
+ zu anderen CPUs - befindet sich in der Datei MC68HC05.TXT und wer sich an
+ die Programmierung einer Interruptroutine heranwagen moechte sollte die
+ Textdateien TIPSUTRI.TXT und INTERRUP.TXT lesen. Schliesslich enthalten die
+ Programme KARTEBAS.BAS, KARTEASM.BAS und KARTEASM.ASM eine Demonstration,
+ wie ein bestehendes BASIC-Programm komplett in Assembler umgeschrieben
+ werden kann. Die Funktion der Programme (Lesen von Chipkarten) ist in diesem
+ Zusammenhang nicht ganz so wichtig.
+
+ Zum Schluss muss ich noch unbedingt auf den Assemblerkurs von Mario Boller-
+ Olfert (http://www.ymir.de/arbeiten/index.htm) hinweisen, denn der ist auch
+ sehr gut fuer Einsteiger geeignet!
+
+
+ ----------------------------------------------------------------------------
+              Entwickeln von Assemblerprogrammen in der DOS-IDE              
+ ----------------------------------------------------------------------------
+
+ Mit der DOS-IDE lassen sich perfekt Assemblerprogramme entwickeln. Dafuer
+ muss der dieser Sammlung beiliegende Assembler AS05.EXE allerdings erst in
+ der IDE eingebunden werden. Das geschieht im Menuepunkt "Tools" im "Option"-
+ Menue. Hier stehen die Programmnamen der verschiedenen Hilfsprogramme der
+ IDE und deren Aufrufparameter. Im Requester muss unter Assembler/Programm
+ "$CCEPATH$\AS05.EXE" und unter Assembler/Parameter "-s -lnul $NOSWAP$
+ $EDNAMEFULL$" eingegeben werden (beides bitte ohne Gaensefuesschen). Nach
+ einem Druck auf OK sollte der Assembler nun bei jedem editierten
+ Assemblerprogramm ueber das Menue "Entwicklung" aufrufbar sein;
+ vorausgesetzt die Datei AS05.EXE wurde in das selbe Verzeichnis kopiert in
+ dem sich auch CCE.EXE befindet.
+
+ Dieser Sammlung liegt zusaetzlich die Datei CCE.TOK bei. Wenn diese Datei
+ ebenfalls in das CCE-Verzeichnis kopiert wird (das alte CCE.TOK wird
+ ueberschrieben), unterstuetzt der Editor der IDE nun nicht nur bei BASIC-,
+ sondern auch bei Assemblerprogrammen Syntaxhighlighting.
+
+ Wer einen anderen Assembler als den in dieser Sammlung enthaltenen einsetzt,
+ sollte beachten, dass dieser eventuell einen anderen Mnemonic-Befehlssatz
+ benoetigt. Die meisten Assembler wissen beispielsweise mit "bset
+ #<nr>,<adr>" und "cmpx" nichts anzufangen und auch die Pseudocodes "db" und
+ "dw" werden meist nicht unterstuetzt. Aus diesem Grund muessen die
+ verschiedenen Beispiel-Assemblerprogramme in dieser Sammlung vermutlich
+ leicht editiert werden. Auch das ROM-Listing kann wohl nicht ohne
+ Aenderungen assembliert werden.
+
+ Noch ein wichtiger Hinweis: Der Assembler braucht hinter der letzter Zeile
+ eines Programms unbedingt einen Carriage Return plus Line Feed, also
+ unbedingt darauf achten, dass hinter dem letzten Befehl eines Programms die
+ RETURN-Taste gedrueckt wird. Sonst wird u.U. das letzte RTS einfach
+ ignoriert (!).
+
+
+ ----------------------------------------------------------------------------
+             Gute Uebersicht ueber alle Assemblerbefehle der CPU             
+ ----------------------------------------------------------------------------
+
+ Von der Firma "TECI - The Enginers Collaborative, Inc." gibt es ein
+ Programmpaket, das die Demoversion eines Assemblers (WASM05 v2.4) und eines
+ dazugehoerigen Texteditors (WTT05 v2.7) enthaelt. Das Paket mit dem Namen
+ "hc05demo.exe" kann im Internet unter der Adresse "http://www.tec-i.com"
+ kostenlos heruntergeladen werden.
+
+ WASM benoetigt zur Ausfuehrung eine spezielle Hardware (Hardware-Emulator)
+ an der seriellen Schnittstelle, so dass das Programm selbst nur
+ eingeschraenkt zu gebrauchen ist. Es enthaelt jedoch eine ganz gute
+ Onlinehilfe fuer Windows, die eine detaillierte Liste aller Assemblerbefehle
+ einer 6805'er CPU enthaelt. Zu jedem Befehl gibt es ein Beispiel und jede
+ moegliche Veraenderung der Flagregister (H, I, N, Z und C) ist ausfuehrlich
+ beschrieben.
+
+
+ ----------------------------------------------------------------------------
+               Simulatoren und C-Compiler fuer den CCBASIC-Chip              
+ ----------------------------------------------------------------------------
+
+ Leider kann man mit dem CCBASIC-Chip Maschinenspracheprogramme nicht Befehl-
+ fuer-Befehl ausfuehren und sich das Ergebnis anzeigen lassen. Doch auch
+ hierfuer gibt es Loesungen. Von der Firma Cosmic Software gibt es einen
+ 68HC05 Simulator fuer Windows namens ZAP, der eigentlich fuer den Cosmic C
+ Cross Compiler gedacht ist. Nun, mit dem C-Compiler kann man beim CCBASIC-
+ Chip wenig anfangen, doch gibt es in der Programmiersprache C die
+ Moeglichkeit Assemblercode mittels der "#asm"-Direktive ins Programm
+ einzubinden. Dieser Assemblercode kann dann mittels ZAP ganz genauso wie ein
+ normales C-Programm im Single-Step-Modus ausgefuehrt werden. Das
+ funktioniert sogar in der Demoversion.
+
+ Der C-Compiler von Cosmic ist aber nicht leicht dazu zu bewegen, ein
+ Programm in dem vom Simulator benoetigten "Cross Debugging"-Format zu
+ kompilieren, zumal die Onlinehilfe von ZAP zu diesem Thema falsche Hinweise
+ gibt. Weil der Compiler auch sonst - besonders bei Fehlern in eingebundenen
+ Assemblercodes - etwas "komisch" reagiert, habe ich dieser Sammlung drei
+ Dateien (CPROG.BAT, CPROG.C und CPROG.LCF) beigelegt, die zeigen, wie man
+ selbst mit dieser Diva Programme kompilieren und simulieren kann.
+
+ Nicht unerwaehnt bleiben soll die Moeglichkeit den CCBASIC-Chip in der
+ Sprache C zu programmieren. Die meisten am Markt erhaeltlichen Compiler sind
+ ungeeignet, da sie zuviel Overheap benoetigen (sie brauchen mehr als die 255
+ Bytes, die im CCBASIC-Mikrokontroller fuer Assemblerprogrammierung zur
+ Verfuegung stehen). Einen C-Compiler der gar keinen Overheap produziert gibt
+ es von der Firma Byte Craft Limited und heisst C6805. In der Demoversion
+ produziert er zwar nur ein Assemblerlisting (aehnlich dem ROM-Listing), doch
+ wer sich die einzelnen Befehlsbyte aus dem Listing herausdamelt hat gut
+ lachen.
+
+
+       Beispiel fuer ein kompiliertes C-Programm mit der Demoversion von
+                          Byte Craft Limited's C6805:
+
+   6805 "C" COMPILER V4.50  30-Apr-1998
+   
+   0101 00FF                         #pragma memory ROMPROG  [255]  @ 0x101;
+   00A1 0018                         #pragma memory RAMPAGE0  [24]  @ 0xa1;
+   
+                                     void main(void)
+                                     {
+   00A1                                int a;
+   0101 A6 01     LDA    #$01          a=345;
+   0103 B7 A1     STA    $A1
+   0105 A6 59     LDA    #$59
+   0107 B7 A2     STA    $A2
+   0109 3C A2     INC    $A2           a++;
+   010B 26 02     BNE    $010F
+   010D 3C A1     INC    $A1
+   010F 81        RTS                }
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------
+

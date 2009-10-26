@@ -1,0 +1,456 @@
+
+ UEBERSICHT UEBER DIE BELEGUNG DES SPEICHERS BEIM C-CONTROL/BASIC-CHIP
+ =====================================================================
+
+ Um die Arbeitsweise der verschiedenen Betriebssystemroutinen besser nach-
+ vollziehen zu koennen folgt eine detaillierte Beschreibung der Belegung
+ des Speichers. Die Liste beginnt bei Adresse 0 und endet an der letzten
+ vom Mikrokontroller ansprechbaren Adresse $1fff (8191).
+
+ Wenn hinter einer Adresse oder einem Port "nicht benutzt" steht, wird das
+ entsprechende Register oder der Inhalt des entsprechenden Speicherbereichs
+ innerhalb des Betriebssystems (bzw. BASIC-Interpreter) nicht benutzt.
+
+ Die Liste enthaelt die Adressen aller Daten auf die entweder direkt, per
+ Index-Register oder ueber die Pseudo-Adressierungsbefehle lesend oder
+ schreibend zugegriffen wird.
+
+
+ REGISTER-BEREICH
+ ================
+
+ Ports und Register eines MC68HC05B6 und deren Bedeutung im CCBASIC-Chip
+
+ $00     = PORTA (Port A data register)
+ $00 #0  = SDA (Datenleitung des I2C Bus)
+ $00 #1  = SCL (Clockleitung des I2C Bus)
+ $00 #2  = wenn Bit geloescht wird leuchtet die RUN-LED
+ $00 #3  = wenn Bit geloescht wird leuchtet die ACTIVE-LED
+ $00 #4  = wenn Bit geloescht wird leuchtet die DCF-OK-LED
+ $00 #5  = hiermit kann der START-Jumper abgefragt werden
+ $00 #6  = hiermit wird RTS gesetzt (ist LOW-aktiv)
+ $00 #7  = hiermit kann CTS abgefragt werden (dito)
+
+ $01     = PORTB (Port B data register)
+ $02     = PORTC (Port C data register)
+ $03     = PORTD (Port D input data register)
+
+ $04     = DDRA (Port A data direction register)
+ $05     = DDRB (Port B data direction register)
+ $06     = DDRC (Port C data direction register)
+
+ $07     = EEPROM/ECLK control register
+ $07 #0  = E1PGM (EEPROM charge pump enable/disable)
+ $07 #1  = E1LAT (EEPROM programming latch enable bit)
+ $07 #2  = E1ERA (EEPROM erase/programming bit)
+ $07 #3  = ECLK (External clock output bit), nicht benutzt
+ $07 #4  = reserviert
+ $07 #5  = reserviert
+ $07 #6  = reserviert
+ $07 #7  = reserviert
+
+ $08     = A/D data register
+
+ $09     = A/D status/control register
+ $09 #0  = CH0 \
+ $09 #1  = CH1  \ Select A/D channel 0-7
+ $09 #2  = CH2  / (or VRH, (VRH+VRL)/2, VRL for test purpose)
+ $09 #3  = CH3 /
+ $09 #4  = reserviert
+ $09 #5  = ADON (A/D converter on)
+ $09 #6  = ADRC (A/D RC oscillator control)
+ $09 #7  = COCO (Conversion complete flag)
+
+ $0a     = Pulse length modulation A data register
+ $0b     = Pulse length modulation B data register
+
+ $0c     = Miscellaneous register
+ $0c #0  = WDOG (enable Watchdog; cannot be disabled by software)
+ $0c #1  = SM, wenn Bit gesetzt ist, wird der Takt auf 1/16 reduziert
+ $0c #2  = SFB (Slow or fast mode selection for PLMB)
+ $0c #3  = SFA (Slow or fast mode selection for PLMA)
+ $0c #4  = INTE (External interrupt enable)
+ $0c #5  = INTN \ External interrupt sensitivity options
+ $0c #6  = INTP / INTN=1 & INTP=0 -> Negative edge only
+ $0c #7  = POR (to distinguish between a power-on and an external reset)
+
+ $0d     = BAUD (SCI baud rate register)
+ $0d #0  = SCR0 \  SCI rate select bits (receiver)
+ $0d #1  = SCR1  > SCR0=0, SCR1=0 & SCR2=0  ->  NR=1
+ $0d #2  = SCR2 /  baudRX = 2000000/(16*NP*NR) = 9615.4 baud
+ $0d #3  = SCT0 \  SCI rate select bits (transmitter)
+ $0d #4  = SCT1  > SCT0=0, SCT1=0 & SCT2=0  ->  NT=1
+ $0d #5  = SCT2 /  baudTX = 2000000/(16*NP*NT) = 9615.4 baud
+ $0d #6  = SCP0 \  Serial prescaler select bits (Prescaler division ratio)
+ $0d #7  = SCP1 /  SCP1=1 & SP0=1 -> NP=13
+
+ $0e     = SCCR1 (SCI control register 1)
+ $0e #0  = LBCL (Last bit clock)
+ $0e #1  = CPHA (Clock phase)
+ $0e #2  = CPOL (Clock polarity)
+ $0e #3  = WAKE (Wake-up mode select)
+ $0e #4  = M (Mode, select character format)
+ $0e #5  = reserviert
+ $0e #6  = T8 (Transmit data bit 8)
+ $0e #7  = R8 (Receive data bit 8)
+
+ $0f     = SCCR2 (SCI control register 2)
+ $0f #0  = SBK (Send break)
+ $0f #1  = RWU (Receiver wake-up)
+ $0f #2  = RE (Receiver enable)
+ $0f #3  = TE (Transmitter enable)
+ $0f #4  = ILIE (Idle line interrupt enable)
+ $0f #5  = RIE (Receiver interrupt enable)
+ $0f #6  = TCIE (Transmit complete interrupt enable)
+ $0f #7  = TIE (Transmit interrupt enable)
+
+ $10     = SCSR (SCI status register)
+ $10 #0  = reserviert
+ $10 #1  = FE (Framing error flag)
+ $10 #2  = NF (Noise error flag)
+ $10 #3  = OR (Overrun error flag)
+ $10 #4  = IDLE (Idle line detected flag)
+ $10 #5  = RDRF (Receive data register full flag)
+ $10 #6  = TC (Transmit complete flag)
+ $10 #7  = TDRE (Transmit data register empty flag)
+
+ $11     = SCDR (SCI data register)
+
+ $12     = TCR (Timer control register)
+ $12 #0  = OLVL1 (Output level 1)
+ $12 #1  = IEDG1 (Input edge 1)
+ $12 #2  = OLVL2 (Output level 2)
+ $12 #3  = FOLV1 (Force output compare 1)
+ $12 #4  = FOLV2 (Force output compare 2)
+ $12 #5  = TOIE (Timer overflow interrupt enable)
+ $12 #6  = OCIE (Output compares interrupt enable)
+ $12 #7  = ICIE (Input captures interrupt enable)
+
+ $13     = TSR (Timer status register)
+ $13 #0  = reserviert
+ $13 #1  = reserviert
+ $13 #2  = reserviert
+ $13 #3  = OCF2 (Output compare flag 2)
+ $13 #4  = ICF2 (Input capture flag 2)
+ $13 #5  = TOF (Timer overflow status flag)
+ $13 #6  = OCF1 (Output compare flag 1)
+ $13 #7  = ICF1 (Input capture flag 1)
+
+ $14:$15 = ICR1 (Input capture register 1)
+ $16:$17 = OCR1 (Output compare register 1)
+ $18:$19 = TR (Timer counter register)
+ $1a:$1b = ATR (Alternate timer counter register)
+ $1c:$1d = ICR2 (Input capture register 2)
+ $1e:$1f = OCR2 (Output compare register 2)
+
+
+ ZWISCHENBEREICH
+ ===============
+
+ Im Bereich von Adresse $20 bis $4f liegt das sogenannte "Page 0 User ROM".
+ Dieser Bereich haette von Conrad Electronic beschrieben werden koennen,
+ ist aber leer.
+
+ $20-$4f = Page 0 User ROM
+
+
+ RAM-BELEGUNG
+ ============
+
+ Das RAM liegt beim MC68HC06B6 im Bereich von Adresse $50 bis $ff. Davon
+ wird der Bereich von $c0 bis $ff vom Hardwarestack benutzt (beim CCBASIC-
+ Chip bleibt fuer den Stack etwas weniger Platz). Es folgt die Belegung des
+ RAMs durch den CCBASIC-Interpreter.
+
+ $50     = IRQPTR (Userpointer fuer IRQ-Interrupt)
+ $51     = CAPPTR (Userpointer fuer TIMERCAP-Interrupt)
+ $52     = CMPPTR (Userpointer fuer TIMERCMP-Interrupt)
+ $53     = OFLPTR (Userpointer fuer TIMEROFL-Interrupt)
+
+ $54-$59 = temporaer, fuer verschiedene Aufgaben
+
+ $5a     = das letzte ausgefuehrte Basic-Token (Byte wird nur beschrieben)
+
+ $5b-$62 = Ringbuffer der seriellen Schnittstelle (RS232), 8 Byte lang
+ $63     = Anzahl der Bytes die noch aus dem Buffer gelesen werden koennen
+ $64     = Pointer auf das naechste zu lesende Byte im Ringbuffer der RS232
+ $65     = Pointer auf den naechsten freien Platz im Ringbuffer der RS232
+           falls Buffer leer ist, ist $63 gleich null und $64 gleich $65
+
+ $66:$67 = entspricht der EEPROM-Adresse auf die beim naechsten sequentiel-
+           len Zugriff zugegriffen wird (z.B. BASIC-Programmzaehler)
+
+ $68:$69 = Millisekundenzaehler der Uhr, nur von TIMERCMP benutzt
+
+ $6a     = DAY
+ $6b     = DOW
+
+ $6c     = Zaehler fuer aktuelle DCF77-Bitmarke, nur von TIMERCAP benutzt
+ $6d:$6e = Zaehler fuer die Zeit, die seit der letzten Zustandsaenderung des
+           DCF77-Signals vergangen ist, von TIMERCAP und TIMERCMP benutzt
+ $6f     = Buffer fuer neues DCF77-Kalenderjahr, nur von TIMERCAP benutzt
+ $70     = Buffer fuer neuen DCF77-Kalendermonat, nur von TIMERCAP benutzt
+ $71     = Buffer fuer neuen DCF77-Kalendertag, nur von TIMERCAP benutzt
+ $72     = Buffer fuer neuen DCF77-Wochentag, nur von TIMERCAP benutzt
+ $73     = Buffer fuer neue DCF77-Stunden, nur von TIMERCAP benutzt
+ $74     = Buffer fuer neue DCF77-Minuten, nur von TIMERCAP benutzt
+ $75     = Buffer fuer letztes DCF77-Kalenderjahr, nur von TIMERCAP benutzt
+ $76     = Buffer fuer letzten DCF77-Kalendermonat, nur von TIMERCAP benutzt
+ $77     = Buffer fuer letzten DCF77-Kalendertag, nur von TIMERCAP benutzt
+ $78     = Buffer fuer letzten DCF77-Wochentag, nur von TIMERCAP benutzt
+ $79     = Buffer fuer letzte DCF77-Stunden, nur von TIMERCAP benutzt
+ $7a     = Buffer fuer letzte DCF77-Minuten, nur von TIMERCAP benutzt
+
+ $7b     = allgemeines Statusregister des CCBASIC-Interpreters
+ $7b #0  = Bit ist high wenn ein gueltiges DCF77-Signal empfangen wird
+ $7b #1  = Bit ist waehrend der BASIC-Programmausfuehrung high
+ $7b #2  = nicht benutzt
+ $7b #3  = nicht benutzt
+ $7b #4  = Bit ist high wenn die Systemzeit von aussen (ueber DCF77 oder die
+           serielle Schnittstelle) wenigstens einmal gestellt wurde
+ $7b #5  = Bit ist im SLOWMODE (interner Takt auf 1/16 reduziert) high
+ $7b #6  = Bit ist der Marker fuer den CCBASIC-Interpreter, dass die BASIC-
+           IRQ-Interruptroutine aufgerufen werden soll
+ $7b #7  = Bit legt fest, ob RTS & CTS benutzt oder ignoriert werden
+           (wird aber bisher kaum abgefragt)
+
+ $7c:$7d = FREQ1
+ $7e:$7f = FREQ2
+ $80     = HOUR
+ $81     = MINUTE
+ $82     = MONTH
+ $83:$84 = zum Zwischenspeichern von Rechenergebnissen (OCR1 & OCR2 laden),
+           von TIMERCMP- & TIMERCAP-Interrupt und BEEP benutzt
+ $85:$86 = Buffer fuer FREQ1, nur von TIMERCMP- & TIMERCAP-Interrupt benutzt
+ $87:$88 = Buffer fuer FREQ2, nur von TIMERCMP- & TIMERCAP-Interrupt benutzt
+ $89     = SECOND
+ $8a:$8b = TIMER
+ $8c:$8d = Halbe Periodendauer des BEEP-Ausgangssignals (in Prozessortakten),
+           von TIMERCMP-Interrupt und BEEP benutzt
+ $8e:$8f = Anzahl der Ticks die bei PAUSE noch gewartet werden,
+           wird von TIMERCMP2 alle 20 ms um eins dekrementiert
+ $90     = YEAR
+
+ $91-$9e = Rechenstack, $91:$92 wird beim naechsten POP vom Stack gelesen
+           und anschliessend $95-$9e nach $93-$9c kopiert
+
+ $9f:$a0 = RAND-Zahl (fuer Zufallszahlengenerator)
+
+ $a1-$b8 = 24 User-Bytes
+
+ $b9:$ba = Adresse der BASIC-Routine die bei einem IRQ aufgerufen werden
+           soll oder Null, wenn keine Routine aufgerufen wird
+ $bb:$bc = Buffer fuer Aufnahme des BASIC-PCs vor Ausfuehrung einer BASIC-
+           IRQ-Routine (zum spaeteren Restaurieren bei RETURN INTERRUPT)
+ $bd-$bf = Code fuer Simulation eines 'jmp adr16' Befehls (fuer SYS)
+ $c0-$c7 = GOSUB-Stack (insgesamt 4 Eintraege)
+
+ $c8:$c9 = Anzahl der Bytes in der EEPROM-Datendatei
+ $ca:$cb = aktuelle Lese- oder Schreibposition in der EEPROM-Datendatei
+ $cc:$cd = nach dem Oeffnen die EEPROM-Anfangsadresse der EEPROM-Datendatei
+
+ $ce-$d4 = temporaer, fuer verschiedene Aufgaben
+ $d5:$d6 = letztes in die Datendatei im seriellen EEPROM uebertragenes Word
+ $d7     = letztes gelesene Byte von der RS232, wird nur von SCI benutzt
+ $d8     = Fehlermarker fuer RS232, wird nur vom SCI-Interrupt benutzt
+ $d9-$da = temporaer, fuer verschiedene Aufgaben
+ $db     = temporaer, nur von SQR benutzt
+
+ $dc     = nicht benutzt (?)
+
+ $dd-$e0 = Code zur Erweiterung der Adressmodi (Pseudo-Adressierungsmodi)
+ $e1     = letztes ueber den I2C-Bus uebertragenes Byte
+ $e2     = Differenz der Minutenwerte der beiden letzten empfangenen
+           DCF77-Uhrzeiten, nur von TIMERCAP benutzt
+ $e3     = Anzahl der Tage im aktuellen Monat (wird um Mitternacht gesetzt),
+           nur von TIMERCMP benutzt
+ $e4     = Zwischenspeicher zum Ermitteln eines Schaltjahres,
+           nur von TIMERCMP benutzt
+ $e5-$ff = HARDWARE-STACK-BEREICH (eigentlich $c0-$ff)
+
+
+ EEPROM-BEREICH
+ ==============
+
+ $0100       = Options register (OPTR) (wird vom Self-check ROM I benutzt)
+ $0100 #0    = SEC (Security bit)
+               nur wenn Bit gesetzt ist kann der "test mode" gestartet werden
+ $0100 #1    = EE1P (EEPROM protect bit)
+               wenn Bit geloescht ist, dann sind die letzten 224 Bytes des
+               EEPROMs gegen Ueberschreiben geschuetzt
+ $0100 #2    = reserved
+ $0100 #3    = reserved
+ $0100 #4    = reserved
+ $0100 #5    = reserved
+ $0100 #6    = reserved
+ $0100 #7    = reserved
+
+ $0101-$011f = Non protected EEPROM
+ $0120-$01ff = Protected EEPROM
+
+
+ ROM-BEREICH
+ ===========
+
+ $0200-$02bf = Self-check ROM I
+ $02c0-$07ff = unbenutztes ROM / reserviert
+ $0800-$1eff = User ROM (CCBASIC-Interpreter, von Conrad Electronic)
+ $1f00-$1fef = Self-Check ROM II (enthaelt am Ende vermutlich eine Sprung-
+               tabelle, ist ansonsten aber leer)
+ $1ff0       = COPR (COP control register) oder reserviert (?)
+ $1ff1       = reserviert (?)
+ $1ff2-$1fff = User vectors (Sprungtabelle zu den Interruptroutinen)
+
+
+
+ BELEGUNG DES SERIELLEN EEPROMS
+ ==============================
+
+ Alle Adressen sind EEPROM-Adressen!
+
+ $0000:$0001 = Groesse des BASIC-Programms in Byte
+ $0002:$0003 = Groesse der Daten-Datei in Byte
+ $0004       = Beginn des BASIC-Programms, dahinter folgt die Daten-Datei
+
+
+ -----------------------------------------------------------------------------
+
+
+ SPEICHERBELEGUNG NACH IDI05.EXE
+ ===============================
+
+ Beim Disassemblieren des ROMs hat der Disassembler IDI05 die folgenden
+ Bereiche gefunden.
+
+
+ Maschinencodebereiche:
+ (von/bis Adresse)
+
+   $200-$2a9,$800-$9b4,$9b6-$9e8,$9ea-$9f6,$9f8-$a9a,$a9d-$c24,$c26-$cde,
+   $ce0-$ce6,$ce8-$d87,$d89-$db1,$db3-$de3,$de5-$10f5,$10f7-$1118,$111a-$1265,
+   $1267-$164f,$1651-$1aa5,$1aa7-$1d75
+
+
+ Prozedur-Einsprungpunkte:
+ (Startadressen aller Prozeduren die ueber jsr, bsr, jmp oder ueber eine
+  der beiden Sprungtabellen aufgerufen werden)
+
+   $0,$50,$51,$bd,$dd,$200,$800,$811,$83c,$846,$86f,$8bb,$8e5,$8ee,$940,$98b,
+   $9ab,$9b0,$9b6,$9ea,$9f8,$a0a,$a28,$a5c,$a7d,$a82,$a87,$a9d,$aa4,$b9f,$bca,
+   $bff,$c26,$c49,$c63,$c74,$c77,$c7d,$cb5,$cce,$cd9,$ce0,$ce8,$d89,$d92,$db3,
+   $de5,$e01,$e04,$e0d,$e18,$e70,$ee9,$f0d,$f45,$fce,$1040,$105b,$106a,$10f7,
+   $110b,$1112,$111a,$1155,$115c,$1163,$116a,$1187,$11b8,$11e1,$11f3,$1226,
+   $1235,$1246,$125c,$1267,$1273,$12a3,$12aa,$12b6,$12c3,$12d2,$12d6,$12e5,
+   $12e9,$12f8,$1316,$1334,$1342,$1351,$1360,$137e,$139c,$13ba,$13cc,$13e8,
+   $1442,$1468,$1484,$14a4,$14c4,$14ea,$1510,$1536,$155c,$1579,$1596,$15b7,
+   $15b8,$15bb,$15cb,$15e0,$161f,$1628,$1631,$1640,$169d,$16a6,$170a,$1714,
+   $1720,$172b,$1736,$1740,$174b,$1756,$1761,$176f,$177a,$1781,$1788,$178f,
+   $1796,$17a0,$17a7,$17ae,$17b5,$17bc,$17c3,$17ca,$1806,$1881,$18d4,$18df,
+   $18ed,$18f2,$18f9,$1900,$190e,$1915,$197c,$19d8,$19df,$19e6,$19ee,$1a0b,
+   $1a24,$1a48,$1a69,$1a91,$1aa7,$1ad4,$1afe,$1b0f,$1b2d,$1b6b,$1b84,$1bb0,
+   $1bb9,$1c0f,$1c1a,$1c37,$1c5d,$1c7a,$1c83,$1c8c,$1c95,$1c9e,$1ca2,$1cb5,
+   $1cc9,$1cdb,$1ce3,$1cfc,$1d06,$1d09,$1d12,$1d15,$1d26,$1d35,$1d5f
+
+
+ Speicherbereiche oder Portadressen aus denen byteweise gelesen wird:
+ (ueber das Index Register oder die Pseudo-Adressierungsmodi angesprochene
+  Adressen bleiben unberuecksichtigt)
+
+   $0-$3,$8-$9,$11,$13,$15-$19,$1d-$1f,$50-$59,$63-$7a,$7c-$82,$84-$a0,
+   $b9-$bc,$c0-$db,$de-$df,$e1-$e4,$100
+
+
+ Speicherbereiche oder Portadressen in die byteweise geschrieben wird:
+ (s.o.)
+
+   $1-$2,$5-$7,$9,$d-$f,$11,$13,$16-$17,$19,$1e-$1f,$50-$5a,$63-$a0,$b9-$db,
+   $dd-$e4
+
+
+ Speicherbereiche oder Portadressen aus denen bitweise gelesen wird:
+ (alle Bits die in der in Klammern stehenden Bitmaske gesetzt sind)
+
+   $0  (%10000001), $9  (%10000000), $10 (%01100110), $12 (%00000111),
+   $13 (%11000000), $56 (%10000000), $59 (%00000001), $7b (%11100001)
+
+ Speicherbereiche oder Portadressen in die bitweise geschrieben wird:
+ (s.o.)
+
+   $0  (%01011111), $4  (%01011111), $7  (%00000111), $9  (%00100000),
+   $c  (%00100010), $f  (%00000100), $12 (%11000111), $7b (%11110011),
+   $dd (%00001011)
+
+
+ Speicherbereiche die unter Zuhilfenahme des Index-Registers adressiert
+ werden und aus denen gelesen wird:
+
+   $0-$1,$5,$5b,$a1-$a2,$100,$1d76,$1dbc,$1dc1,$1dc4,$1dca,$1dd1,$1dd9,$1de1
+
+
+ Speicherbereiche die unter Zuhilfenahme des Index-Registers adressiert
+ werden und in die geschrieben wird:
+
+   $0-$1,$5,$a,$5b,$a1-$a2,$100-$101
+
+
+
+ FEHLER & PROBLEME BEIM DISASSEMBLIEREN:
+ =======================================
+
+ Die folgenden Spruenge haben beim CCBASIC-Chip keine Bedeutung:
+
+   Sprung an Adresse $0 des Exclude-Bereichs von Adresse $20f aus.
+   Sprung zur Subroutine an Adr. $0 des Exclude-Bereichs von Adr. $1ffc aus.
+   Sprung an Adresse $51 des Exclude-Bereichs von Adresse $268 aus.
+   Sprung zur Subroutine an Adr. $50 des Exclude-Bereichs von Adr. $294 aus.
+
+
+ Um die Adressierungmodi des MC68HC05 zu erweitern benutzt das Betriebs-
+ system kleine Maschinencode-Programme in der Zeropage:
+ ("Pseudo-Adressierungsmodi")
+
+   Sprung zur Subroutine an Adr. $dd des Exclude-Bereichs von Adr. $1cbb aus.
+   Sprung an Adresse $dd des Exclude-Bereichs von Adresse $1cc7 aus.
+   (hiermit wird in die Words $9f:$a0, $cf:$d0 und $d0:$d1 geschrieben)
+
+   Sprung an Adresse $dd des Exclude-Bereichs von Adresse $1ce1 aus.
+   (zum Anspringen der BASIC-Hauptroutinen)
+
+   Sprung an Adresse $dd des Exclude-Bereichs von Adresse $1d04 aus.
+   (fuer den ASCII-Dump des internen EEPROMS)
+
+   Sprung zur Subroutine an Adr. $bd des Exclude-Bereichs von Adr. $1711 aus.
+   (zum Aufruf eines Assemblerprogramms mittels "SYS"-Befehl)
+
+   Sprung zur Subroutine an Adr. $dd des Exclude-Bereichs von Adr. $1ca6 aus.
+   Sprung zur Subroutine an Adr. $dd des Exclude-Bereichs von Adr. $1cb0 aus.
+   (hiermit werden die Words $9f:$a0, $cf:$d0 und $d0:$d1 ausgelesen)
+
+   Sprung zur Subroutine an Adr. $dd des Exclude-Bereichs von Adr. $1ccd aus.
+   Sprung zur Subroutine an Adr. $dd des Exclude-Bereichs von Adr. $1cd6 aus.
+   (Word aus Tabelle zum ASCII-Kodieren einer Zahl holen)
+
+   Sprung zur Subroutine an Adr. $dd des Exclude-Bereichs von Adr. $1ceb aus.
+   Sprung zur Subroutine an Adr. $dd des Exclude-Bereichs von Adr. $1cf5 aus.
+   (zum Holen der Adressen der BASIC-Hauptroutinen aus der Sprungtabelle)
+
+
+ Es besteht die Moeglichkeit, eigene Maschinensprache-Interruptroutinen
+ zu benutzen:
+
+   Sprung zur Subroutine an Adresse $100+x von Adresse $1d1a aus.
+   Sprung zur Subroutine an Adresse $100+x von Adresse $1d2b aus.
+   Sprung zur Subroutine an Adresse $100+x von Adresse $1d3a aus.
+   Sprung zur Subroutine an Adresse $100+x von Adresse $1d64 aus.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------
+

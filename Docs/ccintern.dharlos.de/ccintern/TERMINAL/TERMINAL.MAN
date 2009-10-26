@@ -1,0 +1,126 @@
+
+ ----------------------------------------------------------------------------
+                       Neues Terminal-Programm fuer DOS                      
+ ----------------------------------------------------------------------------
+
+ TERMINAL.EXE ist ein einfaches Terminal-Programm fuer die serielle
+ Schnittstelle. Es wurde speziell fuer den Einsatz mit der C-Control-Unit
+ geschrieben und kann als Ersatz fuer MINITERM.EXE in der DOS-IDE (CCE.EXE)
+ benutzt werden. Es laeuft sowohl unter reinem DOS, als auch in der DOS-Box
+ unter Windows 95/98.
+
+ Defaultmaessig werden alle Daten die auf der seriellen Schnittstelle
+ ausgetauscht werden in der Datei TERMINAL.OUT abgespeichert. Ausserdem
+ bietet das Programm einen schnellen Start mit 600 Baud, was der
+ Uebertragungsgeschwindigkeit im SLOWMODE entspricht (9600 Baud / 16 = 600
+ Baud). Wenn das Programm mit dem Parameter "/?" gestartet wird erscheint ein
+ kurzer Hilfetext, in dem saemtliche benutzbaren Parameter erklaert werden.
+
+ Um MINITERM.EXE innerhalb der DOS-IDE durch TERMINAL.EXE zu ersetzen muss
+ TERMINAL.EXE in das CCE-Verzeichnis kopiert und im Menuepunkt "Tools" im
+ "Option"-Menue das Programm fuer das Miniterminal von
+ "$CCEPATH$\MINITERM.EXE" in "$CCEPATH$\TERMINAL.EXE" veraendert werden. Der
+ Parameter kann gleich bleiben.
+
+ Zu beachten ist jedoch, das TERMINAL.EXE keine Editiermoeglichkeiten wie
+ MINITERM.EXE (z.B. ueber die Backspace-Taste) besitzt, sondern gleich
+ nachdem eine Taste gedrueckt wurde diese zur Unit uebertraegt.
+
+ Das Programm kann benutzt werden, um alle Ausgaben der C-Control-Unit zu
+ empfangen und gleichzeitig abzuspeichern.
+
+ Um sich die Vorgehensweise beim Uebertragen eines BASIC-Programms zur Unit
+ klar zu machen, ist es mit TERMIAL.EXE aber auch moeglich, die Aufgaben des
+ Ladeprogramms (CCDL.EXE) "von Hand" Schritt fuer Schritt durchzufuehren:
+
+
+ ----------------------------------------------------------------------------
+              Uebertragung einer Binaerdatei zur C-Control-Unit              
+ ----------------------------------------------------------------------------
+
+ Dieser Sammlung liegt eine Binaerdatei namens "TEST.BIN" bei, die ein BASIC-
+ Programm fuer die C-Control-Unit enthaelt. Wie diese Datei zur Unit
+ uebertragen werden kann, wird hier beschrieben.
+
+ Zuerst muss TERMINAL.EXE gestartet werden. Das geschieht, indem das Programm
+ unter DOS oder in einem DOS-Fenster gestartet, und dabei die Nummer der
+ seriellen Schnittstelle uebergeben wird, an der die C-Control-Unit am PC
+ angeschlossen ist. Normalerweise ist die erste serielle Schnittstelle beim
+ PC durch die Maus belegt, so dass das Programm in den meisten Faellen mit
+ dem Befehl "TERMINAL 2" am DOS-Prompt gestartet werden muss.
+
+ Zunaechst sollte man sich davon vergewissern, dass die richtige
+ Schnittstelle gewaehlt wurde, und dass sich die Unit im "Idle-Modus"
+ befindet, d.h. dass kein Programm ausgefuehrt, und jedes Byte, das von der
+ RS232 gelesen wird, als Befehl interpretiert wird. Um das zu ueberpruefen,
+ wird zur Unit der ASCII-Code 1 uebertragen. Daraufhin sollte sich die Unit
+ mit ihrer Versionsnummer melden. Druecken Sie, um den Code zu uebertragen
+ unter DOS (oder in einem DOS-Fenster) die linke ALT-Taste und halten diese
+ gedrueckt, waehrend auf dem rechten, abgesetzten Ziffernblock die Taste 1
+ gedrueckt wird. Danach muss die ALT-Taste wieder losgelassen werden, und am
+ Bildschirm sollte jetzt "CCTRL-BASIC Version 1.1 (20.12.96)" erscheinen.
+
+ Falls nichts zu sehen ist, stimmt entweder die Nummer der seriellen
+ Schnittstelle nicht, oder die Unit ist nicht angeschlossen, bzw. nicht
+ bereit.
+
+ Jetzt muss zur Unit der Befehl mit dem ASCII-Code 2 uebertragen werden. Mit
+ diesem Befehl wird ein BASIC-Programm in das externe EEPROM programmiert.
+ Also wird - wie oben - die linke ALT-Taste gedrueckt gehalten, waehrend auf
+ dem abgesetzten Ziffernblock die Taste 2 gedrueckt wird. Danach wieder die
+ ALT-Taste loslassen. Am Bildschirm erscheint jetzt ein Smily, doch das
+ interessiert nicht.
+
+ Im naechsten Schritt muss der Unit die Anzahl der zu programmierenden Bytes
+ mitgeteilt werden. Das geschieht etwas umstaendlich mit zwei Zeichen. Es
+ muss der ASCII-Code 0 und danach 122 uebertragen werden, da unsere
+ Binaerdatei 0*256+122 Bytes lang ist. Allerdings kann der ASCII-Code 0 nicht
+ so wie oben beschrieben eingegeben werden. Sondern es muss die Strg-Taste
+ (bzw. Ctrl) zusammen mit der Leerzeichentaste (bzw. Space) gedrueckt werden.
+ Anschliessend wird das zweite Laengenbyte wieder mit der
+ "ALT+Ziffernblockmethode" eingegeben. Also ALT gedrueckt halten waehrend die
+ Zahlen 1, dann 2 und noch mal 2 eingetippt werden. Alternativ kann man auch
+ einfach ein kleines "z" druecken. Uebrigens quittiert die Unit beide
+ uebertragenen Zeichen - wie auch alle folgenden - mit einem Echo. An diesem
+ Echo kann der PC erkennen, dass die Zeichen fehlerfrei empfangen wurden, und
+ dass die Unit zum Empfang weiterer Zeichen bereit ist.
+
+ Wir haben der Unit jetzt mitgeteilt, das 122 Bytes in das serielle EEPROM
+ programmiert werden sollen. Jetzt fehlen nur noch die Daten selbst, welche
+ sich ja in unserer Binaerdatei befinden.
+
+ Druecken Sie jetzt die Taste F3 (drei Tasten rechts von Escape, bzw. ESC).
+ Es erscheint ein Dialog, in dem der Name der zu uebertragenden Datei
+ eingegeben werden kann. Wer unter Windows arbeitet, kann die Datei per
+ "Drag-And-Drop" aus einem Explorerfenster auf das DOS-Box-Fenster ziehen.
+ Wer unter reinem DOS arbeitet, muss leider "test.bin" von Hand eintippen.
+ Auf die Frage, ob die Datei mit Echo gesendet werden soll, muss in diesem
+ Fall "y" (also "Yes" oder "Ja") gedrueckt werden. Anschliessend beginnt die
+ Datenuebertragung.
+
+ Falls die Unit waehrend der Datenuebertragung kein Echo oder ein falsches
+ sendet, meldet TERMINAL.EXE einen Fehler. In diesem Fall sollte die
+ Verbindung zwischen PC und Unit ueberprueft werden, vielleicht enthaelt sie
+ einen Wackelkontakt oder aehnliches.
+
+ Nach der Uebertragung befindet sich die Unit wieder im "Idle-Modus". Um das
+ zu ueberpruefen, kann wiederum die Versionsnummer mittels ASCII-Code 1
+ abgefragt werden. Falls sich die Unit nicht mit der Versionsnummer meldet,
+ befindet sie sich bestimmt noch im Programmiermodus. In diesem Fall ist bei
+ der Uebertragung der Laenge der Binaerdatei irgend etwas schiefgegangen. Die
+ Unit sollte resettet, und der Vorgang noch einmal durchgefuehrt werden.
+
+ Falls alles fehlerfrei uebertragen wurde, kann das BASIC-Programm durch
+ Druecken des Startjumpers gestartet werden.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------
+

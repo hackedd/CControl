@@ -1,0 +1,82 @@
+
+ 旼컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴커
+ �        Allgemeine Beschreibung zum I2C (I-Quadrat-C) Busprotokoll        �
+ 읕컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴켸
+
+ Der I2C-Bus (Inter-Integrated Circuit-Bus) wurde von der Firma Philips
+ entwickelt und besteht aus den drei Leitungen SDA, SCL und GND. SDA dient
+ zur bidirektionalen Uebermittlung von Adressen und Daten zwischen bis zu 256
+ verschiedenen Geraeten am Bus. SCL ist die CLOCK-Leitung. Sie signalisiert
+ zu welchem Zeitpunkt SDA einen gueltigen Zustand hat.
+
+ Die Geraete am I2C-Bus werden in die Kategorien Master und Slave unterteilt.
+ Der Master sorgt fuer das Takten der SCL-Leitung sowohl beim Senden als auch
+ beim Empfangen von Daten zum, bzw. vom Slave.
+
+ Der Ruhezustand beim I2C-Bus ist auf beiden Leitungen (SCL und SDA) HIGH-
+ Potential (5 Volt). Das wird dadurch erreicht, indem die beiden Leitungen
+ ueber Pullup-Widerstaende mit 5 Volt verbunden werden. Wenn nach dem
+ Ruhezustand SDA auf LOW (0 Volt) geht, waehrend SCL weiter HIGH ist, ist das
+ das Startsignal fuer die Datenuebertragung. Danach wird ein Byte (8 Bit)
+ beginnend mit dem MSB uebertragen, indem SDA entsprechend dem Bit gesetzt,
+ und anschliessend mit SCL ein kurzer LOW/HIGH/LOW-Impuls gesendet wird. Nach
+ der Uebertragung der 8 Bit laesst der Sender die SDA-Leitung "los", damit
+ der Empfaenger auf dieser Leitung ein Acknowledge-Signal senden kann (indem
+ SDA auf LOW gezogen wird). Fehlt das ACK-Signal ist der Empfaenger entweder
+ beschaeftigt, oder - wenn der Empfaenger ein Master ist - dem Sender wird
+ signalisiert, dass das Senden von Daten beendet werden soll. Wenn mehr als
+ ein Byte uebertragen wird, folgen die naechsten 8 Bit direkt an das ACK-
+ Signal (ohne neues Startsignal). Beendet wird die Uebertragung, wenn im
+ Anschluss an die ACK-Quittierung SDA auf HIGH geht, waehrend SCL bereits
+ HIGH ist. Somit ist dann wieder der Ruhezustand erreicht!
+
+
+    Beispiel:
+    
+          START  1  0  1  0  0  0  0  1  ACK STOP
+         ____   ___   ___            _______   ____    ___ = low (0 Volt)
+    SDA      ___   ___   ____________    XXX___
+         _____   _  _  _  _  _  _  _  _   _   _____    ___
+    SCL       ___ __ __ __ __ __ __ __ ___ ___             = high (5 Volt)
+    
+    Bei XX zieht der Empfaenger die Leitung SDA auf 0 Volt, um das ACK-
+    Signal zum Sender zu uebermitteln.
+
+
+ Um verschiedene Geraete ueber den I2C-Bus ansprechen zu koennen erhaelt
+ jedes Geraet eine Kennung. Ein Sender muss bei einer Uebertragung mit dem
+ START-Impuls und der Geraetekennung beginnen. Die ersten 4 Bit der Kennung
+ die nach dem START-Impuls uebertragen werden geben den Schaltungstyp (vom
+ Hersteller vorgegeben) an. Beim 24C65-EEPROM von der Firma Microchip, das
+ von Conrad Electronic verwendet wurde, ist die Kennung des Schaltungstyp
+ dualkodiert 1010. Die folgenden 3 Bits (A2,A1 und A0) koennen mittels
+ Verdrahtung auf der Platine gesetzt werden (vgl. Schaltplan des CCBASIC-
+ Systems: beim EEPROM sind A2,A1 und A0 mit GND verbunden, also LOW). Das
+ achte Bit (R/W) gibt an, ob der Sender im folgenden Byte lesen (R/W ist
+ HIGH) oder schreiben (R/W ist LOW) will. So ergibt sich eine Lesekennung
+ fuer das serielle EEPROM des CCBASIC-Chips von $a1 und eine Schreibkennung
+ von $a0. Auf diese Art und Weise koennen bis zu acht EEPROMs am CCBASIC-
+ Mikrokontroller betrieben werden; vorausgesetzt A2, A1 und A0 sind bei jedem
+ EEPROM anders kodiert!
+
+ Der dem CCBASIC-Chip zugrundeliegende Prozessor (MC68HC05B6) bietet
+ standardmaessig keine Unterstuetzung fuer den I2C-Bus. Das Betriebssystem
+ enthaelt darum Routinen, mit denen der Bus mittels Software und zwei I/O-
+ Pins emuliert wird.
+
+ Fuer eine genauere Beschreibung des Protokolls zwischen dem seriellen EEPROM
+ und dem Mikrokontroller verweise ich auf das Manual zum EEPROM, das von der
+ Herstellerfirma Microchip als PDF-File kostenlos ueber das Internet
+ (http://www.microchip.com) bezogen werden kann.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------
+

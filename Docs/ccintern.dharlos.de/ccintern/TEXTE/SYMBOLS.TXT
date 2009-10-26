@@ -1,0 +1,386 @@
+
+Symboltabelle aus CCBASIC.MAP nach Adressen sortiert
+====================================================
+
+Diese Tabelle dient als "Schnittstelle" zwischen den Adressen, die im ROM-
+Listing verwendet werden und den Symbolen des von Conrad Electronic ver-
+oeffentlichten Betriebssystemlisting (in der Programmiersprache C).
+
+Fuer eine genauere Beschreibung des Inhalts der jeweiligen Adresse sollte in
+der Datei ADRESSEN.TXT, im ROM-Listing, im Manual zum MC68HC05B6 von
+Motorola oder im Betriebssystemlisting von Conrad Electronic nachgeschlagen
+werden.
+
+Da nicht alle Routinen und Symbole in CCBASIC.MAP auftauchen, ist diese
+Tabelle leider unvollstaendig.
+
+
+Symbolname:                   Typ:     Adr.:   Beschreibung:
+----------------------------------------------------------------------------
+_porta                        (abs)    $0000   PORTA (Port A data register)
+_port                         (abs)    $0001
+_portb                        (abs)    $0001   PORTB (Port B data register)
+_wordport                     (abs)    $0001
+_portc                        (abs)    $0002   PORTC (Port C data register)
+_portd                        (abs)    $0003   PORTD (Port D input data register)
+_portadir                     (abs)    $0004   DDRA (Port A data direction register)
+_portbdir                     (abs)    $0005   DDRB (Port B data direction register)
+_portdir                      (abs)    $0005
+_wordportdir                  (abs)    $0005
+_portcdir                     (abs)    $0006   DDRC (Port C data direction register)
+_eectrl                       (abs)    $0007   EEPROM/ECLK control register
+_adc                          (abs)    $0008   A/D data register
+_adcctrl                      (abs)    $0009   A/D status/control register
+_dac                          (abs)    $000A   Pulse length modulation data registers
+_sccr1                        (abs)    $000E   SCCR1 (SCI control register 1)
+_sccr2                        (abs)    $000F   SCCR2 (SCI control register 2)
+_scsr                         (abs)    $0010   SCSR (SCI status register)
+_cap1lo                       (abs)    $0015   ICR1_LO (Input capture register 1)
+_comp1                        (abs)    $0016   OCR1 (Output compare register 1)
+_counter                      (abs)    $0018   TR (Timer counter register)
+_cap2lo                       (abs)    $001D   ICR2_LO (Input capture register 2)
+_comp2                        (abs)    $001E   OCR2 (Output compare register 2)
+----------------------------------------------------------------------------
+_IRQPTR                       (abs)    $0050   IRQPTR (Userpointer fuer IRQ-Interrupt)
+_CAPPTR                       (abs)    $0051   CAPPTR (Userpointer fuer TIMERCAP-Interrupt)
+_CMPPTR                       (abs)    $0052   CMPPTR (Userpointer fuer TIMERCMP-Interrupt)
+_OFLPTR                       (abs)    $0053   OFLPTR (Userpointer fuer TIMEROFL-Interrupt)
+__Ltemp                       temp     $0054   temporaer, fuer verschiedene Aufgaben
+__Htemp                       temp     $005A   temporaer, fuer verschiedene Aufgaben
+_token                        rbss     $005A   das letzte ausgefuehrte Basic-Token
+__Hrdata                      rdata    $005A
+__Lrdata                      rdata    $005A
+__Lrbss                       rbss     $005A
+_rxBuf                        rbss     $005B   Ringbuffer der RS232
+_rxCount                      rbss     $0063   Anzahl der Bytes die noch aus dem Buffer gelesen werden koennen
+_rxGetIndex                   rbss     $0064   Pointer auf das naechste zu lesende Byte im Ringbuffer der RS232
+_rxPutIndex                   rbss     $0065   Pointer auf den naechsten freien Platz im Ringbuffer der RS232
+_adrcounter                   rbss     $0066   EEPROM-Adresse des naechsten sequentiellen Zugriffs
+_clockMsCnt                   rbss     $0068   Millisekundenzaehler der Uhr
+_day                          rbss     $006A   DAY-Variable
+_dayoftheweek                 rbss     $006B   DOW-Variable
+_dcfBitCnt                    rbss     $006C   Zaehler fuer aktuelle DCF77-Bitmarke
+_dcfMsCnt                     rbss     $006D   Zaehler fuer die Zeit seit der letzten DCF77-Zustandsaenderung
+_dcfnew                       rbss     $006F   Buffer fuer neues DCF77-Zeittelegramm
+_dcfold                       rbss     $0075   Buffer fuer altes DCF77-Zeittelegramm
+_flags                        rbss     $007B   allgemeines Statusregister des CCBASIC-Interpreters
+_freqhz                       rbss     $007C   FREQ1-Variable
+_freqhz2                      rbss     $007E   FREQ2-Variable
+_hour                         rbss     $0080   HOUR-Variable
+_min                          rbss     $0081   MINUTE-Variable
+_month                        rbss     $0082   MONTH-Variable
+_nextcompare                  rbss     $0083   Zum Errechnen des naechsten Werts fuer OCR1 & OCR2
+_pulsecnt                     rbss     $0085   Buffer fuer FREQ1
+_pulsecnt2                    rbss     $0087   Buffer fuer FREQ2
+_sec                          rbss     $0089   SECOND-Variable
+_timer                        rbss     $008A   TIMER-Variable
+_userticks                    rbss     $008C   Halbe Periodendauer des BEEP-Ausgangssignals (in Prozessortakten)
+_waitcnt                      rbss     $008E   Anzahl der Ticks die bei PAUSE noch gewartet werden
+_year                         rbss     $0090   YEAR-Variable
+_A                            rbss     $0091   Rechenstack, 1. Word ("Top-Of-Stack")
+_B                            rbss     $0093   Rechenstack, 2. Word
+_C                            rbss     $0095   Rechenstack, 3. Word
+_D                            rbss     $0097   Rechenstack, 4. Word
+_E                            rbss     $0099   Rechenstack, 5. Word
+_F                            rbss     $009B   Rechenstack, 6. Word
+_G                            rbss     $009D   Rechenstack, 7. Word
+_R                            rbss     $009F   fuer Zufallszahlengenerator
+_userdata                     rbss     $00A1   die 24 User-Bytes fuer User-Variablen
+_irqadr                       rbss     $00B9   Adresse der BASIC-Routine die bei einem IRQ aufgerufen wird
+_irqretadr                    rbss     $00BB   Buffer fuer Aufnahme des BASIC-PCs vor Ausfuehrung der IRQ-Routine
+_jumpstruct                   rbss     $00BD   Code fuer Simulation eines 'jmp adr16' Befehls (fuer SYS)
+_retadr1                      rbss     $00C0   GOSUB-Stack, 1. Eintrag
+_retadr2                      rbss     $00C2   GOSUB-Stack, 2. Eintrag
+_retadr3                      rbss     $00C4   GOSUB-Stack, 3. Eintrag
+_retadr4                      rbss     $00C6   GOSUB-Stack, 4. Eintrag
+_filelen                      rbss     $00C8   Anzahl der Bytes in der EEPROM-Datendatei
+_fileoff                      rbss     $00CA   aktuelle Lese- oder Schreibposition in der EEPROM-Datendatei
+_filestart                    rbss     $00CC   nach dem Oeffnen die EEPROM-Anfangsadresse der EEPROM-Datendatei
+?a_ProcInput                  rbss     $00CE   temporaer
+?a_ProcLookup                 rbss     $00CE   temporaer
+?a_ProgUserCode               rbss     $00CE   temporaer
+?a_Program                    rbss     $00CE   temporaer
+?a_SendInfo                   rbss     $00CE   temporaer
+?a_IfEqualGoto                rbss     $00CE   temporaer
+?a_ProcSendText               rbss     $00CE   temporaer
+?a_ProcIfNotGoto              rbss     $00CE   temporaer
+?a_ProcFileIO                 rbss     $00CE   temporaer
+?a_DumpUserCode               rbss     $00CE   temporaer
+?a_DumpProgram                rbss     $00CE   temporaer
+?_Wait                        rbss     $00CE   temporaer
+?_SetWordPort                 rbss     $00CE   temporaer
+?_SetPort                     rbss     $00CE   temporaer
+?a_ProcAddStoreByteAndGoto    rbss     $00CE   temporaer
+?_DAC                         rbss     $00CE   temporaer
+?a_ProcAddStoreWordAndGoto    rbss     $00CE   temporaer
+?_SetBytePort                 rbss     $00CE   temporaer
+?_Gosub                       rbss     $00CE   temporaer
+?a_ProcStoreSpecialData       rbss     $00CE   temporaer
+?a_ProcGoto                   rbss     $00CF   temporaer
+?_SetUserTicks                rbss     $00D0   temporaer
+?_RS232_SendValueAsText       rbss     $00D0   temporaer
+?_WriteFile                   rbss     $00D1   temporaer
+?a__24C65_WriteNext           rbss     $00D1   temporaer
+?_EE_WriteByte                rbss     $00D1   temporaer
+?a_ReadFile                   rbss     $00D1   temporaer
+?_LoadWordImm                 rbss     $00D2   temporaer
+?a_EE_WriteByte               rbss     $00D2   temporaer
+?__24C65_WriteWord            rbss     $00D3   temporaer
+?__24C65_BeginSequentialRead  rbss     $00D3   temporaer
+?a__24C65_ReadWord            rbss     $00D3   temporaer
+?__24C65_BeginSequentialWrite rbss     $00D3   temporaer
+?a__24C65_WriteWord           rbss     $00D5   letztes in die Datendatei im seriellen EEPROM uebertragene Word
+?a_HandleSCI                  rbss     $00D7   letztes gelesene Byte der RS232 / Fehlermarker fuer RS232
+__Hrbss                       rbss     $00D9
+ltemp                         mptr     $00D9   temporaer
+__Lmptr                       mptr     $00D9
+mptr                          mptr     $00DE   Code zur Erweiterung der Adressmodi, 16 Bit "Memory Pointer"
+__Hmptr                       mptr     $00E1
+__Lbss                        bss      $00E1
+__Hbss                        bss      $00E5
+__Lheap                       heap     $00E5
+__Lnvram                      nvram    $00E5
+__Hheap                       heap     $00E5
+__Hnvram                      nvram    $00E5
+__Hramtop                     ramtop   $0100
+__Lramtop                     ramtop   $0100
+----------------------------------------------------------------------------
+_eeprom                       (abs)    $0101   internes EEPROM
+----------------------------------------------------------------------------
+start                         text     $0800   Beginn des CCBASIC-ROMs, Initialisierung nach RESET
+_exit                         text     $0800
+__Ltext                       text     $0800
+
+_I2C_Init                     text     $0811   I2C-Bus initialisieren
+_I2C_Start                    text     $083C   ein Byte auf den I2C-Bus schreiben (mit Start-Impuls)
+_I2C_Write                    text     $0846   ein Byte auf den I2C-Bus schreiben
+_I2C_Read                     text     $086F   ein Byte vom I2C-Bus lesen
+_I2C_ReadLast                 text     $08BB   ein Byte vom I2C-Bus lesen (mit abschliessendem STOP-Impuls)
+_I2C_Stop                     text     $08E5   STOP-Signal auf den I2C-Bus schreiben
+
+_Run                          text     $08EE   BASIC-Programm starten und ausfuehren
+
+_main                         text     $0940   Initialisierung und Ausfuehren der IDLE-LOOP
+
+_GetPort                      text     $098B   fuer BASIC Token 10 b - Bitport abfragen
+_GetBytePort                  text     $09AB   fuer BASIC Token 11 b - Byteport abfragen
+_GetWordPort                  text     $09B0   fuer BASIC Token 12 - Wordport abfragen
+_SetPort                      text     $09B6   fuer BASIC Token 13 b - auf Bitport schreiben
+_SetBytePort                  text     $09EA   fuer BASIC Token 14 b - auf Byteport schreiben
+_SetWordPort                  text     $09F8   fuer BASIC Token 15 - auf Wordport schreiben
+_TogglePort                   text     $0A0A   fuer BASIC Token 80 b - TOG - Bitport invertieren
+_PulsePort                    text     $0A28   fuer BASIC Token 81 b - PULSE - Impuls auf Bitport ausgeben
+_DeactivatePort               text     $0A5C   fuer BASIC Token 82 b - DEACT - Bitport deaktivieren
+_DeactivateBytePort           text     $0A7D   fuer BASIC Token 83 b - DEACT - Byteport deaktivieren
+_DeactivateWordPort           text     $0A82   BASIC Token 84 - DEACT - Wordport deaktivieren
+_ADC                          text     $0A87   fuer BASIC Token 16 b - Daten vom AD-Port lesen
+_DAC                          text     $0A9D   fuer BASIC Token 17 b - Daten zu einem DA-Port senden
+
+_DispatchHostCommand          text     $0AA4   Befehlsbyte von der RS232 Schnittstelle interpretieren
+_SendInfo                     text     $0AD6   RS232-Befehl 1 - Einschaltmeldung ausgeben
+_Program                      text     $0AEE   RS232-Befehl 2 - Programmieren des seriellen EEPROMS
+_DumpProgram                  text     $0B42   RS232-Befehl 3 - ASCII-Dump des BASIC-Programms
+_ProgUserCode                 text     $0B9F   RS232-Befehl 8 - Programmieren des internen EEPROMS
+_DumpUserCode                 text     $0BCA   RS232-Befehl 9 - ASCII-Dump des internen EEPROMS
+_SetTime                      text     $0BFF   RS232-Befehl 14 - Uhr stellen
+_EE_WriteByte                 text     $0C26   ein Byte ins interne EEPROM programmieren
+_Delay                        text     $0C49   Verzoegerung zum Programmieren des internen EEPROMS
+_RS232_Setup                  text     $0C63   RS232 Schnittstelle initialisieren
+_RS232_SetBaud                text     $0C74   Baudrate setzen
+_RS232_WriteByte              text     $0C77   Zeichen ueber die serielle Schnittstelle (RS232) ausgeben
+_HandleSCI                    text     $0C7D   wird bei jedem Serial communications interface-Interrupt aufgerufen
+_RS232_GetByte                text     $0CB5   ein Zeichen von der RS232 holen (auf das Zeichen warten)
+_RS232_IsByteAvail            text     $0CCE   pruefen, ob ein Byte im RS232 Buffer vorhanden ist
+_RS232_IsCTS                  text     $0CD9   fuer BASIC Token 37 - CTS - Abfrage, ob CTS gesetzt ist
+_RS232_EmptyRX                text     $0CE0   Ringbuffer der RS232 loeschen
+_RS232_SendValueAsText        text     $0CE8   Zahl als ASCII-String dezimal kodiert auf RS232 ausgeben
+
+__24C65_BeginSequentialWrite  text     $0D89   Adresszaehler fuer sequentielle EEPROM-Zugriffe setzen
+__24C65_WriteNext             text     $0D92   fuer RS232-Befehl 2 - Byte ins serielles EEPROM schreiben
+__24C65_WriteWord             text     $0DB3   fuer CLOSE# und PRINT# - Word zum seriellen EEPROM senden
+__24C65_BeginSequentialRead   text     $0DE5   Adresszaehler fuer sequentielle EEPROM-Zugriffe uebertragen
+__24C65_EndSequentialRead     text     $0E01   Sequentielles Lesen vom EEPROM beenden
+__24C65_ReadNext              text     $0E04   Byte vom EEPROM holen
+__24C65_ReadWord              text     $0E0D   Word vom EEPROM holen
+
+_InitTiming                   text     $0E18   die Speicherbereiche fuer die TIMER-Interrupts initialisieren
+_HandleSysTimer               text     $0E70   fuer TIMERCMP-Interrupt: Routine TIMERCMP2 (wird alle 20 ms aufgerufen)
+_HandleUserTimer              text     $0EE9   fuer TIMERCMP-Interrupt: Routine TIMERCMP1 (fuer BEEP-Ton)
+_DCF77LoHi                    text     $0F0D   fuer TIMERCAP-Interrupt: Routine DCF77_HIGH (positive Flanke)
+_DCF77HiLo                    text     $0F45   fuer TIMERCAP-Interrupt: Routine DCF77_LOW (negative Flanke)
+_AddBit                       text     $0FCE   Dekodierung einer einzelnen High-Marke des DCF77-Signals
+_CopyTime                     text     $1040   Systemzeit nach dem empfangenen DCF77-Zeittelegramm stellen
+_ReadyForNextFrame            text     $105B   Buffer zum Lesen des DCF77-Zeittelegramms loeschen
+_Clock                        text     $106A   Systemuhr eine Sekunde weiterzaehlen und FREQ1 und FREQ2 speichern
+
+_Wait                         text     $10F7   fuer BASIC Token 2 - PAUSE - stoppt den Prozessor eine gewisse Zeit lang
+_SetSlowModeOn                text     $110B   SLOWMODE an - Takt auf 1/16 verringern (125 KHz intern)
+_SetSlowModeOff               text     $1112   SLOWMODE aus - Normaler Takt (2 MHz intern)
+_SetUserTicks                 text     $111A   fuer BASIC Token 29 b - TICKS (z.B. fuer BEEP-Befehl) setzen
+_GetTimer                     text     $1155   TIMER holen
+_GetFreqHz                    text     $115C   FREQ1 holen
+_GetFreqHz2                   text     $1163   FREQ2 holen
+_ClearRegs                    text     $116A   Rechenstack ($91..$9e) loeschen
+_NumPush                      text     $1187   Platz auf Stack schaffen ($91,$92 -> $93,$94, usw.)
+_NumPop                       text     $11B8   Stack poppen, dabei Top-Of-Stack ($91,$92) unbeeinflusst lassen
+_ClearData                    text     $11E1   nach Reset die 24 Userbytes ab Adresse $A1 loeschen
+_LoadBit                      text     $11F3   fuer BASIC Token 21 b - User-Bitvariable auf den Stack pushen
+_LoadByte                     text     $1226   User-Bytevariable auf den Stack pushen
+_LoadWord                     text     $1235   User-Wordvariable auf den Stack pushen
+_LoadBitImm                   text     $1246   ON oder OFF auf den Rechenstack pushen
+_LoadByteImm                  text     $125C   Byte (als Word) auf den Rechenstack pushen
+_LoadWordImm                  text     $1267   Word auf den Rechenstack pushen
+_StoreBit                     text     $1273   User-Bitvariable mit Top-Of-Stack laden
+_StoreByte                    text     $12A3   User-Bytevariable mit Top-Of-Stack laden
+_StoreWord                    text     $12AA   User-Wordvariable mit Top-Of-Stack laden
+_Not                          text     $12B6   BASIC Token 40 - NOT
+_And                          text     $12C3   BASIC Token 41 - AND
+_Nand                         text     $12D2   BASIC Token 42 - NAND
+_Or                           text     $12D6   BASIC Token 43 - OR
+_Nor                          text     $12E5   BASIC Token 44 - NOR
+_Xor                          text     $12E9   BASIC Token 45 - XOR
+_Shl                          text     $12F8   BASIC Token 46 - SHL
+_Shr                          text     $1316   BASIC Token 47 - SHR
+_Neg                          text     $1334   BASIC Token 50 - negate last word on stack
+_Add                          text     $1342   BASIC Token 51 - add last two words on stack & push result to stack
+_Sub                          text     $1351   BASIC Token 52 - subtract last word on stack from last-but-one word
+_Mul                          text     $1360   BASIC Token 53 - multiply last two words on stack
+_Div                          text     $137E   BASIC Token 54 - divide last-but-one word on stack by last word
+_Mod                          text     $139C   BASIC Token 55 - MOD
+_Abs                          text     $13BA   BASIC Token 56 - ABS
+_Sgn                          text     $13CC   BASIC Token 66 - SGN
+_Sqr                          text     $13E8   BASIC Token 57 - SQR
+_Randomize                    text     $1442   BASIC Token 48 - RANDOMIZE
+_Rand                         text     $1468   BASIC Token 49 - RAND
+_Max                          text     $1484   BASIC Token 58 - MAX
+_Min                          text     $14A4   BASIC Token 59 - MIN
+_Higher                       text     $14C4   BASIC Token 60 - test if last-but-one word on stack is bigger than last word
+_Lower                        text     $14EA   BASIC Token 62 - test if last-but-one word on stack is lower than last word
+_HigherSame                   text     $1510   BASIC Token 61 - test if last-but-one word on stack is bigger/equal last word
+_LowerSame                    text     $1536   BASIC Token 63 - test if last-but-one word on stack is lower/equal to last word
+_Equal                        text     $155C   BASIC Token 64 - test if last two words on stack are equal
+_NotEqual                     text     $1579   BASIC Token 65 - test if last two words on stack are not equal
+_InitUserJmp                  text     $1596   Arbeitsspeicher fuer SYS, GOSUB und die BASIC-IRQ-Routine initialisieren
+_ProcNix                      text     $15B7   BASIC Token 0, 18, 19, 38, 39, 67, 68, 69, 78, 79 - werden ignoriert
+_ProcBegin                    text     $15B8   BASIC Token 1 - Loeschen des Rechenstacks
+_ProcWait                     text     $15BB   BASIC Token 2 - PAUSE
+_ProcGoto                     text     $15CB   BASIC Token 3 w - GOTO (und ELSE)
+_ProcIfNotGoto                text     $15E0   BASIC Token 4 w - IF .. THEN
+_IfEqualGoto                  text     $15FC   gemeinsamer Codeteile fuer Token 74 und 75
+_ProcIfByteEqualGoto          text     $161F   BASIC Token 74 b w - fuer FOR..NEXT-Schleifen mit Bytevariablen
+_ProcIfWordEqualGoto          text     $1628   BASIC Token 75 b w - fuer FOR..NEXT-Schleifen mit Wordvariablen
+_ProcAddStoreByteAndGoto      text     $1631   BASIC Token 76 b w - fuer FOR..NEXT-Schleifen mit Bytevariablen
+_ProcAddStoreWordAndGoto      text     $1640   BASIC Token 77 b w - fuer FOR..NEXT-Schleifen mit Wordvariablen
+_Gosub                        text     $1651   Code fuer GOSUB
+_ProcGosub                    text     $169D   BASIC Token 5 w - GOSUB
+_ProcReturn                   text     $16A6   BASIC Token 6 - RETURN
+_ProcSys                      text     $170A   BASIC Token 8 w - SYS
+_ProcSlowMode                 text     $1714   BASIC Token 9 b - SLOWMODE
+_ProcGetPort                  text     $1720   BASIC Token 10 b - push data from bitport number b to stack
+_ProcGetBytePort              text     $172B   BASIC Token 11 b - push data from byteport number b to stack
+_ProcGetWordPort              text     $1736   BASIC Token 12 - push data from wordport to stack
+_ProcSetPort                  text     $1740   BASIC Token 13 b - store Top-Of-Stack to bitport number b
+_ProcSetBytePort              text     $174B   BASIC Token 14 b - store Top-Of-Stack to byteport number b
+_ProcSetWordPort              text     $1756   BASIC Token 15 - store Top-Of-Stack to wordport
+_ProcADC                      text     $1761   BASIC Token 16 b - push data from ad-port number b to stack
+_ProcDAC                      text     $176F   BASIC Token 17 b - store Top-Of-Stack to da-port number b
+_ProcTogglePort               text     $177A   BASIC Token 80 b - TOG
+_ProcPulsePort                text     $1781   BASIC Token 81 b - PULSE
+_ProcDeactivatePort           text     $1788   BASIC Token 82 b - DEACT - Bitport Nummer b deaktivieren
+_ProcDeactivateBytePort       text     $178F   BASIC Token 83 b - DEACT - Byteport Nummer b deaktivieren
+_ProcLoadImm                  text     $1796   BASIC Token 20 w - push wordvalue w to stack
+_ProcLoadBit                  text     $17A0   BASIC Token 21 b - push bitvariable number b to stack
+_ProcLoadByte                 text     $17A7   BASIC Token 22 b - push bytevariable number b to stack
+_ProcLoadWord                 text     $17AE   BASIC Token 23 b - push wordvariable number b to stack
+_ProcStoreBit                 text     $17B5   BASIC Token 24 b - store Top-Of-Stack to bitvariable number b
+_ProcStoreByte                text     $17BC   BASIC Token 25 b - store Top-Of-Stack to bytevariable number b
+_ProcStoreWord                text     $17C3   BASIC Token 26 b - store Top-Of-Stack to wordvariable number b
+_ProcLookup                   text     $17CA   BASIC Token 27 w - LOOKTAB
+_ProcLoadSpecialData          text     $1806   BASIC Token 28 b - push internal variable number b to stack
+_ProcStoreSpecialData         text     $1881   BASIC Token 29 b - store Top-Of-Stack to internal variable number b
+_ProcSendResult               text     $18D4   BASIC Token 30 - PRINT number
+_ProcSendText                 text     $18DF   BASIC Token 31 s - PRINT string
+_ProcSendByte                 text     $18ED   BASIC Token 32 - PUT
+_ProcIsByteAvail              text     $18F2   BASIC Token 33 - RXD
+_ProcGetByte                  text     $18F9   BASIC Token 34 - GET
+_ProcHandshake                text     $1900   BASIC Token 36 b - HANDSHAKE
+_ProcIsCts                    text     $190E   BASIC Token 37 - CTS
+_ProcInput                    text     $1915   BASIC Token 35 - INPUT
+_ProcFileIO                   text     $197C   BASIC Token 70 b - Befehle zum Handling der EEPROM-Datendatei
+_ProcCheckEof                 text     $19D8   BASIC Token 71 - EOF
+_ProcSetBaud                  text     $19DF   BASIC Token 72 b - BAUD
+_ProcSetInterrupt             text     $19E6   BASIC Token 73 w - INTERRUPT
+_UserInterrupt                text     $19EE   wird von der BASIC-Interpreterschleife bei einem IRQ-Interrupt aufgerufen
+_ProcReturnInterrupt          text     $1A0B   BASIC Token 7 - RETURN INTERRUPT
+_OpenFileForRead              text     $1A24   fuer OPEN# FOR READ
+_OpenFileForWrite             text     $1A48   fuer OPEN# FOR WRITE
+_OpenFileForAppend            text     $1A69   fuer OPEN# FOR APPEND
+_CloseFile                    text     $1A91   fuer CLOSE#
+_WriteFile                    text     $1AA7   fuer PRINT#
+_ReadFile                     text     $1AD4   fuer INPUT#
+_IsEof                        text     $1AFE   fuer EOF
+_GetFreeFileSpace             text     $1B0F   fuer FILEFREE
+
+_DumpFile                     text     $1B2D   RS232-Befehl 13 - Word-Dump der Datendatei im seriellen EEPROM
+
+wacmp                         text     $1B6B   Vergleiche zwei Worte miteinander und setze die Flags
+awmul                         text     $1B84   Multipliziere zwei Worte miteinander
+lwmul                         text     $1B84
+asawmul                       text     $1BB0   Multipliziere zwei Worte miteinander (mit Zeiger)
+aslwmul                       text     $1BB0
+lwmod                         text     $1BB9   Vorzeichenlose 16 Bit Division (Divisionsergebnis und Modulowert)
+lwdiv                         text     $1C0F   Dividiere Word1 vorzeichenlos durch Word2
+awdiv                         text     $1C37   Dividiere Word1 durch Word2
+awmod                         text     $1C5D   Dividiere Word1 durch Word2 und liefere Modulowert zurueck
+aslwdiv                       text     $1C7A   Dividiere Word1 vorzeichenlos durch Word2 (mit Zeiger)
+asawdiv                       text     $1C83   Dividiere Word1 durch Word2 (mit Zeiger)
+aslwmod                       text     $1C8C   Dividiere Word1 vorzeichenlos durch Word2 (mit Zeiger; Modulowert)
+asawmod                       text     $1C95   Dividiere Word1 durch Word2 (mit Zeiger; Modulowert)
+
+xld_ctemp0_word               text     $1C9E   Inhalt (Word) einer ueber einen 16-Bit-Zeiger adressierten Speicherstelle holen
+ld_ctemp0_word                text     $1CA2   Inhalt (Word) einer ueber einen 16-Bit-Zeiger adressierten Speicherstelle holen
+rst_ctemp0_word               text     $1CB5   Word auf einer 16-Bit-Adresse speichern
+ld_wordx                      text     $1CC9   Inhalt (Word) einer ueber einen 16-Bit-Zeiger adressierten Speicherstelle holen
+call_mptr                     text     $1CDB   Sprung zu einer 16-Bit-Adresse
+xld_mptr_word                 text     $1CE3   Inhalt (Word) einer ueber einen 16-Bit-Zeiger adressierten Speicherstelle holen
+ld_mptr_word                  text     $1CE7   Inhalt (Word) einer ueber einen 16-Bit-Zeiger adressierten Speicherstelle holen
+xld_x_byte                    text     $1CFC   'ldx adr16' simulieren
+ld_x_byte                     text     $1D00   'ldx adr16' simulieren
+startup                       text     $1D06   Initialisierung der Pseudo-Adressierungscodes
+init_mptr                     text     $1D09   Initialisierung der Pseudo-Adressierungscodes
+
+__Lpowerup                    powerup  $1D12
+powerup                       powerup  $1D12   wird bei jedem RESET aufgerufen
+__Htext                       text     $1D12
+_TMROFL                       const    $1D15   wird bei jedem Timer overflow Interrupt aufgerufen
+__Lconst                      const    $1D15
+__Hpowerup                    powerup  $1D15
+_IRQ                          const    $1D26   wird bei jedem IRQ Interrupt aufgerufen
+_TMRCAP                       const    $1D35   wird bei jedem Timer input capture 1 oder 2 Interrupt aufgerufen
+_TMRCMP                       const    $1D5F   wird bei jedem Timer output compare 1 oder 2 Interrupt aufgerufen
+
+_div                          const    $1DD7   Tabelle zum Kodieren einer Zahl in den ASCII-Dezimalcode
+_MAXDAYS                      const    $1DE1   Tabelle - enthaelt die Anzahl der Tage jeden Monats
+_TIMEADD                      const    $1DEE   Tabelle zum Dekodieren einer DCF77-Highmarke
+_proc                         const    $1DF6   Sprungtabelle mit den Anfangsadressen der Routinen der BASIC-Token
+----------------------------------------------------------------------------
+__Brdata                      rdata    $1EA0
+__Hconst                      const    $1EA0
+__Lstrings                    strings  $1EA0
+__Hstrings                    strings  $1EA0
+__Ldata                       data     $1EA0
+__Hdata                       data     $1EA0
+----------------------------------------------------------------------------
+__Lvectors                    vectors  $1FF0   Interrupttabelle (Adressen der Routinen, die bei einem Interrupt aufgerufen werden)
+__Hvectors                    vectors  $2000   Ende des Adressraums
+
+
+-----------------------------------------------------------------------------
+Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+-----------------------------------------------------------------------------

@@ -1,0 +1,25 @@
+CCINTERN.ZIP - Version 1.2 - vom 21. Juli 2000
+Autor: Dietmar Harlos (dharlos@web.de)
+
+Sammlung von Informationen, Tips und Programmen
+zum von Conrad Electronic entwickelten C-Control-
+Mikrokontroller speziell zur systemnahen
+Programmierung.
+
+Diese Sammlung enthaelt unter anderem ein
+vollstaendiges, kommentiertes ROM-Listing des
+C-Control/BASIC-Betriebssystems, Hilfsprogramme
+zur Assemblerprogrammierung und Disassemblierung,
+einen detaillierten Speicherbelegungsplan, die
+Liste aller CCBASIC-Token, eine Beschreibung der
+Bugs im Betriebssystem, Tips & Tricks zur
+Programmierung und viele weitere nuetzliche
+Informationen.
+
+Einige Texte in dieser Sammlung benutzen den DOS-
+Zeichensatz und sollten deshalb unter Windows in
+einer DOS-Box (z.B. mit EDIT.COM) betrachtet
+werden.
+
+Die Datei INFO.TXT enthaelt eine Uebersicht
+ueber alle Dateien der Sammlung.

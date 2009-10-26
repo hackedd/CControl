@@ -1,0 +1,687 @@
+
+ ----------------------------------------------------------------------------
+             Tips und Tricks zum C-Control/BASIC Mikrokontroller             
+ ----------------------------------------------------------------------------
+
+ In dieser Textdatei stehen einige Tips und Tricks zur Programmierung des C-
+ Control/BASIC-Mikrokontrollers in BASIC und/oder Assembler und zu anderen
+ Themen.
+
+ ----------------------------------------------------------------------------
+                Assemblerprogramme auf den Rechenstack pushen                
+ ----------------------------------------------------------------------------
+
+ Selten benutze, kurze Assemblerprogramme muessen nicht unbedingt ins interne
+ EEPROM programmiert werden. Viel effektiver ist es, diese einfach waehrend
+ der Laufzeit des BASIC-Programms auf den Rechenstack zu pushen und
+ anschliessend aufzurufen. Zu beachten ist hierbei, dass die
+ Assemblerprogramme nicht laenger als 7 Words (14 Bytes) werden duerfen und
+ das fuer das Laden des Rechenstacks natuerlich relativ viel Zeit benoetigt
+ wird. Immerhin muss der Rechenstack VOR JEDEM Aufruf des Assemblerprogramms
+ geladen werden.
+
+ Falls doch einmal ein Assemblerprogramm benoetigt wird, das laenger als 14
+ Byte ist, koennen die Datenstrukturen die im Speicher hinter dem Rechenstack
+ folgen als Zwischenspeicher fuer das Assemblerprogramm missbraucht werden.
+ Das ist einerseits ein Word das zum Generieren der Zufallszahlen benoetigt
+ wird (kann mit RANDOMIZE geaendert werden) und andererseits das USER-RAM zum
+ Abspeichern der USER-Variablen. In das USER-RAM kann einfach durch Aendern
+ von Variableninhalten geschrieben werden. Wenn alle aufgefuehrten
+ Moeglichkeiten ausgenutzt werden, koennen Assemblerprogramme bis 40 Byte
+ Laenge (14+2+24) waehrend der Laufzeit des BASIC-Programms
+ zwischengespeichert und aufgerufen werden!
+
+            Hier ein einfaches Beispiel, das den SYS-Befehl nutzt:
+
+   print asmaufruf
+   end
+   
+   ' Der SYS-Befehl in der BASIC-Unterroutine ASMAUFRUF ruft folgendes
+   ' Assemblerprogramm auf:
+   
+   '0091 =        org $91
+   '0091 : a604   lda #$4
+   '0093 : b791   sta $91
+   '0095 : a6d2   lda #$d2
+   '0097 : b792   sta $92
+   '0099 : 81     rts
+   '009a : 9d     nop
+   
+   #asmaufruf
+     sys &h91 &h819d,&hb792,&ha6d2,&hb791,&ha604
+   return
+
+
+ Diese Art Assemblerprogramme in BASIC-Programme einzubinden erhoeht sogar
+ die Lebensdauer des Mikrokontrollers, denn laut Motorola vertraegt das
+ interne EEPROM nur 10000 Schreibzyklen!
+
+ Allerdings sollte beachtet werden, dass diese Art der Stackbenutzung auch
+ ihre Tuecken hat: Innerhalb einer komplexen Berechnung sollte kein
+ Assemblerprogramm auf diese Weise aufgerufen werden. Z.B. bereitet der
+ Ausdruck "2+3*asmaufruf" Probleme, da zuerst 2 und 3 auf den Stack gepusht,
+ dann das Assemblerprogramm aufgerufen und erst anschliessend die
+ Multiplikation und dann die Addition durchgefuehrt werden. Falls das
+ Assemblerprogramm in diesem Fall aber mehr als 5 Words (10 Bytes) des Stacks
+ benutzt, tritt ein Stackueberlauf auf, bei dem die Zahlen 2 und 3 verloren
+ gehen.
+
+ Auch innerhalb einer Interruptroutine sollte der Stack nicht
+ ueberstrapaziert werden (siehe hierzu die Anmerkungen in der Datei
+ BUGS.TXT).
+
+
+ ----------------------------------------------------------------------------
+                  Tabelleninhalte als BASIC-Token ausfuehren                 
+ ----------------------------------------------------------------------------
+
+ Wenn Tabellen inmitten von BASIC-Codebereichen stehen, werden die Daten in
+ den Tabellen als BASIC-Token ausgefuehrt. Diesen Umstand kann man sich
+ zunutze machen um Token zu erzeugen, die der BASIC-Compiler nicht
+ unterstuetzt.
+
+      Hier ein Beispiel, das die Laenge der EEPROM-Datendatei bestimmt:
+
+   open# for write
+   print filelen
+   print# 12
+   print filelen
+   print# 13
+   print filelen
+   close#
+   print filelen
+   end
+   
+   #filelen
+     table filelentab
+       7180  '28*256+12
+     tabend
+   return
+
+
+ ----------------------------------------------------------------------------
+                 PEEK und POKE-Funktionen in BASIC-Programmen                
+ ----------------------------------------------------------------------------
+
+ In der Datei DUMP.BAS (liegt dieser Informationssammlung bei) ist
+ beschrieben, wie mit Hilfe von kleinen Assemblerprogrammen, die innerhalb
+ des USER-RAMs liegen, PEEK und POKE-Funktionen nachgebildet werden koennen.
+ Die dem C-Control/BASIC-Chip zugrundeliegende CPU unterstuetzt keine 16-Bit
+ Zeiger, so dass etwas getrickst werden muss, um Daten ausserhalb der
+ Zeropage zu lesen oder zu schreiben.
+
+
+ ----------------------------------------------------------------------------
+                 Abspeichern ins interne EEPROM von BASIC aus                
+ ----------------------------------------------------------------------------
+
+ Auch Informationen zu diesem Thema stehen in der Datei DUMP.BAS.
+
+
+ ----------------------------------------------------------------------------
+               Eigene Assembler-Interruptroutinen programmieren              
+ ----------------------------------------------------------------------------
+
+ Das Betriebssystem unterstuetzt das Einbinden von eigenen Assembler-
+ Interruptroutinen, die im internen EEPROM (Adresse $101 bis $1ff) liegen
+ muessen. Auf Adresse $50 bis $53 des RAMs befinden sich Zeiger, in die die
+ Adressen der eigenen Unterroutinen eingetragen werden muessen. Nach einem
+ Reset werden diese Pointer mit dem Wert null (d.h.: keine User-
+ Interruptroutine vereinbart) ueberschrieben.
+
+ Als kleines Beispiel folgt ein Assemblerprogramm, das sich in den Timer
+ Compare Interrupt einklinkt und etwa alle 20 Millisekunden den Zustand von
+ Port A nach Port B kopiert. Wenn an Port B ein Oszilloskop oder LEDs
+ angeschlossen werden, kann somit der Zustand von Port A ueberwacht werden.
+ Das ist sehr sinnvoll bei einer BASIC M-Unit, denn hier ist Port A nicht
+ vollstaendig herausgefuehrt. Zusaetzlich koennen (mit LEDs am Port B) die
+ Zustandsaenderungen auf der SDA- und SCL-Leitung des I2C-Busses ueberwacht
+ werden.
+
+
+                           Hier das BASIC-Programm:
+          (in der DOS-IDE eingeben und unter TIMERCMP.BAS speichern)
+
+   sys &h101                     ' Interruptroutine in das System einbinden
+   syscode "timercmp.s19"
+
+
+                       Und hier das Assemblerprogramm:
+   (in der DOS-IDE eingeben, unter TIMERCMP.ASM speichern und assemblieren)
+
+     org $101
+   
+   initmytimercmp:
+     lda #255                    ; Port B als Ausgang schalten
+     sta $05
+     lda #(mytimercmp-$100)      ; eigene Interruptroutine setzen
+     sta $52
+     rts                         ; Ruecksprung zu BASIC
+   
+   mytimercmp:
+     lda $00                     ; Port A nach
+     sta $01                     ;   Port B schreiben
+     lda #1                      ; Betriebssystemroutine aufrufen
+     rts                         ; Ruecksprung zum Betriebssystem
+
+
+ Um eine eigene Interruptroutine in das System einzubinden muss einer der
+ vier Userpointer (an Adresse $50, $51, $52 oder $53) mit der Adresse der
+ entsprechenden Routine geladen werden. Da hierfuer nur ein Byte zur
+ Verfuegung steht, wird die Adresse relativ zum Beginn des EEPROMs (Adresse
+ $100) angegeben.
+
+ Eine eigene Interruptroutine muss immer mit RTS (nicht RTI) beendet werden.
+ Wird im Akkumulator als letzter Wert null gespeichert, dann wird die
+ Betriebssystemroutine, die eigentlich fuer das Bedienen des Interrupts
+ zustaendig ist, nicht mehr aufgerufen. Hiermit kann das Betriebssystem also
+ voellig "ausgeschaltet" werden. Ich habe im obigen Beispiel als letzten Wert
+ eine Eins in den Akkumulator gespeichert und so dem Betriebssystem
+ signalisiert, dass die normale Routine weiterhin aufgerufen werden soll.
+
+ Zu beachten ist auch, dass die eigene Interruptroutine nicht zu lang geraten
+ darf, denn wenn ein weiterer Interrupt auftritt bevor die Interruptroutine
+ abgearbeitet wurde fuehrt das zum "Verschlucken" von folgenden Interrupts.
+
+       Diese vier Pointer stehen fuer Interruptroutinen zur Verfuegung:
+
+              $50 = IRQPTR (Userpointer fuer IRQ-Interrupt)
+              $51 = CAPPTR (Userpointer fuer TIMERCAP-Interrupt)
+              $52 = CMPPTR (Userpointer fuer TIMERCMP-Interrupt)
+              $53 = OFLPTR (Userpointer fuer TIMEROFL-Interrupt)
+
+ Leider ist es nicht moeglich, eigene Routinen in den Serial Communications
+ Interface Interrupt, in SWI oder RESET einzubinden.
+
+ Genauere Informationen wie ein Interrupt arbeitet oder welche Register nach
+ einem Interrupt wieder initialisiert werden muessen, kann dem
+ Betriebssystemlisting (CCBASROM.TXT) oder dem MC68HC05B6-Manual der Firma
+ Motorola entnommen werden. Eine genaue Beschreibung der verschiedenen
+ Interrupts steht in der Textdatei INTERRUP.TXT.
+
+
+ ----------------------------------------------------------------------------
+                 Benutzung der A/D-Ports als Digitaleingaenge                
+ ----------------------------------------------------------------------------
+
+ Es scheint wenig bekannt zu sein, dass die A/D-Ports als zusaetzliche
+ digitale Eingaenge benutzt werden koennen. Hierzu steht, zusaetzlich zu den
+ Ports mit denen der A/D-Wert (0..255) ausgelesen werden kann, der Port D an
+ Adresse $03 zur Verfuegung.
+
+ Leider unterstuetzt das Betriebssystem der C-Control/BASIC-Unit nicht dieses
+ zusaetzliche Feature des MC68HC05B6-Mikrokontrollers, so dass wieder einmal
+ etwas getrickst werden muss.
+
+                    Port D von BASIC aus byteweise lesen:
+
+   print portd
+   end
+   
+   #portd
+     table portdtab
+       2818  '11*256+2
+     tabend
+   return
+
+
+ ----------------------------------------------------------------------------
+            Lesen und Schreiben von beliebigen RAM-Speicherstellen           
+ ----------------------------------------------------------------------------
+
+ Es gibt ein Byte an der Adresse $dc, das offenbar von keiner
+ Betriebssystemroutine verwendet wird. Wenn man den schon weiter oben
+ beschriebenen Tabellentrick anwendet, kann auf dieses Byte ganz einfach -
+ und sogar ohne Maschinensprache - zugegriffen werden.
+
+         Die Speicherstelle $dc von BASIC aus lesen und beschreiben:
+
+   define var byte
+   var=123
+   
+   var=var                ' durch diesen Trick wird der Wert von
+                          ' "var" auf den Stack gepusht
+   gosub unbenutztwrite   ' dann den Stackinhalt auf Adresse $dc schreiben
+   var=0                  ' Variable "var" loeschen und
+   var=unbenutztread      ' den Wert an Adresse $dc wieder einlesen
+   print var              ' zum Schluss den Inhalt der Variablen ausgeben
+   end
+   
+   #unbenutztread
+     table unbenutztreadtab
+       3035 '11*256+$dc-1
+     tabend
+   return
+   
+   #unbenutztwrite
+     table unbenutztwritetab
+       4562 '17*256+$dc-$a
+     tabend
+   return
+
+ Durch eine kleine Aenderung im Programm kann jedes beliebige Byte im RAM ab
+ Adresse 1 abgefragt und jedes Byte ab Adresse $a veraendert werden. Dazu
+ muessen nur die Werte in den Tabellen angepasst werden. So koennte man also
+ fuer jede Adresse, auf die man zugreifen moechte, eine eigene BASIC-
+ Subroutine erstellen.
+
+
+ ----------------------------------------------------------------------------
+                     Taktfrequenz bis auf 12 MHz erhoehen                    
+ ----------------------------------------------------------------------------
+
+ Wie das Conrad Electronic Technologie Centrum am 15. September 1998 ueber
+ ihr Forum zur C-Control-Unit verlauten liess kann die Taktrate des
+ Minicomputersystems problemlos bis auf 12 MHz erhoeht werden. Dazu muss ein
+ anderer Quarz, bzw. Schwinger eingeloetet werden. Manche Exemplare sollen
+ sogar mit 16 MHz noch funktionieren.
+
+ Der Mikrokontroller koennte sogar noch weit ueber 20 MHz betrieben werden
+ (obwohl er von Motorola nur bis 4 MHz spezifiziert wurde), doch das serielle
+ EEPROM 24C65 ist zu langsam.
+
+ Zu beachten ist aber, dass sich durch den Einbau eines anderen Quarzes die
+ Baudrate der RS232-Schnittstelle aendert. Ausserdem laeuft die Uhr schneller
+ und die Stromaufnahme der Unit wird erhoeht. Das durch das Einloeten eines
+ neuen Quarzes (bzw. Schwingers) jeglicher Garantieanspruch verfaellt
+ versteht sich hoffentlich von selbst.
+
+
+ ----------------------------------------------------------------------------
+                 Internes EEPROM nicht unnoetig strapazieren                 
+ ----------------------------------------------------------------------------
+
+ Wenn ein Programm geschrieben werden soll, das sowohl BASIC- als auch
+ Assembler-Code enthaelt, sollte darauf geachtet werden, dass jedes
+ Neuprogrammieren des internen EEPROMs (mit "Systembytes") schaedlich auf
+ dieses wirkt.
+
+ Falls die Assemblerroutinen des Programms fehlerfrei funktionieren und nur
+ noch Aenderungen an dem BASIC-Code durchgefuehrt werden muessen, sollte vor
+ dem Uebertragen des Programms zur C-Control Unit der SYSCODE-Befehl
+ auskommentiert werden. In diesem Fall wird das Maschinenspracheprogramm (das
+ sich ja im internen EEPROM befindet) nicht veraendert und so wertvolle
+ Schreibzyklen gespart. Laut Motorola vertraegt das interne EEPROM nur 10000
+ (in Worten: zehntausend) Programmierzyklen!
+
+
+ ----------------------------------------------------------------------------
+                 EEPROM-Datendatei nicht unnoetig schliessen                 
+ ----------------------------------------------------------------------------
+
+ Das Betriebssystem unterscheidet bei einem CLOSE#-Befehl nicht ob die im
+ seriellen EEPROM befindliche Datendatei zum Lesen oder zum Schreiben
+ geoeffnet wurde. Das hat die Konsequenz, dass der CLOSE#-Befehl
+ grundsaetzlich von einem schreibenden Zugriff ausgeht und so auch nach dem
+ Lesen den Zaehler fuer die Groesse der Datei ins EEPROM programmiert.
+ Dadurch werden unnoetig Programmierzyklen des EEPROMs verschenkt. Da sich
+ die Anzahl der Bytes in der Datei durch einen lesendem Zugriff natuerlich
+ nicht aendert, wird der gleiche Wert in die entsprechende EEPROM-Adresse
+ geschrieben, der schon auf der Adresse steht. Ob das 24C65-EEPROM dies
+ erkennt, das Umprogrammieren als unnoetig ansieht und deshalb nicht
+ durchfuehrt, ist aus dem Manual zum EEPROM von Microchip (meines Wissens)
+ nicht ersichtlich.
+
+ Auf diesem Grund sollte auf den CLOSE#-Befehl bei einem lesenden Zugriff auf
+ die Daten im EEPROM (mit OPEN# FOR READ) verzichtet werden.
+
+
+ ----------------------------------------------------------------------------
+            High Endurance Block des seriellen EEPROMs verschieben           
+ ----------------------------------------------------------------------------
+
+ Jede Speicherstelle im seriellen 24C65'er EEPROM, das im C-Control-
+ Minicomputer Verwendung findet, kann eine Million mal neu programmiert
+ werden, danach ist sie hinueber. Es gibt aber einen verschiebbaren, 4096 Bit
+ grossen Bereich, der bis zu zehn Millionen mal neu programmiert werden kann.
+ Dieser Bereich heisst High Endurance Block und liegt von Werk aus
+ (angeblich) am Ende des Speicherraums des EEPROMs.
+
+ Eigentlich wollte ich meiner Informationssammlung auch ein getestetes
+ Programm zum Verschieben des High Endurance Blocks beilegen. Doch selbst
+ naechtelange Versuche meinem EEPROM mittels Oszilloskopkarte, Manual und
+ unzaehligen Assemblerprogrammen das Verschieben des Blocks beizubringen
+ blieben ohne Erfolg. Warum alle meine Versuche zum Scheitern verurteilt
+ waren viel mir erst sehr viel spaeter beim Blick auf die Platine meiner M-
+ Unit auf: Diese ist naemlich nicht mit dem 24C65'er EEPROM von Microchip,
+ sondern mit dem 24C64 von der Firma SGS Thomson bestueckt. Und dieser
+ Speicherchip hat gar keinen High Endurance Block!
+
+ Der arme Chip war selbst durch den recht harmlosen Versuch, die Lage des
+ High Endurance Block auszulesen so verwirrt, dass er das naechste Byte, das
+ nach dem Leseversuch uebertragen wurde, nicht einmal mehr per Acknowledge-
+ Signal bestaetigte.
+
+ Aus diesem Grund ist es mir leider unmoeglich, die Programme, die ich zum
+ Auslesen und Setzen der Lage des High Endurance Block geschrieben und dieser
+ Informationssammlung beigelegt habe, richtig zu testen. Nach dem was laut
+ meiner Scopekarte am I2C-Bus anliegt, sollten die Programme aber fehlerfrei
+ arbeiten. Vielleicht kann sie ja jemand anderes (der ein 24C65 EEPROM
+ besitzt) austesten?!
+
+ Wie ein 24C65-Chip auf das Verschieben des High Endurance Blocks reagiert
+ kann ich nicht genau (vorher-)sagen. Vermutlich muss der Mikrokontroller
+ mitsamt EEPROM nach dem Verschieben resettet und das BASIC-Programm erneut
+ ins serielle EEPROM programmiert werden.
+
+ Das Assemblerprogramm zum Lesen und Schreiben der Lage des High Endurance
+ Blocks heisst auf jeden Fall HIGHENDU.ASM und benoetigt nach dem
+ Assemblieren das BASIC-Programm HIGHENDU.BAS zum Kompilieren und Ausfuehren.
+ Die Signalverlaeufe auf dem I2C-Bus beim Setzen des Blocks auf Block Nummer
+ 14 sind in der Grafik HIGHENDU.GIF dargestellt.
+
+ Genauere Infos zum EEPROM und wie man den High Endurance Block verschiebt,
+ findet man uebrigens im 24C65-Manual der Firma Microchip (siehe
+ INTERNET.TXT).
+
+
+ ----------------------------------------------------------------------------
+          Eingaenge der M-Unit auf ein definiertes Potential setzen          
+ ----------------------------------------------------------------------------
+
+ Falls eine M-Unit in einer Schaltung eingesetzt werden soll, muss beachtet
+ werden, dass bei diesem Chip nicht alle Eingaenge ab Werk durch Pull-Up oder
+ Pull-Down Widerstaende auf ein definiertes Potential gelegt wurden.
+
+ Bei den diversen digitalen Ein- und Ausgaengen spielt das keine allzu grosse
+ Rolle. Diese koennen einfach im BASIC- oder Assemblerprogramm als Ausgaenge
+ definiert werden. Probleme koennten aber durch die unbeschalteten Eingaenge
+ am PORTA und durch die Datenleitungen der seriellen Schnittstelle (TXD und
+ RXD) entstehen. Wenn diese "in der Luft" liegen, kann bereits durch die
+ blosse Beruehrung des Mikrokontrollergehauses mit der Hand ein
+ Eingangssignal vorgegaukelt werden. Durch diese statischen Entladungen kann
+ man den Chip sogar zerstoeren!
+
+ Aus diesem Grund sollte der RXD-Eingang des Kontrollers mit einem Pull-Up
+ oder Pull-Down Widerstand (z.B. 10 kOhm) auf VDD oder GND Potential gelegt
+ werden. Die unbeschalteten Eingaenge von PORTA sollten in jedem BASIC-
+ Programm durch Aufruf des untenstehenden Assemblerprogramms auf Ausgang
+ geschaltet werden. Das sollte moeglich frueh, also beim Start des Programms,
+ geschehen.
+
+                Alle Eingaenge von PORTA auf Ausgang schalten:
+             (sollte von jedem BASIC-Programm aufgerufen werden)
+
+     org $101
+   
+   definiert:
+     lda $04            ; DDRA holen (sollte %01011111 sein)
+     ora #%11011110     ; CTS zusaetzlich als Ausgang schalten
+     sta $04
+   
+     lda $01            ; PORTA holen
+     and #%01111111     ; CTS auf 0 Volt (GND-Potential) setzen
+     sta $01
+   
+     rts
+
+
+ ----------------------------------------------------------------------------
+      Maximale Verschachtelungstiefe bei Assemblerunterprogrammaufrufen      
+ ----------------------------------------------------------------------------
+
+ Bei jedem Aufruf einer Assemblerunterroutine wird die Adresse, zu der nach
+ Abarbeitung der Unterroutine zurueckgekehrt werden soll, auf dem
+ Hardwarestack zwischengespeichert. Nach Abarbeitung der Routine wird diese
+ Adresse per "rts"-Befehl wieder vom Stack entfernt und hinter den Befehl,
+ der die Assemblerroutine aufgerufen hat, gesprungen.
+
+ Bei jeder 6805'er CPU wird dieser Stack automatisch von einem Stackpointer
+ verwaltet, der den Speicherbereich von Adresse $c0 bis $ff ansprechen kann.
+ Der Stack hat also eine Groesse von 64 Byte. Da das Betriebssystem der C-
+ Control aber einen grossen Teil des Stackbereichs zum Zwischenspeichern von
+ eigenen Daten benutzt, schrumpft die maximale Groesse auf nur noch 27 Bytes
+ zusammen.
+
+ In diesen 27 Byte werden aber nicht nur Ruecksprungadressen, sondern auch
+ die aktuellen Inhalte des Akkumulators, des Index Registers und der Flags
+ zwischengespeichert, bevor eine Interruptroutine aufgerufen wird. In diesem
+ Fall werden die angesprochenen Register mittels "rti"-Befehl (inklusive
+ Ruecksprungadresse) vom Stack entfernt. Bei einem Interrupt werden also
+ fuenf Bytes des Stacks benutzt, waehrend es bei einem "normalen"
+ Unterprogrammaufruf nur zwei Bytes sind.
+
+ Es stellt sich die Frage, wieviele Ruecksprungadressen und Registerinhalte
+ auf den Stack gespeichert werden koennen, ohne dass es zu einem
+ Stackueberlauf (bzw. zum Ueberschreiben von Systemdaten) kommt. Ich moechte
+ dazu an dieser Stelle zunaechst ausfuehrlich beschreiben, was mit dem
+ Hardwarestack zwischen einem Reset und dem Aufruf eines eigenen
+ Assemblerprogramms (mittels "SYS"-Befehls von BASIC aus) passiert.
+
+ Der Stackpointer wird nach einem Reset auf den Wert $ff gesetzt.
+ Anschliessend fuehrt das Betriebssystem die "IDLE-LOOP" (Adresse $969 im
+ ROM-Listing) solange aus, bis der Start-Jumper gedrueckt und so die
+ Betriebssystemroutine zum Starten des BASIC-Programms aufgerufen wird.
+
+ Dieser Aufruf hinterlaesst natuerlich seine Spur auf dem Stack: Auf Adresse
+ $fe wird der Wert $097e gespeichert. Wer das ROM-Listing zur Hand nimmt,
+ wird erkennen, dass auf dem Stack die Adresse des Befehls "bra $0969"
+ gespeichert wurde. Von Interesse ist aber weniger dieser Befehl, als der
+ Befehl unmittelbar davor ("jsr $08ee"). Dieser "Jump To Subroutine"-Befehl
+ steht auf Adresse $097b und ruft die bereits angesprochene Routine zum
+ Starten des BASIC-Programms auf. Der Stackpointer zeigt nach dem Speichern
+ dieses Words auf Adresse $fd.
+
+ Jetzt wird also das BASIC-Programm ausgefuehrt. Dazu holt das Betriebssystem
+ ein BASIC-Token nach dem anderen aus dem seriellen EEPROM und liest die
+ Startadressen der zu den Token gehoerenden Unterroutinen aus einer
+ Sprungtabelle. Anschliessend wird die entsprechende Routine mit Hilfe der
+ Systemfunktionen fuer die Pseudo-Adressierungsmodi aufgerufen. Irgendwann
+ trifft das Betriebssystem auch auf das "SYS"-Token und ruft die
+ Systemroutine an Adresse $1cdb auf. Auch hierbei wird wiederum die
+ Ruecksprungadresse auf dem Stack gespeichert und kann auf Adresse $fc des
+ Stacks gefunden werden. Der Stackpointer zeigt auf $fb.
+
+ Die Systemroutine fuer die Pseudo-Adressierungsmodi verzweigt ueber einige
+ Umwege zur eigentlichen "SYS"-Routine, die an Adresse $170a beginnt. Dazu
+ werden aber unbedingte Spruenge ("jmp" oder "bra") benutzt, so dass im
+ Gegensatz zu den "jsr"- und "bsr"-Befehlen keine Adressen auf dem Stack
+ gespeichert werden muessen.
+
+ Die Routine fuer den "SYS"-Befehl holt nun ihrerseits ein Word aus dem
+ seriellen EEPROM, das die Adresse der aufzurufenden Assemblerroutine
+ enthaelt. Um dieses nun endlich aufzurufen, wird ein kleines Programm im
+ Zeropage-RAM (ab Adresse $bd) generiert und aufgerufen. Da das kleine
+ Hilfsprogramm ebenfalls per "jsr"-Befehl gestartet wird, hinterlaesst auch
+ dieser Aufruf seine Spur auf dem Stack (Adresse $fa). Das Hilfsprogramm
+ enthaelt nichts weiter als einen unbedingten Sprung zu unserem Programm, so
+ dass dieser Aufruf wieder keinen Stackspeicher benoetigt.
+
+ Jetzt endlich wird unser Assemblerprogramm ausgefuehrt. Der Stackpointer
+ steht auf Adresse $f9 und so wurden bis jetzt drei Words (oder sechs Bytes)
+ des Stacks benutzt.
+
+       Belegung des Hardwarestacks bei Aufruf eines Assemblerprogramms:
+                   (der Stackpointer zeigt auf Adresse $f9)
+
+   Adr. Wert   Beschreibung
+   $fa  $1713  User-Assemblerroutine starten ("jsr $bd" auf Adresse $1711)
+   $fc  $093e  SYS-Hauptroutine starten ("jsr $1cdb" auf Adresse $093b)
+   $fe  $097e  BASIC-Programm starten ("jsr $08ee" auf Adresse $097b)
+
+ Es stehen auf dem Stack also noch 21 Bytes zur Verfuegung. Bei jedem Aufruf
+ einer eigenen Assemblerroutine mittels "jsr"- oder "bsr"-Befehl ohne
+ anschliessendes "rts" bewegt sich der Stack um zwei Bytes in Richtung
+ Systemdaten und droht diese zu ueberschreiben. Um festzustellen, wieviele
+ Unterprogrammverschachtelungen erlaubt sind, reicht es nun aber nicht aus,
+ einfach 21 (bzw. 20) durch zwei zu teilen, als Ergebnis zehn
+ herauszubekommen und daraus zu schliessen, dass Unterprogramme bis zu einer
+ Verschachtelungstiefe von zehn verwendet werden koennen. Wie oben bereits
+ erwaehnt, wird der Stack auch von den Interruptroutinen benutzt!
+
+ So stellt sich also die Frage, wieviel Stackspeicher die Interruptroutinen
+ benoetigen. Wenn in einen Interrupt eine eigene User-Assemblerinterrupt-
+ routine eingebunden wurde, haengt es eventuell von dieser Routine ab,
+ wieviel der kostbaren Stackeintraege maximal benutzt werden. Fuer die
+ Standard-Interruptroutine gilt aber folgendes:
+
+ Die Betriebssystemroutine fuer den 20-Millisekunden-Ticker und die Routinen
+ zur Dekodierung des (DCF77-)Signals einer am FREQ1-, bzw. TCAP1-Eingang
+ angeschlossenen Signalquelle haben den groessten Stackspeicherbedarf. Wie
+ jede Interruptroutine, so benutzen auch diese fuenf Bytes des Stacks zum
+ Speichern der Ruecksprungadresse und der Registerinhalte. Zusaetzlich finden
+ innerhalb der Interruptroutinen zwei verschachtelte Unterprogrammaufrufe
+ statt, so dass insgesamt neun Bytes des Stacks fuer die Interruptbedienung
+ reserviert werden muessen.
+
+ Und so schrumpft der freie Stackspeicher auf eine Groesse von 12 Bytes
+ zusammen. In einem selbstgeschriebenen Assemblerprogramm duerfen also
+ maximal sechs verschachtelte Unterprogrammaufrufe verwendet werden. Bei
+ Programmen, die ausschliesslich eigene Unterroutinen aufrufen, sollte dieser
+ Wert keine Probleme machen. Problematisch wird es aber, wenn ein Programm
+ Betriebssystemroutinen verwendet, die ihrerseits weitere Systemroutinen
+ aufrufen!
+
+ Ein gutes Beispiel hierfuer ist die Betriebssystemroutine an Adresse $197c,
+ die ueber die Adresse $197f (mit einer Zahl zwischen 1 und 6 im Akkumulator)
+ aufgerufen werden sollte. Ueber die sechs Funktionen dieser Routine kann auf
+ die Datendatei im seriellen EEPROM zugegriffen werden. Wenn z.B. der BASIC-
+ Befehl "OPEN# FOR READ" in Assembler nachgebildet werden soll muss im
+ Akkumulator der Wert 1 uebergeben werden.
+
+ Leider ruft diese Betriebssystemroutine eigenstaendig relativ viele andere
+ Subroutinen verschachtelt auf. Bei "OPEN# FOR READ" betraegt die
+ Verschachtelungstiefe (inklusive erstem "jsr $197f"-Aufruf) insgesamt vier,
+ so dass diese Routine hoechstens aus einer Unter-unterroutine eines eigenen
+ Assemblerprogrammes heraus aufgerufen werden darf!
+
+         Aufrufbaum fuer das Assemblerequivalent zu "OPEN# FOR READ":
+
+   jsr $197f          Aufruf von ProcFileIO vom Assemblerprogramm aus
+     jsr $1a24        Aufruf von OpenFileForRead (von Adresse $19ab aus)
+       jsr $0de5      Aufruf von _24C65_BeginSequentialRead (von $1a2a aus)
+         jsr $083c    Aufruf von I2C_Start (von Adresse $0def aus)
+         jsr $0846    Aufruf von I2C_Write (von Adresse $0df4 aus)
+       jsr $0e0d      Aufruf von _24C65_ReadWord (von Adresse $1a2d aus)
+         bsr $0e04    Aufruf von _24C65_ReadNext (von Adresse $0e0d aus)
+
+ Die Aufrufbaeume von weiteren Betriebssystemroutinen koennen der Datei
+ CCBASIC.MAP entnommen werden. Diese Datei liegt dem ZIP-Archiv mit den
+ Original-Quellcodes des Betriebssystems bei. Leider sind dort aber auch
+ Unterprogrammaufrufe, die mit einem unbedingten Sprung ("jmp") durchgefuehrt
+ wurden, aufgefuehrt.
+
+
+ ----------------------------------------------------------------------------
+        Unit ueber RS232 bei gesetztem Start-Jumper neu programmieren        
+ ----------------------------------------------------------------------------
+
+ Die meisten C-Control-Units werden in der Praxis wohl mit gesetztem Start-
+ Jumper betrieben. Das macht das manuelle Setzen des Jumpers von Hand, wenn
+ der Strom ausgefallen ist oder die Unit aus sonst einem Grund resettet
+ wurde, ueberfluessig.
+
+ Das Problem sind dann aber Programmupdates: Es waere eine gute Sache, wenn
+ die Unit "aus der Ferne" ueber eine RS232-Verbindung mit einem neuen BASIC-
+ oder Assemblerprogramm ausgestattet werden koennte - nur leider ist der
+ Start-Jumper gesetzt und die Unit ignoriert saemtliche Programmierversuche.
+
+ Doch auch hierfuer existiert eine Loesung: Man kann die Routinen des
+ Betriebssystems, mit denen ein neues BASIC- oder Maschinenspracheprogramm
+ zur Unit uebertragen wird, vom laufenden BASIC-Programm aus aufrufen und die
+ Unit anschliessend resetten. Das kann ganz einfach durch ein paar
+ Sprungbefehle in Assembler geschehen:
+
+
+                      Hier ein passendes BASIC-Programm:
+
+   
+   ' Der folgende SYS-Befehl ruft dieses Assemblerprogramm auf:
+   
+   '0091 =         org $91
+   '0091 : cd0917  jsr $0917    ; BASIC-Programmausfuehrung beenden
+   '0094 : cd0aa4  jsr $0aa4    ; Befehlsbyte holen und ausfuehren
+   '0097 : cc0800  jmp $0800    ; Betriebssystem neu starten
+   '009a : 9d      nop          ; (muss per "jmp" aufgerufen werden!)
+   
+   #endlos
+     if rxd then sys &h91 &h009d,&hcc08,&h0aa4,&h17cd,&hcd09
+                                ' wenn ein Byte an der RS232-Schnittstelle
+                                ' anliegt, wird dieses so interpretiert,
+                                ' als ob es bei nichtgesetztem Startjumper
+                                ' (waehrend der IDLE-Loop) empfangen wurde
+   
+     ...                        ' das restliche BASIC-Programm
+   goto endlos
+
+
+ Natuerlich kann dieses Programm noch verfeinert werden. So ist es z.B.
+ denkbar, dass die Unit nur dann in den Programmiermodus geht, wenn der ueber
+ RS232 angeschlossene PC zuvor ein bestimmtes Signalbyte sendet. Dann kann
+ die RS232-Verbindung auch zum beiderseitigen Datenaustausch benutzt werden.
+
+ Reine BASIC-Programme koennen mit dieser Methode relativ problemlos
+ aktualisiert werden. Bei Programmen, die Assemblerroutinen im internen
+ EEPROM benutzen, gibt es allerdings folgendes Problem: Die RS232-Kommandos
+ werden vom Ladeprogramm bekanntlich sequentiell, d.h. Stueck fuer Stueck
+ hintereinander, uebertragen und von der C-Control-Unit ausgefuehrt. Zwischen
+ diesen Uebertragungen wird das BASIC-Programm immer wieder neu gestartet, da
+ ja der Startjumper gesetzt ist. Wenn das BASIC-Programm nun auf
+ Assemblerroutinen im internen EEPROM zugreifen will, kann es sein, dass das
+ interne EEPROM zu diesem Zeitpunkt noch nicht die aktualisierte Version des
+ Maschinenspracheprogramms enthaelt. Das BASIC-Programm muss auf diesen Fall
+ vorbereitet sein und z.B. die Versionsnummer des Programms im internen
+ EEPROM abfragen, bevor es eine Assemblerroutine aufruft.
+
+ Es ist auch zu beachten, dass die serielle Schnittstelle von der C-Control
+ waehrend der gesamten Update-Phase nicht benutzt werden darf, denn sonst
+ wird das Ladeprogramm im PC vermutlich die Uebertragung abbrechen. Ausserdem
+ muss die Unit auf jedes gesendete Befehlsbyte natuerlich ausreichend schnell
+ reagieren.
+
+ Wenn sich das BASIC-Programm aus irgendeinem Grund "aufhaengt" und deshalb
+ nicht mehr die serielle Schnittstelle abfragt oder waehrend der Uebertragung
+ des Programms ein Fehler auftritt, ist auf die beschriebene Weise natuerlich
+ kein Softwareupdate mehr moeglich und die Unit muss resettet werden. Die
+ sicherste Methode fuer ein Softwareupdate ist deshalb, einfach noch eine
+ zusaetzliche Leitung mehr als fuer die RS232-Verbindung ohnehin erforderlich
+ ist zur Unit zu legen und darueber ein Relais zu steuern. Mit diesem Relais
+ kann dann sowohl der RESET-Pin kurz auf Masse gezogen, als auch der
+ Startjumper waehrend der Neuprogrammierung unterbrochen werden.
+
+ Es gibt natuerlich noch einige andere Moeglichkeiten, ein Softwareupdate bei
+ einer Unit durchzufuehren, die sich ausser Reichweite befindet. Friedhelm
+ Boehl hat mir seine auf Hardware basierende Realisierung als ZIP-Archiv
+ zugesandt (befindet sich in der Datei NEUPROG.ZIP im WORD_TXT-Verzeichnis).
+ Wenn jemand noch andere gute Idee verwirklicht hat, kann er sich ja bei mir
+ oder im Forum melden.
+
+
+ ----------------------------------------------------------------------------
+                          Unit per Software resetten                         
+ ----------------------------------------------------------------------------
+
+ Manchmal ist es nuetzlich, die C-Control aus der laufenden Anwendung heraus
+ zu resetten. Im vorherigen Abschnitt wurde davon beispielsweise Gebrauch
+ gemacht. Mit dem "jmp $0800"-Befehl kann das Betriebssystem der Unit aus
+ jedem laufenden Programm heraus neu gestartet werden.
+
+ Es gibt aber noch die Moeglichkeit, den "Watchdog" (zu deutsch: Wachhund)
+ fuer diesem Zweck zu missbrauchen. Er dient normalerweise zum Resetten des
+ Mikrokontrollers und der eventuell am RESET-Pin angeschlossenen externen
+ Baugruppen, wenn das laufende Programm abgestuerzt ist.
+
+ Ein einmal aktivierter Watchdog kann aus Sicherheitsgruenden nicht mehr per
+ Software deaktiviert werden. Das laufende Programm ist nun gezwungen, einen
+ Zaehler in periodischen Zeitintervallen zu loeschen, damit dieser nicht
+ ueberlaeuft. Bei einem Ueberlauf loest die Watchdog-Baugruppe einen Reset
+ aus und das Programm startet von neuem. So ist eine weitgehende
+ Funktionssicherheit des Mikrokontrollers auch bei nicht anwesendem Anwender
+ gewaehrleistet.
+
+ Wenn ein Programm den Watchdog zum Resetten der Unit benutzen moechte, muss
+ es ihn durch Setzen eines Bits im "Miscellaneous register" aktivieren. In
+ Assembler geschieht dies durch den Befehl "bset #0,$0c". Wenn dahinter
+ gleich ein "stop"-Befehl folgt, wird sofort ein Reset durchgefuehrt. Nach
+ dem Reset ist der Watchdog wieder deaktiviert.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------

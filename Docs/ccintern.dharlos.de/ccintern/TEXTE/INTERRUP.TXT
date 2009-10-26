@@ -1,0 +1,198 @@
+
+ ----------------------------------------------------------------------------
+                      Die sechs Interrupts im C-Control                      
+ ----------------------------------------------------------------------------
+
+ Hier werden die Aufgaben der verschiedenen Interrupts des MC68HC05 Mikro-
+ kontrollers im C-Control/BASIC-Betriebssystem erklaert. Um den Erlaeuter-
+ ungen folgen zu koennen, sollten zusaetzlich das ROM-Listing (CCBASROM.TXT)
+ und die Textdatei ADRESSEN.TXT zur Hand genommen werden. Die Startadressen
+ der Routinen, die bei Ausloesung der verschiedenen Interrupts aufgerufen
+ werden, stehen am Ende des Speichers (ab Adresse $1ff2).
+
+ Ein Beispiel zum Einbinden von eigenen Assembler-Interruptroutinen in das
+ System steht in der Datei TIPSUTRI.TXT.
+
+
+ ----------------------------------------------------------------------------
+                    Reset/Power-On-Reset Interrupt (RESET)                   
+ ----------------------------------------------------------------------------
+
+ Sobald der RESET-, bzw. RST-Eingang des Mikrokontrollers auf Masse (GND)
+ gezogen wird, wird der Reset-Interrupt ausgeloest. Er dient im Betriebs-
+ system zum Initialisieren des Speichers, der seriellen Schnittstelle, der
+ Ports und des seriellen EEPROMs. Ausserdem werden die uebrigen Interrupts
+ (soweit sie verwendet werden) aktiviert.
+
+ Bei der M-Unit wird dieser Interrupt auch durch das Anlegen der Betriebs-
+ spannung ausgeloest, da auf dieser ein Spannungsueberwachungs-IC fuer einen
+ definierten Anfangszustand beim Einschalten der Versorgungsspannung sorgt.
+
+ Nach einem Reset wird der Programmcounter mit dem Wordwert der an Adresse
+ $1ffe:$1fff steht geladen und so an die Speicheradresse $1d12 gesprungen.
+ Von dort aus wird direkt bei $0800 fortgefahren und mit der Initialisierung
+ des Speichers, des EEPROMs und der Ports weitergemacht.
+
+ Die Haupt-Endlosschleife beginnt bei Adresse $0969. Hier wird der Prozessor
+ solange in den Warte-Zustand versetzt bis ein Timer Output Compare Interrupt
+ (alle 20 Millisekunden) oder ein RS232-Interrupt ausgeloest wird.
+ Anschliessend wird ueberprueft, ob ein Zeichen ueber die RS232-Schnittstelle
+ empfangen wurde oder ob der START-Pin aktiviert ist und mit der Abarbeitung
+ des BASIC-Programms weitergemacht werden soll. Die Haupt-Schleife ist ein
+ guter Ausgangspunkt fuer eigene Erkundungen des Betriebssystems.
+
+ Ausserdem unterstuetzt jeder MC68HC05B6 "von Haus aus" besondere
+ Operationsmodi, mit denen ein Maschinenspracheprogramm zum Mikrokontroller
+ uebertragen und ausgefuehrt werden kann. Dazu muessen nach einem Reset
+ bestimmte Bedingungen erfuellt sein. Naehere Informationen hierzu sollten
+ dem MC68HC05B6-Manual von der Firma Motorola und dem ROM-Listing (ab Adresse
+ $200) entnommen werden.
+
+
+ ----------------------------------------------------------------------------
+                           Software Interrupt (SWI)                          
+ ----------------------------------------------------------------------------
+
+ Das C-Control/BASIC-Betriebssystem unterstuetzt die Verwendung des Software
+ Interrupts leider nicht. Falls ein Assemblerprogramm dennoch einen SWI-
+ Befehl benutzt, wird die Adresse $0 angesprungen. Dort liegen PORTA, PORTB
+ und PORTC, so dass, um den Interrupt verwendet zu koennen, die Datenregister
+ dieser Ports mit einem kurzen Maschinenspracheprogramm geladen werden
+ muessten.
+
+
+ ----------------------------------------------------------------------------
+                           External Interrupt (IRQ)                          
+ ----------------------------------------------------------------------------
+
+ Der External Interrupt kann durch die Verbindung des IRQ-Eingangs mit Masse
+ ausgeloest werden und dient zum Aufrufen von User-Interruptroutinen, die
+ wahlweise in BASIC und/oder Assembler programmiert werden koennen.
+
+ Um eine eigene Assembler-Interruptroutine fuer den External Interrupt in das
+ System einzubinden, muss der Userpointer auf Adresse $50 mit der
+ Startadresse der entsprechenden Routine geladen werden. Da der Userpointer
+ nur ein Byte lang ist, wird die Adresse relativ zum Beginn des EEPROMs
+ (Adresse $100) angegeben. Aus diesem Grund koennen nur Routinen verwendet
+ werden, die im internen EEPROM stehen.
+
+ Für den IRQ-Interrupt gilt, ebenso wie fuer alle folgenden Interrupts, dass
+ eine eigene Assemblerinterruptroutine immer mit RTS (nicht RTI) beendet
+ werden muss. Wird im Akkumulator als letzter Wert eine null gespeichert,
+ dann wird die Betriebssystemroutine, die eigentlich fuer das Bedienen des
+ Interrupts zustaendig ist, nicht mehr aufgerufen. Hiermit kann das
+ Betriebssystem also voellig "ausgeschaltet" werden.
+
+ Der External Interrupt ist der einzige Interrupt, mit dem es moeglich ist,
+ zusaetzlich eine in BASIC geschriebene Interruptroutine zu verwenden. Wenn
+ keine Assembler-Interruptroutine in das System eingebunden wurde, oder wenn
+ diese Routine im Akkumulator einen Wert ungleich null zurueckgelassen hat,
+ wird nach Ausfuehrung des naechsten BASIC-Tokens eine eventuell aktivierte
+ BASIC-Interruptroutine ausgefuehrt.
+
+ Unter bestimmten Bedingungen kann es unter BASIC zu Fehlern im Hauptprogramm
+ bei Benutzung einer Interruptroutine kommen. Naeheres hierzu steht in der
+ Datei BUGS.TXT.
+
+
+ ----------------------------------------------------------------------------
+                Timer Input Capture 1 & 2 Interrupt (TIMERCAP)               
+ ----------------------------------------------------------------------------
+
+ Dieser Interrupt wird entweder durch ein Signal am TCAP1- oder am TCAP2-
+ Eingang ausgeloest. Mit ihm kann die Zeit, die zwischen zwei Interrupt-
+ ausloesungen vergangen ist, relativ zum Prozessortakt bestimmt werden.
+
+ Am TCAP1-Pin (FREQ1-Eingang) haengt ein eventuell vorhandener DCF77-
+ Empfaenger und generiert deshalb einen Input Capture 1-Interrupt. Dieser
+ Interrupt kann entweder bei einer positiven oder bei einer negativen Flanke
+ ausgeloest werden. Von beidem wird beim Detektieren des DCF77-Signals
+ Gebrauch gemacht.
+
+ Am TCAP2-Pin (FREQ2-Eingang) kann eine andere Signalquelle angeschlossen
+ werden, deren Frequenz ueber die Systemvariable FREQ2 abgefragt werden kann.
+ Allerdings reagiert dieser Eingang nur auf eine negative Flanke.
+
+ Auch in diesen Interrupt kann eine eigene Assembler-Interruptroutine
+ eingebunden werden. Der dafuer zu aendernde Userpointer liegt auf Adresse
+ $51. Ansonsten gelten die gleichen Hinweise wie beim External Interrupt.
+
+ Falls eine eigene Interruptroutine verwendet werden soll, die das
+ Betriebssystem "ausschaltet", muss beachtet werden, dass die Routine nach
+ dem Lesen des Highbytes eines Input capture registers (ICR1 oder ICR2) auch
+ das Lowbyte liest, denn das Register wird solange nicht veraendert bis auch
+ das niederwertige Byte gelesen wurde!
+
+
+ ----------------------------------------------------------------------------
+               Timer Output Compare 1 & 2 Interrupt (TIMERCMP)               
+ ----------------------------------------------------------------------------
+
+ Mit Hilfe des Timer Output Compare Interrupts koennen Interruptroutinen nach
+ einem festgelegten Zeitintervall aufgerufen werden.
+
+ Jeder MC68HC05B6 Mikrokontroller besitzt einen internen Zeitzaehler (das
+ Timer Counter Register (TR)), der alle vier Prozessortakte (alle 2
+ Mikrosekunden) automatisch inkrementiert wird. Wenn der Inhalt dieses
+ Registers entweder gleich dem Output Compare Register 1 (OCR1) oder dem
+ Output Compare Register 2 (OCR2) ist wird der Timer Output Compare Interrupt
+ ausgeloest.
+
+ Das Output Compare Register 1 dient zum Generieren des Tonsignals am BEEP-
+ Ausgang (TCMP1-Pin). Mit Hilfe dieses Registers legt das Betriebssystem die
+ Ausloesehaeufigkeit des Interrupts und damit die Ausgangsfrequenz des BEEP-
+ Signals fest.
+
+ Das Output Compare Register 2 spielt im C-Control-Mikrokontroller eine
+ wichtige Rolle. Es sorgt dafuer, dass der Interrupt alle 20 ms ausgeloest
+ und dadurch z.B. die Uhr und die TIMER-Systemvariable weitergezaehlt und die
+ PAUSE-Verzoegerung und das TEST-Signal (am TCMP2-Pin) generiert wird.
+
+ Auch in diesen Interrupt kann eine eigene Assembler-Interruptroutine
+ eingebunden werden. Der dafuer zu aendernde Userpointer liegt auf Adresse
+ $52. Ansonsten gelten die gleichen Hinweise wie beim External Interrupt.
+
+
+ ----------------------------------------------------------------------------
+                          Timer Overflow (TIMEROFL)                          
+ ----------------------------------------------------------------------------
+
+ Immer wenn der interne Zeitzaehler im Mikrokontroller (das Timer Counter
+ Register (TR)) von #$ffff auf #$0000 springt wird dieser Interrupt
+ ausgeloest. Das passiert alle 65536*4 Taktzyklen (etwa alle 0.13 Sekunden im
+ normalen, und alle 2.1 Sekunden im SLOWMODE).
+
+ Fuer das Betriebssystem spielt dieser Interrupt keine Rolle, doch kann in
+ diesen Interrupt eine eigene Assembler-Interruptroutine eingebunden werden.
+ Der dafuer zu aendernde Userpointer liegt auf Adresse $53. Ansonsten gelten
+ die gleichen Hinweise wie beim External Interrupt.
+
+ Wer mit diesem Interrupt herumspielen moechte muss erst ein Bit im Timer
+ Control Register (TCR) setzen. Erst wenn Bit Nummer 5 gesetzt ist, wird bei
+ einem Timer-Ueberlauf auch ein Interrupt ausgeloest (in Assembler: "bset
+ #5,$12").
+
+
+ ----------------------------------------------------------------------------
+               Serial Communications Interface Interrupt (SCI)               
+ ----------------------------------------------------------------------------
+
+ Dieser Interrupt wird immer dann ausgeloest, wenn ein Zeichen von der
+ seriellen Schnittstelle (RS232) empfangen wurde. Das Betriebssystem fuegt
+ dieses Zeichen in seinen acht Byte grossen Ringbuffer ein, vorausgesetzt
+ beim Empfangen wurden keine Fehler detektiert und im Buffer ist noch
+ genuegend Freiraum.
+
+ Leider kann in diesen Interrupt keine eigene Assemblerroutine eingebunden
+ werden.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------

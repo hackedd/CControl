@@ -1,0 +1,173 @@
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³                    Informationen zum DCF77-Zeitsignal                    ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+ Mit dem Zeitgesetz vom 25. Juli 1978 hat die Physikalisch-Technische
+ Bundesanstalt (PTB) den Auftrag erhalten, fuer die Bundesrepublik
+ Deutschland die Gesetzliche Zeit darzustellen und zu verbreiten.
+
+ Zur Wahrnehmung der ersten Aufgabe benutzt das Labor "Zeiteinheit" der PTB
+ Braunschweig vier Atomuhren, CS1 bis CS4, die zu den genausten Frequenz-
+ normalen weltweit gehoeren. Die Bezeichnung "CS" ist vom Caesium abgeleitet,
+ dessen Eigenschaften in den verwendeten Atomuhren genutzt werden.
+
+ Zur Verbreitung der (codierten) Zeitinformation dient der Sender DCF77 in
+ Mainflingen, etwa 30 km suedoestlich von Frankfurt am Main. Er benutzt die
+ Langwellenfrequenz 77,5 kHz, wodurch eine maximale Reichweite von 1000 bis
+ 1500 km bei nur 30 kW Sendeleistung erreicht wird. Auf diese Weise kann das
+ Zeitsignal in ganz Mitteleuropa (zumindest nachts) empfangen werden.
+
+ Das zur Zeitaussendung benutzte Kodierungsprinzip ist so klar strukturiert,
+ dass man es wahrlich genial nennen kann. Die im Dauerstrich abgestrahlte
+ Traegerfrequenz von 77,5 kHz wird zu Beginn jeder Sekunde einmal auf 25% der
+ Normalamplitude abgesenkt ("Sekundenmarke").
+
+ Diese Amplitudenmodulation kann entweder kurz (0,1 Sekunde) oder lang (0,2
+ Sekunde) sein; eine kurze Marke entspricht einem digitalen LOW-Bit, die
+ lange einem HIGH-Bit. Sammelt man die ankommenden Bits ein und decodiert sie
+ entsprechend, erhaelt man die BCD-Codes von Uhrzeit, Datum und Wochentag.
+
+ Um den kontinuierlich eintreffenden Bit-Strom empfaengerseitig
+ synchronisieren zu koennen, fehlt in jeder Minute die 59. Sekundenmarke.
+ Wenn eine Auswerteschaltung dieses "Loch" erkennt, weiss sie, dass mit dem
+ Beginn der naechsten Sekundenmarke eine neue Minute und damit eine neue
+ Datenuebertragung beginnt.
+
+ Jede weitere Sekundenmarke ist dann anhand ihrer Nummer eindeutig zu
+ identifizieren, und ihre Bedeutung liegt aufgrund des gewaehlten
+ Codierungsschemas fest. Um beispielsweise eine "8" im BCD-Code zu
+ uebermitteln, werden vier Marken uebertragen: 0 - 0 - 0 - 1 (die
+ Uebertragung beginnt immer mit dem LSB).
+
+ Die codierte Zeitinformation braucht fuer die Uebertragung des Minutenwertes
+ 7 Bits (vier fuer die Einer, denn diese koennen Werte von "0" bis "9"
+ annehmen, und drei fuer die Zehner, welche erfahrungsgemaess nur bis maximal
+ "5" gehen); fuer die Stunden genuegen 6 Bits (wieder vier fuer die Einer,
+ aber nur zwei fuer die Zehner - maximal "2"), gleiches gilt fuer den
+ Kalendertag. Der Monat benoetigt nur 5 Bits, der Wochentag 3 und zur
+ Uebermittlung der Jahreszahl (00 bis 99) werden 8 Bits verwendet. Wo die
+ einzelnen Informationen innerhalb des Datenstroms beginnen wird in der
+ Grafik am Ende dieser Textdatei beschrieben.
+
+ Insgesamt kommt man nach diesem Verfahren auf 35 Bits. Die Sekunden brauchen
+ nicht mit uebertragen zu werden, weil die Auswerteelektronik dazu nur die
+ Sekundenmarken mitzaehlen muss; beim Minutenbeginn (nach dem 59er-Loch) wird
+ dieser Zaehler einfach auf Null zurueckgesetzt.
+
+ Zur Sicherung fuegt man noch drei Paritaetsbits ein, die die
+ Auswerteschaltung mit einbeziehen kann, so dass von den 59 Sekundenmarken
+ die pro Minute zur Verfuegung stehen nur 38 zur Uebermittlung der Uhrzeit
+ und des Datums verwendet werden. In den restlichen 21 Bits kann
+ Zusatzinformation untergebracht werden; wie z.B. ein Marker fuer Sommerzeit,
+ die Ankuendigung eines Wechsels von Sommer- auf Winterzeit (oder umgekehrt),
+ sowie ein Hinweis auf eine nahende Schaltsekunde (die 61. Sekunde einer
+ Minute; um "Gangfehler" der Erde auszugleichen).
+
+ Die benutzten Atomuhren CS1 bis CS4 sind Eigenentwicklungen und -Bauten der
+ PTB Braunschweig. Sie gelten als weltweit genaueste "Uhren", von denen es
+ nur etwa zehn annaehernd vergleichbare Exemplare gibt.
+
+ Eine Atom-"Uhr" nutzt folgenden physikalischen Effekt: Atome koennen
+ verschiedene Energiezustaende einnehmen, die man z.B. mit (+) und (-)
+ kennzeichnen kann. Fuehrt man den Uebergang von einen in den anderen
+ Energiezustand herbei, erzeugen die Atome eine elektromagnetische Strahlung
+ hoher Konstanz; durch aeussere Bestrahlung mit dieser Frequenz ist der
+ Effekt umkehrbar. Dieser Effekt ist beim Caesium-133-Atom besonders
+ ausgepraegt; dabei handelt es sich um ein gelbliches Metall, das bereits bei
+ ca. 30 øC schmilzt. In einer Atomuhr wird es bei rund 100 øC zum Verdampfen
+ gebracht, wobei Atome beider Energiezustaende austreten.
+
+ Sie durchlaufen ein Magnetfeld, in dem die Atome unterschiedlich abgelenkt
+ werden: Nur die (+)-Typen gelangen in den Hohlraumresonator, die (-)-Typen
+ werden vom Magnetfeld eingefangen. Auf ihrem Flug durch den Resonator setzt
+ man die Atome einer Bestrahlung mit der fuer Caesium typischen Frequenz von
+ 9,192631770 GHz aus, wodurch die meisten (+)-Atome wieder in den (-)-Zustand
+ uebergehen. Die verbliebenen (+)-Atome werden nach erneutem Durchlaufen
+ eines Magnetfeldes in einem Auffaenger gesammelt; der daraus resultierende
+ Strom (im Pikoampere-Bereich!) ist um so kleiner, je besser der Beschuss im
+ Resonator geklappt hat. Dieser Strom dient also als Stellgroesse fuer eine
+ Frequenzregelschaltung, die die Bestrahlungsfrequenz von 9,192631770 GHz
+ nachfuehrt. Frequenzteiler setzen diese krumme Mutterfrequenz herunter und
+ leiten daraus sowohl die hochgenaue Traegerfrequenz von 77,5 kHz ab als auch
+ die Sekunde als Grundbaustein der Zeitskala. Der mit dem alten Prunkstueck
+ CS2 erzielbare Restfehler liegt im Bereich von 10^14; d.h. man ist damit in
+ der Lage, eine Zeitspanne von 10^14 Sekunden auf die Sekunde genau
+ anzugeben! Die so niedlich klingenden 10^14 sind immerhin gut 3 Millionen
+ Jahre lang (wir wollen uns in diesem Zusammenhang nicht um ein paar
+ zehntausend Jahre streiten)! Tatsaechlich gehen die CS2-Nachfolger auch in
+ Jahrmillionen noch genau; sicherlich wird ihre relative Unschaerfe dann um
+ Groessenordnungen kleiner sein als jetzt, was fuer heutige Generationen
+ allerdings relativ bedeutungslos sein duerfte.
+
+ Wer noch mehr Informationen zum DCF77-Zeitsignal benoetigt, sollte auf der
+ wirklich gut gemachten "Funk-Uhr Homepage" vorbeischauen. Unter der
+ Internetadresse "http://www.heret.de/funkuhr/index.htm" gibt es Bauplaene,
+ Programme, Reichweitenberichte, Informationen, Tips und Logfiles zum DCF77-
+ Signal. Sogar Tondokumente, mit denen das Signal auch akustisch wahrgenommen
+ werden kann, sind vorhanden!
+
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³                Empfang eines DCF77-Signals in der Praxis                 ³
+ ³                 mit Kennzeichnung der einzelnen Ziffern                  ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+ Die kurzen und langen Impulse werden hier bereits durch ihre binaere
+ Aequivalente "0" und "1" symbolisiert. Nach dem Synchronisationsimpuls
+ werden die 59 Datenbits zu Beginn jeder Sekunde uebertragen. Ab der 21.
+ Sekunde beginnt die Uhrzeit:
+
+  ÚÄÄ Minutenbeginn (immer LOW)
+  ³ ÚÄ nach Bedarf kodiert, z.B. Betriebsinformationen
+  ³ ³
+  ³ ³ Paritaet ueber Datum ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+  ³ ³ hoeherwertige Kalenderjahresziffer ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿    ³
+  ³ ³ niederwertige Kalenderjahresziffer ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿    ³    ³
+  ³ ³ hoeherwertige Kalendermonatsziffer ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿ ³    ³    ³
+  ³ ³ niederwertige Kalendermonatsziffer ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿    ³ ³    ³    ³
+  ³ ³ Wochentag (1 = Montag, 7 = Sonntag) ÄÄÄÄÄÄÄÄÄÄÄÄÄ¿   ³    ³ ³    ³    ³
+  ³ ³ hoeherwertige Kalendertagesziffer ÄÄÄÄÄÄÄÄÄÄÄÄ¿  ³   ³    ³ ³    ³    ³
+  ³ ³ niederwertige Kalendertagesziffer ÄÄÄÄÄÄÄ¿    ³  ³   ³    ³ ³    ³    ³
+  ³ ³                                          ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Paritaet ueber Stunde ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ hoeherwertige Stundenziffer ÄÄÄÄÄÄÄÄ¿  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ niederwertige Stundenziffer ÄÄÄ¿    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³                                ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Paritaet ueber Minute ÄÄÄÄÄÄÄ¿ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ hoeherw. Minutenziffer ÄÄ¿   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ nied. Minutenziffer ¿    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³                     ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Uhrzeitbeginn ÄÄÄÄ¿ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³                   ³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Schaltsekunde ÄÄÄ¿³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³                  ³³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Winterzeit ÄÄÄÄÄ¿³³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Sommerzeit ÄÄÄÄ¿³³³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Umstellung ÄÄÄ¿³³³³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³               ³³³³³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³ Reserveant. Ä¿³³³³³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  ³ ³              ³³³³³³ ³    ³   ³ ³    ³  ³ ³    ³  ³   ³    ³ ³    ³    ³
+  0 00000000000000 001001 1001 101 0 1100 01 1 1100 10 100 1001 0 1001 1001 0
+ 
+             dekodiert:   9    5     3    2    3    1  1   9    0 9    9
+
+ Alle Ziffern werden mit dem LSB zuerst uebertragen und sind BCD-kodiert. In
+ diesem Beispiel ergibt sich also der 13.09.99, ein Montag. Die kodierte
+ Uhrzeit ist 23:59. Die Sommerzeit (MESZ) ist aktiv. Es wird immer die
+ Uhrzeit und das Datum der Minute uebertragen die nach der Uebertragung
+ beginnt. Also wurde das erste Datenbit um 23:58:00, und das letzte Bit um
+ 23:58:58 empfangen. Um 23:58:59 wird kein Bit uebertragen um den Beginn der
+ neuen Minute und damit den Beginn einer neuen Uebertragung zu signalisieren.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------
+

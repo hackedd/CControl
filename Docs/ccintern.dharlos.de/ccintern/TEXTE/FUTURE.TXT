@@ -1,0 +1,174 @@
+
+ ----------------------------------------------------------------------------
+       Verbesserungsvorschlaege fuer zukuenftige C-Control/BASIC-Chips       
+ ----------------------------------------------------------------------------
+
+ In dieser Textdatei habe ich mir ueberlegt, wie man das C-Control/BASIC-
+ Mikrokontrollersystem mit einfachen Mitteln (z.B. durch Neucompilieren des
+ Betriebssystems oder durch Modifikationen am CCBASIC-Compiler) besser machen
+ koennte. Diese Vorschlaege sind auch fuer all diejenigen interessant, die
+ einen eigenen C-Control-Chip mit eigenem Betriebssystem auf Basis eines
+ Mikrokontrollers der MC68HC05-Serie, der statt ROM einen EPROM-Bereich
+ besitzt, entwickeln moechten.
+
+
+ ----------------------------------------------------------------------------
+                          Datenbereiche verschieben                          
+ ----------------------------------------------------------------------------
+
+ Es waere sehr sinnvoll, wenn in der naechsten Version des C-Control/BASIC-
+ Chips darueber nachgedacht wuerde, ob der Buffer fuer das DCF77-Zeittele-
+ gramm nicht direkt hinter das User-RAM gelegt werden koennte. Dann kann
+ dieser Bereich (von immerhin 12 Byte Groesse) vom Anwender als zusaetzlicher
+ Variablenspeicher benutzt werden, wenn kein DCF77-Empfaenger an die Unit
+ angeschlossen wird. Natuerlich muss diese Erweiterung auch vom CCBASIC-
+ Compiler unterstuetzt werden, bzw. von diesem eine Warnung ausgegeben
+ werden, falls der "normale" Variablenspeicher fuer das BASIC-Programm nicht
+ ausreicht.
+
+ Der Variablenbereich laesst sich sogar noch zusaetzlich erhoehen, indem
+ Speicherbereiche, die nicht zwingend von jedem BASIC-Programm benoetigt
+ werden (wie z.B. der Ringbuffer der seriellen Schnittstelle oder die Bytes
+ zum Speichern und Weiterzaehlen der internen Uhr) ebenfalls hinter dem User-
+ RAM angesiedelt wuerden.
+
+
+ ----------------------------------------------------------------------------
+                           Zusaetzliche Funktionen                           
+ ----------------------------------------------------------------------------
+
+ Wenn das Betriebssystem etwas optimaler programmiert wuerde, koennte der
+ BASIC-Interpreter durch zusaetzliche Funktionen erweitert werden. Sinnvoll
+ waere z.B. eine PEEK- und POKE-Funktion auf das serielle EEPROM, wahlfreier
+ Zugriff auf die Datendatei und das komfortable Ansprechen von zusaetzlichen
+ Geraeten am I2C-Bus. Solche Funktionen gibt es zwar schon als "Add-Ons",
+ doch durch diese in Maschinensprache geschrieben Routinen werden wertvolle
+ Systembytes im internen EEPROM verschwendet.
+
+
+ ----------------------------------------------------------------------------
+                     Parameteruebergabe an Unterprogramme                    
+ ----------------------------------------------------------------------------
+
+ Beim Aufruf eines BASIC-Unterprogramms sollten Parameter uebergeben werden
+ koennen. Diese koennten zum Beispiel auf dem Rechenstack zwischengespeichert
+ und dann innerhalb der Unterroutine mittels einer "Pseudo-Variablen" am
+ Beginn der Routine Variablen zugeordnet werden.
+
+                            Hier dazu ein Beispiel:
+
+   a=unterprogramm(1,2,3)
+   end
+
+   #unterprogramm
+     b=STACK         'der letzte Parameter (3) wird vom Stack geholt
+     c=STACK         'der vorletzte Parameter (2) wird vom Stack geholt
+     d=STACK         'der erste Parameter (1) wird vom Stack geholt
+   return b+c+d      'das Unterprogramm liefert diesen Wert zurueck
+
+
+ ----------------------------------------------------------------------------
+               Erleichterung des Aufrufs von Assemblerroutinen               
+ ----------------------------------------------------------------------------
+
+ Durch eine leichte Modifikation des BASIC-Compilers und ganz ohne Aenderung
+ des Betriebssystems kaeme diese Verbesserung aus. Maschinenspracheprogramme
+ sollten auf die Weise "a=sys(&h101,1,2,3)" aufgerufen werden koennen. Das
+ wuerde besonders die Rueckgabe von Parametern von der Unterroutine an das
+ Hauptprogramm erleichtern. Denn durch diese Art des Aufrufs wuerde keine der
+ (ohnehin knappen) vier GOSUB-Ebenen benutzt werden.
+
+
+ ----------------------------------------------------------------------------
+                     Aufrufoptimierung beim "SYS"-Befehl                     
+ ----------------------------------------------------------------------------
+
+ Wie im ROM-Listing an Adresse $1711 zu sehen ist, wird eine User-
+ Assemblerroutine per "jsr"-Befehl aufgerufen, obwohl unmittelbar hinter dem
+ Befehl ein "rts" steht. Dieser Befehl kann problemlos durch einen
+ unbedingten Sprung ("jmp") ersetzt werden. Dadurch wird immerhin ein
+ kostbarer Eintrag auf dem Hardwarestack gespart.
+
+
+ ----------------------------------------------------------------------------
+                RS232-Befehl zum Neustart des Mikrokontrollers               
+ ----------------------------------------------------------------------------
+
+ Um die Unit "aus der Ferne" ueber eine RS232-Verbindung mit einem neuen
+ BASIC- oder Assemblerprogramm auszustatten und anschliessend neu zu starten
+ ist es sinnvoll, wenn die C-Control nicht nur durch den Startjumper, sondern
+ ebenfalls durch einen speziellen RS232-Befehl in den RUN-Modus versetzt
+ werden koennte. Derzeit ist das nur ueber Tricks moeglich (siehe
+ TIPSUTRI.TXT).
+
+
+ ----------------------------------------------------------------------------
+                                Bugs entfernen                               
+ ----------------------------------------------------------------------------
+
+ Natuerlich sollten auch alle Fehler, die sich zur Zeit im Betriebssystem
+ befinden, verbessert werden. Eine genaue Liste ist in der Textdatei BUGS.TXT
+ zu finden.
+
+
+ ----------------------------------------------------------------------------
+                              DOS-IDE verbessern                             
+ ----------------------------------------------------------------------------
+
+ Ich finde, die Bedienung der DOS-IDE kann (besonders aus Sicht von Fast-Nur-
+ Tastatur-Benutzern) erheblich vereinfacht werden. Wieso kann das
+ Meldungsfenster nach dem Compilieren nicht mit Escape geschlossen werden?
+ Wieso springt der Cursor, wenn in der ersten Spalte einer Zeile die linke
+ Cursortaste gedrueckt wird, an das Ende der vorherigen Zeile und wieso kann
+ man das nicht ausstellen? Auch die Benutzung von TABs im Listing ist etwas
+ "strange". Ausserdem arbeitet der Editor im 43-Zeilen-Modus nicht richtig.
+
+ Die DOS-IDE ist gut, doch kann sie noch sehr viel besser werden, wenn mehr
+ Optionen vom Benutzer geaendert werden koennten.
+
+
+ ----------------------------------------------------------------------------
+          Die Weiterentwicklung der C-Control-Serie: Die C-Control 2         
+ ----------------------------------------------------------------------------
+
+ Im Dezember 1999 hat das Conrad Technologie Centrum angekuendigt, eine
+ grosse Schwester zur C-Control zu entwickeln. Die C-Control-2 (CC-2) wird
+ erheblich leistungsfaehiger sein und leider auch deutlich mehr kosten (ca.
+ 200,- DM).
+
+ Sie soll einen Infineon C164CI 16Bit-Mikrokontroller enthalten, mit
+ mindestens 20 MHz getaktet sein, 64KB User-Static-RAM und acht 10-Bit-AD-
+ Wandler besitzen. Ausserdem soll sie ein Multitasking-Realtime-
+ Betriebssystem und standardmaessig ein 2x8 Zeichen Mini-LCD verpasst
+ bekommen. Untergebracht werden soll der Mikrokontroller in einem wasserdicht
+ vergossenen Plastikmodul von der Groesse der CC-1-Unit.
+
+ So toll sich diese Neuerungen auch immer anhoeren, finde ich doch, dass
+ diese Neuentwicklung etwas in die falsche Richtung geht. Welcher Privatmann
+ will 200,- DM fuer einen Kontroller (also viermal mehr als fuer die CC-1)
+ ausgeben, um sein Aquarium, Spiel-Roboter oder sonst-was zu steuern? Fuer
+ viele Anwendungszwecke ist selbstverstaendlich eine hoehere Performance auf
+ kleinem Raum erforderlich, doch wuerde man die auch mit einem
+ Mikrokontroller auf 6805-Niveau erreichen, wenn man diesen mit einem
+ RICHTIGEN Basic-Kompiler ausstatten wuerde, der richtigen Assemblercode (und
+ nicht nur Tokens) generieren wuerde. Es gibt heutzutage - selbst im
+ Conradkatalog - Kontroller, die nicht mehr als 20,- DM kosten. Wenn man fuer
+ diese einen guten Kompiler schreiben wuerde erreicht man damit bestimmt mehr
+ Geschwindigkeit als mit interpretiertem BASIC auf der CC-2. Und auf einen
+ A/D-Wandler, der einen Kontroller relativ teuer macht, kann man in vielen
+ Anwendungen ebenfalls verzichten.
+
+ Es bleibt abzuwarten, wie die neue C-Control von den Anwendern aufgenommen
+ wird. Das Konzept vom preisguenstigen, einfach zu programmierenden
+ Mikrokontroller fuer "Jedermann" wird damit auf jeden Fall verworfen.
+
+
+ -----------------------------------------------------------------------------
+ Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+ Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+ kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+ tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+ Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+ der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+ Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+ -----------------------------------------------------------------------------

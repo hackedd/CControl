@@ -1,0 +1,278 @@
+
+CCBASIC-Tokentabelle:
+=====================
+
+In dieser Liste sind alle Token des C-Control/BASIC-Dialekts der Version
+1.7 aufgefuehrt. Die meisten BASIC-Befehle haben eine Laenge von einem
+Byte. Bei allen Befehlen die laenger als ein Byte sind folgen hinter dem
+jeweiligen Token noch zusaetzliche Daten im kompilierten BASIC-Programm.
+Diese zusaetzlichen Daten werden in dieser Liste durch einen Buchstaben
+hinter dem Token symbolisiert. Dabei steht b fuer einen Bytewert (8 Bit),
+w fuer einen Wordwert (16 Bit) und s fuer einen nullterminierten ASCII-
+String. Ob die einzelnen Befehle noch zusaetzliche Daten benoetigen (die
+meistens vom Rechenstack geholt werden) oder Werte zurueckliefern, sollte
+dem ROM-Listing (CCBASROM.TXT) entnommen werden.
+
+Die in der Tabelle aufgefuehrte Adresse gibt an, an welcher Adresse im ROM
+die Routine des jeweiligen Befehls beginnt.
+
+
+Token   Adr.   Befehl (und Beschreibung)
+==================================================================================
+0       $15B7  ignoriert, 1 Byte lang
+1       $15B8  intern, Rechenstack loeschen
+2       $15BB  PAUSE
+3 w     $15CB  GOTO, ELSE
+4 w     $15E0  IF .. THEN      hole das letzte Word vom Stack und springe zur
+                               Adresse w, falls das Word gleich 0 ist
+5 w     $169D  GOSUB
+6       $16A6  RETURN
+7       $1A0B  RETURN INTERRUPT
+8 w     $170A  SYS
+9 b     $1714  SLOWMODE
+10 b    $1720  intern, push data from bitport b to stack
+11 b    $172B  intern, push data from byteport b to stack
+12      $1736  intern, push data from wordport to stack
+13 b    $1740  intern, store Top-Of-Stack to bitport b
+14 b    $174B  intern, store Top-Of-Stack to byteport b
+15      $1756  intern, store Top-Of-Stack to wordport
+16 b    $1761  intern, push data from ad-port b to stack
+17 b    $176F  intern, store Top-Of-Stack to da-port b
+18      $15B7  ignoriert, 1 Byte lang
+19      $15B7  ignoriert, 1 Byte lang
+20 w    $1796  intern, push wordvalue w to stack
+21 b    $17A0  intern, push bitvar b to stack
+22 b    $17A7  intern, push bytevar b to stack
+23 b    $17AE  intern, push wordvar b to stack
+24 b    $17B5  intern, store Top-Of-Stack to bitvar b
+25 b    $17BC  intern, store Top-Of-Stack to bytevar b
+26 b    $17C3  intern, store Top-Of-Stack to wordvar b
+27 w    $17CA  LOOKTAB         hole die Nummer des zu lesenden Eintrags vom
+                               Stack und speichere anschliessend das Word
+                               von Adresse w + Eintrag auf dem Stack
+28 b    $1806  intern, push internal var b to stack
+29 b    $1881  intern, store Top-Of-Stack to internal var b
+30      $18D4  PRINT number
+31 s    $18DF  PRINT string
+32      $18ED  PUT
+33      $18F2  RXD
+34      $18F9  GET
+35      $1915  INPUT
+36 b    $1900  HANDSHAKE
+37      $190E  CTS
+38      $15B7  ignoriert, 1 Byte lang
+39      $15B7  ignoriert, 1 Byte lang
+40      $12B6  NOT
+41      $12C3  AND
+42      $12D2  NAND
+43      $12D6  OR
+44      $12E5  NOR
+45      $12E9  XOR
+46      $12F8  SHL
+47      $1316  SHR
+48      $1442  RANDOMIZE
+49      $1468  RAND
+50      $1334  intern, (unary -) negate last word on stack
+51      $1342  intern, (+) add last two words on stack & push result to stack
+52      $1351  intern, (-) subtract last word on stack from last-but-one word & push result
+53      $1360  intern, (*) multiply last two words on stack & push result
+54      $137E  intern, (/) divide last-but-one word on stack by last word & push result
+55      $139C  MOD
+56      $13BA  ABS
+57      $13E8  SQR
+58      $1484  MAX
+59      $14A4  MIN
+60      $14C4  intern, (>) test if last-but-one word is bigger than last word & push result
+61      $1510  intern, (>=) test if last-but-one word is bigger/equal last word & push result
+62      $14EA  intern, (<) test if last-but-one word is lower than last word & push result
+63      $1536  intern, (<=) test if last-but-one word is lower/equal to last word & push result
+64      $155C  intern, (=) test if last two words on stack are equal & push result
+65      $1579  intern, (<>) test if last two words are not equal & push result
+66      $13CC  SGN
+67      $15B7  ignoriert, 1 Byte lang
+68      $15B7  ignoriert, 1 Byte lang
+69      $15B7  ignoriert, 1 Byte lang
+70 b    $197C
+   1           OPEN# FOR READ
+   2           OPEN# FOR WRITE
+   3           OPEN# FOR APPEND
+   4           CLOSE#
+   5           PRINT#
+   6           INPUT#
+71      $19D8  EOF
+72 b    $19DF  BAUD
+73 w    $19E6  INTERRUPT     w an Adresse $b9,$ba schreiben
+74 b w  $161F  intern, fuer FOR..NEXT-Schleifen: Vergleiche Word auf dem Stack
+               mit der Bytevariablen b, falls beide gleich sind springe nach w
+75 b w  $1628  intern, fuer FOR..NEXT-Schleifen: Vergleiche Word auf dem Stack
+               mit der Wordvariablen b, falls beide gleich sind springe nach w
+76 b w  $1631  intern, fuer FOR..NEXT-Schleifen: Addiere zur Bytevariablen b
+               das letzte Word auf dem Stack und springe zur EEPROM-Adresse w
+77 b w  $1640  intern, fuer FOR..NEXT-Schleifen: Addiere zur Wordvariablen b
+               das letzte Word auf dem Stack und springe zur EEPROM-Adresse w
+78      $15B7  ignoriert, 1 Byte lang
+79      $15B7  ignoriert, 1 Byte lang
+80 b    $177A  TOG
+81 b    $1781  PULSE
+82 b    $1788  DEACT bitport b
+83 b    $178F  DEACT byteport b
+84      $0A82  DEACT wordport
+255            END
+
+
+Das Basicprogramm beginnt im EEPROM ab Adresse 4.
+
+
+------------------------------------------------------------------------------
+
+
+Vordefinierte Konstanten:
+=========================
+
+R1200 = 219
+R2400 = 210
+R4800 = 201
+R9600 = 192
+ON = 65535 (bzw. -1)
+OFF = 0
+
+
+Interne Variablen:
+==================
+
+YEAR = 0
+MONTH = 1
+DAY = 2
+DOW = 3
+HOUR = 4
+MINUTE = 5
+SECOND = 6
+TIMER = 7
+BEEP = TICKS = 8  (Frequenz des BEEP-Generators)
+FREQ = FREQ1 = 9  (Eingangsfrequenz am DCF77-Port)
+FREQ2 = 10
+FILEFREE = 11
+Laenge der EEPROM-Datei (in Byte) = 12  (wird vom Compiler nicht unterstuetzt)
+
+In die internen Variablen TIMER, FREQ (bzw. FREQ1), FREQ2, FILEFREE und
+die Laenge der EEPROM-Datei kann nicht geschrieben; die Variable BEEP
+(bzw. TICKS) kann nicht ausgelesen werden.
+
+
+Compiler-Anweisungen:
+=====================
+(erzeugen keine Tokens)
+
+DEFINE
+BIT
+BYTE
+WORD
+PORT
+BYTEPORT
+WORDPORT
+AT
+AD
+DA
+SYSCODE
+SYSEND
+TABLE
+TABEND
+
+READ
+WRITE
+APPEND
+TO
+
+
+------------------------------------------------------------------------------
+
+
+Beispiele fuer zusammengesetzte Befehle:
+========================================
+
+BEEP 2,5,9               20 0 2 29 8 20 0 5 2 4 0 22 20 0 0 29 8 20 0 9 2
+
+DEFINE a BYTE
+FOR a=123 TO 125         20 0 123 25 0
+NEXT                     20 0 125 74 0 0 24 20 0 1 76 0 0 10
+
+DEFINE b WORD
+FOR b=123 TO 126         20 0 123 26 1
+NEXT                     20 0 126 75 1 0 23 20 0 1 77 1 0 9
+
+DEFINE a BYTE
+FOR a=123 TO 125 STEP 2  20 0 123 25 0
+NEXT                     20 0 125 74 0 0 24 20 0 2 76 0 0 10
+
+ON...GOSUB          23 1 20 0 0 64 4 0 17 5 0 30 23 1 20 0 1 64 4 0 29 5 0 30
+ON...GOTO           23 1 20 0 0 64 4 0 17 3 0 30 23 1 20 0 1 64 4 0 29 3 0 30
+
+WAIT 0                   20 0 0 4 0 5
+
+DEFINE d AD12[1]
+a=d
+                         5 0 10 25 0 255
+                         20 0 0 20 0 1 2 32 2 41 34 41 34 41 34 41 34 41 34
+                         41 34 41 34 41 34 41 6 3 0 62 32 32 32 41 6 32 32
+                         32 32 32 32 41 6 34 41 34 41 34 41 34 41 6 34 34 34
+                         34 34 34 34 6
+
+
+NETWORK-Befehle:
+================
+(Liste nicht unbedingt vollstaendig)
+
+NETWORK SELF=122 MAILSLOT=1
+INITMODEM
+                         20 0 5 32 2 8 12 224 20 0 0 41 32 20 0 122 32 32
+                         41 32 32 32 32 32 20 0 5 2 41 33 43 4 0 52 40 34
+                         41 33 43 4 0 52 34 41 20 0 122 64 8 12 224 6 255
+                         20 0 0 20 0 1 2 32 2 41 34 25 0 41 34 41 34 25 1
+                         41 34 41 34 25 2 41 34 25 3 41 34 25 4 41 34 41 6
+                         5 0 122 3 0 130 32 32 32 41 6 32 32 32 32 32 32 41
+                         6 34 41 34 41 34 41 34 41 6 34 34 34 34 34 34 34 6
+                         22 0 4 0 138 3 0 55
+
+
+NETWORK SELF=123
+INITMODEM                20 0 5 32 2 8 12 224 20 0 0 41 32 20 0 123 32 32
+                         41 32 32 32 32 32 20 0 5 2 41 33 43 4 0 52 40 34
+                         41 33 43 4 0 52 34 41 20 0 123 64 8 12 224 6 255
+                         20 0 0 20 0 1 2 32 2 41 34 41 34 41 34 41 34 41 34
+                         41 34 41 34 41 34 41 6 3 0 109 32 32 32 41 6 32 32
+                         32 32 32 32 41 6 34 41 34 41 34 41 34 41 6 34 34 34
+                         34 34 34 34
+
+
+NETWORK SELF=122 MAILSLOT=1
+SENDMAIL 125, 126, 127, 128, 129
+
+                         5 0 54 20 0 125 32 20 0 126 32 20 0 122 32 32 20
+                         0 127 32 20 0 128 32 20 0 129 32 34 20 0 0 64 4 0
+                         46 5 0 91 3 0 52 5 0 119 5 0 127 6 255 20 0 0 20 0
+                         1 2 32 2 41 34 25 0 41 34 41 34 25 1 41 34 41 34 25
+                         2 41 34 25 3 41 34 25 4 41 34 41 6 5 0 119 3 0 127
+                         32 32 32 41 6 32 32 32 32 32 32 41 6 34 41 34 41 34
+                         41 34 41 6 34 34 34 34 34 34 34 6 22 0 4 0 135 3 0
+                         52
+
+
+NETWORK SELF=122 MAILSLOT=1
+GETMAIL
+                         5 0 15 22 0 65 5 0 88 6 255 20 0 0 20 0 1 2 32 2
+                         41 34 25 0 41 34 41 34 25 1 41 34 41 34 25 2 41 34
+                         25 3 41 34 25 4 41 34 41 6 5 0 80 3 0 88 32 32 32
+                         41 6 32 32 32 32 32 32 41 6 34 41 34 41 34 41 34 41
+                         6 34 34 34 34 34 34 34 6 22 0 4 0 96 3 0 13
+
+
+-----------------------------------------------------------------------------
+Dieser Text gehoert zur Informationssammlung "C-Control intern" von Dietmar
+Harlos zum C-Control-Mikrokontrollersystem. Die Fehlerfreiheit der Angaben
+kann nicht garantiert werden. Die kommerzielle Nutzung irgendeiner Informa-
+tion oder eines Verfahrens dieser Sammlung ist ausdruecklich untersagt!
+Eine aktuelle Version dieser Sammlung kann als ZIP-Archiv im Internet unter
+der Adresse "http://www.geocities.com/ccontrolintern" heruntergeladen werden.
+Weitere Informationen zum Copyright entnehmen Sie bitte der Datei INFO.TXT.
+-----------------------------------------------------------------------------
+
