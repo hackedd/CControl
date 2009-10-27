@@ -1,0 +1,46 @@
+Ronde = 
+[
+	20 sec Rood
+	90 sec Groen
+	30 sec Oranje
+] * 2 // Bij 3 pijlen
+	
+Ronde = 
+[
+	20 sec Rood
+	2.5 min Groen
+	30 sec Oranje
+] * 2 // Bij 6 pijlen
+	
+	Totaal pijlen is standaard 36
+	Bij jeugd is 18 pijlen
+	
+	Proefronde is AB CD
+	Aantal proefrondes is 0 of 1 of 2
+	Totaal proefpijlen is 6
+	
+	1 ste Ronde AB CD
+	2 de        CD AB
+	
+	Pijlen halen = 5 sec Rood of Rood knipperend 0.5 aan 0.5 uit
+	
+	Voor Rood		2 signalen ( één signaal = 0.5 sec )
+	Rood -> Groen	1 signaal
+	Oranje -> Rood	2 signalen
+	Pijlen halen	3 signalen
+	
+	Groen / Oranje verdeling instelbaar?
+	
+	Knop om vanuit Groen / Oranje naar de volgende Rood te gaan
+	Knop om tijdens Pijlen halen naar de volgende Ronde te gaan (evt. met minimum van 1 minuut)
+	
+	Knop voor noodstop:
+		5 signalen
+		Rood knipperend (S.O.S. )
+		
+		na Noodstop:
+			20 sec Rood
+			MIN(Tijd_in_Groen, 30) sec Groen
+			Tijd_in_Oranje = 0
+			Terugspringen naar wedstrijd
+
