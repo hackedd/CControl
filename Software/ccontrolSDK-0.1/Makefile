@@ -18,7 +18,7 @@ DNIXOBJS=tools/dos2unix.o
 CPP=g++
 CC=gcc
 AS=as
-RM=rm
+RM=rm -f
 .SUFFIXES : .o .c .s
 
 CCFLAGS = -Wall -ansi -g
@@ -46,11 +46,11 @@ dos2unix: $(DNIXOBJS)
 	$(CC) $(CFLAGS) -o $(DNIX) $(DNIXOBJS)
 
 clean: 
-	rm $(ASMOBJS)
-	rm $(CCBASICOBJS)
-	rm $(UOBJS) $(DOBJS)
-	rm $(DNIXOBJS)
-	rm $(ASM)	
-	rm $(CCBASIC)
-	rm $(UP) $(DOWN)
-	rm $(DNIX)
+	$(RM) $(ASMOBJS)
+	$(RM) $(CCBASICOBJS)
+	$(RM) $(UOBJS) $(DOBJS)
+	$(RM) $(DNIXOBJS)
+	$(RM) $(ASM)	
+	$(RM) $(CCBASIC)
+	$(RM) $(UP) $(DOWN)
+	$(RM) $(DNIX)

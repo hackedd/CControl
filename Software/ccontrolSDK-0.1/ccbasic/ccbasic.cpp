@@ -4,10 +4,12 @@
 
 ********************************************************************/
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <string.h>
+
+using namespace std;
 
 #include "68HC05B6/codedefs.h"
 #include "compiler.hpp"

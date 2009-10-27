@@ -4,6 +4,7 @@
 #include <fcntl.h>   /* File control definitions */
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
+#include <stdlib.h>
 
 /*
 * 'open_port()' - Open serial port 1.
@@ -29,7 +30,7 @@ int open_port(char *device)
     bzero(&options, sizeof(options));
     
     tcgetattr(fd, &options);
-    printf("termios: %li %ld %ld %ld %ld\n", options.c_iflag, options.c_oflag, options.c_cflag, options.c_lflag, options.c_line);
+    //printf("termios: %li %ld %ld %ld %ld\n", options.c_iflag, options.c_oflag, options.c_cflag, options.c_lflag, options.c_line);
     
     options.c_cflag = B9600 | CRTSCTS | CS8 | CLOCAL | CREAD;
     options.c_iflag = IGNPAR;
@@ -123,7 +124,7 @@ int main(int argc, char **argv)
     
     if(argc < 2)
     {
-    	printf("Usage: %s -f <file.dat> -d <tty device>\n", argv[0]);
+    	printf("Usage: %s -d <tty device>\n", argv[0]);
 	return 1;
     }
 	
@@ -142,7 +143,7 @@ int main(int argc, char **argv)
 	    break;  	  
 
 	    default:
-		printf("Usage: %s -f <file.dat> -d <tty device>\n", argv[0]);
+		printf("Usage: %s -d <tty device>\n", argv[0]);
 	        exit(1);
 	    break;
         }

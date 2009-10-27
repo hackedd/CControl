@@ -44,6 +44,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "as.h"
 #ifdef M68HC05
@@ -277,13 +278,13 @@ int main( int argc, char *argv[] )
 
 			/* print total bytes: */
 			sprintf( fbuf, "Program + Init Data = %d bytes\n", F_total );
-			fprintf( out, fbuf );
+			fprintf( out, "%s", fbuf );
 			if( ERLflag )
 				fputs( fbuf, EFp );
 
 			/* print error count: */
 			sprintf( fbuf, "Error count = %d\n", Err_count );
-			fprintf( out, fbuf );
+			fprintf( out, "%s", fbuf );
 			if( ERLflag )
 				fputs( fbuf, EFp );
 
@@ -2005,7 +2006,7 @@ void fatal( char *str ){
 	pouterror();	/* added ver TER_2.0 4 Jul 89 */
 	
 	sprintf( buf, "%s\n", str );
-	fprintf( out, buf );
+	fprintf( out, "%s", buf );
 	
 	if( ERLflag )
 		fputs( buf, EFp );
@@ -2030,7 +2031,7 @@ void error( char *str ){
 */
 	pouterror();
 	sprintf( buf, "%s\n", str );
-	fprintf( out, buf );
+	fprintf( out, "%s", buf );
 	if( ERLflag ){
 		fputs( buf, EFp );
 		fputs( Line, EFp );
@@ -2194,7 +2195,7 @@ void print_line( void ){
 		putchar( *ptr++ ); */
 	strcpy( buf, Line );
 	*strchr( buf, '\n' ) = '\0';
-	fprintf( out, buf );
+	fprintf( out, "%s", buf );
 
 	for( ; i<P_total; i++ ){
 		if( i%6 == 0 )
@@ -2309,7 +2310,7 @@ int white( char c ){
 *	alloc --- allocate memory
 *----------------------------------------------------------------------*/
 char *alloc( int nbytes ){
-	char * malloc();
+	//char * malloc();
 	return( malloc( nbytes ));
 }
 

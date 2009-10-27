@@ -4,6 +4,7 @@
 #include <fcntl.h>   /* File control definitions */
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
+#include <stdlib.h>
 
 /*
 * 'open_port()' - Open serial port 1.

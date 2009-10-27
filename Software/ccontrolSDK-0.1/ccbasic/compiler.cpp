@@ -46,6 +46,8 @@ const int BAUDRATE_VALUES[] = { 0xDB, 0xD2, 0xC9, 0xC0 };
 const char KEYWORD_DEFINE[] = "DEFINE";
 const char KEYWORD_NETWORK[] = "NETWORK";
 
+char DEFAULT_SOURCEPATH[] = "";
+
 //-------------------------------------------
   CCompiler::CCompiler ( char* _pSourcePath )
 //-------------------------------------------
@@ -67,7 +69,7 @@ const char KEYWORD_NETWORK[] = "NETWORK";
   vars.Define(KEYWORD_FREQ, (SPECIALDATA << 8) + 9);
 
   if ( NULL ==  _pSourcePath )
-	 pSourcePath = "";
+	 pSourcePath = DEFAULT_SOURCEPATH;
   else
 	 pSourcePath = _pSourcePath;
 }

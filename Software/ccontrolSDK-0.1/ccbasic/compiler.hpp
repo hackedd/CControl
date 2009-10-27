@@ -8,7 +8,8 @@
 #define _COMPILER_HPP
 
 #include <string.h>
-#include <fstream.h>
+#include <fstream>
+using namespace std;
 
 #pragma warning(disable: 4290)
 
@@ -30,7 +31,6 @@
 #ifndef LOBYTE
   #define LOBYTE(w)  ((unsigned char)(w))
 #endif
-
 
 //#define MAX_CODELEN   8100
 #define MAX_CODELEN   20000
