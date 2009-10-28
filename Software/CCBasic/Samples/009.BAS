@@ -63,4 +63,4 @@ table tab1
 tabend
 
 ' Definition einer externen Tabelle
-table tab2 "009demo.tab"
+table tab2 "009DEMO.TAB"
