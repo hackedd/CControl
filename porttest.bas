@@ -1,0 +1,32 @@
+DEFINE red		PORT[1]
+DEFINE orange 	PORT[2]
+DEFINE green 	PORT[3]
+DEFINE buzzer 	PORT[4]
+DEFINE A 		PORT[5]
+DEFINE B 		PORT[6]
+DEFINE C 		PORT[7]
+DEFINE D 		PORT[8]
+DEFINE poort	BYTEPORT[1]
+
+DEFINE i		BYTE
+DEFINE v		BYTE
+
+'BEEP 400, 25, 25
+'END
+
+FOR i = 0 TO 8
+	LOOKTAB values, i, v
+	poort = v
+
+	PAUSE 25
+NEXT i
+
+'buzzer = ON
+'PAUSE 10
+'buzzer = OFF
+
+END
+
+TABLE values
+	&H00 &H01 &H02 &H04 &H10 &H20 &H40 &H80 &H00
+TABEND
