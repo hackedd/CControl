@@ -84,7 +84,7 @@ def process(input, output, verbose = False, outputLine = 1):
 			
 		elif line.strip().upper().startswith("ASCIITABLE"):
 			(ascii, name, data) = line.strip().split(None, 2)
-			bytes = map(ord, data[1:-1])
+			bytes = map(ord, eval(data))
 			
 			if verbose:
 				print >>sys.stderr, "%15s:%3d: Including %s with %d+1 entries" % (input.name, lineno, name, len(bytes))

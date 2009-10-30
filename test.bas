@@ -12,13 +12,13 @@ DEFINE archer	BYTE
 DEFINE round	BYTE
 DEFINE ab		BYTE
 
-'DEFINE red_time		20
-'DEFINE green_time	90
-'DEFINE orange_time	30
+DEFINE green_time	BYTE
 
-DEFINE red_time		2
-DEFINE green_time	3
-DEFINE orange_time	3
+' Magic Constants
+DEFINE RED_TIME		2 '20
+DEFINE ORANGE_TIME	3 '30
+
+green_time = 3
 
 ab = ON
 
@@ -31,7 +31,7 @@ FOR round = 0 TO 1
 		GOSUB buzz
 		GOSUB buzz
 
-		FOR t = 0 to red_time * 2
+		FOR t = 0 to RED_TIME * 2
 			PAUSE 25
 		NEXT t
 		red = OFF
@@ -47,7 +47,7 @@ FOR round = 0 TO 1
 
 #start_orange
 		orange = ON
-		FOR t = 0 to orange_time * 2
+		FOR t = 0 to ORANGE_TIME * 2
 			PAUSE 25
 		NEXT t
 		orange = OFF
@@ -83,27 +83,27 @@ D = OFF
 END
 
 #buzz
-BEEP 400, 50, 25
-RETURN
-buzzer = ON
-PAUSE 50
-buzzer = OFF
-PAUSE 25
+	BEEP 400, 50, 25
+	RETURN
+	buzzer = ON
+	PAUSE 50
+	buzzer = OFF
+	PAUSE 25
 RETURN
 
 #toggle_ab
-ab = NOT ab
+	ab = NOT ab
 
 #show_abcd
-IF ab THEN GOTO show_ab
-A = OFF
-B = OFF
-C = ON
-D = ON
+	IF ab THEN GOTO show_ab
+	A = OFF
+	B = OFF
+	C = ON
+	D = ON
 RETURN
 #show_ab
-C = OFF
-D = OFF
-A = ON
-B = ON
+	C = OFF
+	D = OFF
+	A = ON
+	B = ON
 RETURN
