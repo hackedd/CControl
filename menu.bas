@@ -3,32 +3,6 @@
 ' $Id$
 '
 
-#include "lcd_header.bas"
-#include "key_header.bas"
-
-DEFINE menu_option	BYTE
-DEFINE i			BYTE
-DEFINE j			BYTE
-
-DEFINE options		BYTE[10]
-DEFINE half			BIT[81]
-DEFINE long			BIT[82]
-DEFINE proef		BIT[83]
-
-' Initialize LCD Screen
-GOSUB lcd_init
-
-' Store our custom chars in the LCD's Memory
-GOSUB custom_chars_setup
-
-' Default Settings
-half = OFF
-long = OFF
-proef = ON
-
-' Start at Metric Option
-menu_option = 0
-
 #menu_render_controls
 	' Position cursor at 2:0
 	lcd_param = lcd_line2
@@ -78,12 +52,6 @@ menu_option = 0
 	
 	GOTO menu_render
 
-#start_proef
-#start_test
-	' Do nothing for now...
-	GOSUB lcd_cls
-	END
-
 #include "menu_metric.bas"
 
 #menu_render_proef
@@ -122,7 +90,7 @@ RETURN
 RETURN
 
 '                            0123456789ABCDEF0123456789ABCDEF
-ASCIITABLE menu_controls	" 2\x00 8\x01 4\x7F 6\x7E #\x02 "
+ASCIITABLE menu_controls	" \x002 8\x01 \x7F4 6\x7E #\x02 "
 ASCIITABLE menu_metric		"Metric: "
 '                            0123456789ABCDEF0123456789ABCDEF
 ASCIITABLE menu_metric_o	"Short   Long    Half Sh Half Lo "
@@ -130,8 +98,4 @@ ASCIITABLE menu_proef		"ProefPijlen: "
 ASCIITABLE menu_proef_o		"Ja Nee"
 ASCIITABLE menu_start		"Start Wedstrijd "
 ASCIITABLE menu_test		"Test Signalen   "
-
-#include "lcd_chars.bas"
-#include "lcd_routines.bas"
-#include "key_routines.bas"
 
