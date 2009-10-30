@@ -30,12 +30,10 @@
 	IF key_nr = -1 THEN GOTO menu_render_wait_key
 	
 	' Up one item in menu
-	IF key_nr =  2 AND menu_option > 0 THEN menu_option = menu_option - 1
-	IF key_nr =  2 AND menu_option = 0 THEN menu_option = 3
+	IF key_nr =  2 THEN IF menu_option = 0 THEN menu_option = 3 ELSE menu_option = menu_option - 1
 	
 	' Down one item in menu
-	IF key_nr =  8 AND menu_option < 3 THEN menu_option = menu_option + 1
-	IF key_nr =  8 AND menu_option = 3 THEN menu_option = 0
+	IF key_nr =  8 THEN IF menu_option = 3 THEN menu_option = 0 ELSE menu_option = menu_option + 1
 	
 	' Left and Right in Metric option
 	IF key_nr =  4 AND menu_option = 0 THEN GOSUB menu_metric_left

@@ -5,48 +5,59 @@
 
 DEFINE SLASH 47
 
-'#round
-'	GOSUB show_abcd
+#round
+	GOSUB show_abcd
 	
-'	FOR j = 0 TO 1
+	FOR j = 0 TO 1
 #red_green_orange_cycle
 #start_red
 		red = ON
 		GOSUB buzz
 		GOSUB buzz
 
-		FOR t = 0 TO 3
-			PAUSE 25
-		NEXT t
-		'FOR t = 0 to RED_TIME * 2
-		'	PAUSE 25
-		'NEXT t
-'		TIMER = 0
-'		t = TIMER + RED_TIME
-'#red_loop
-'			'Do something meaningful, like updating the display
-'			IF TIMER < t THEN GOTO red_loop
+		TIMER = 0
+		t = TIMER + RED_TIME
+#red_loop
+			'Do something meaningful, like updating the display
+			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
+			GOSUB display_time_left
+			IF TIMER < t THEN GOTO red_loop
 		red = OFF
 
 #start_green
 		green = ON
 		GOSUB buzz
 
-		FOR t = 0 to green_time * 2
-			PAUSE 25
-		NEXT t
+		TIMER = 0
+		t = TIMER + green_time
+#green_loop
+			'Do something meaningful, like updating the display
+			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
+			GOSUB display_time_left
+			IF TIMER < t THEN GOTO green_loop
+
 		green = OFF
 
 #start_orange
 		orange = ON
-		FOR t = 0 to ORANGE_TIME * 2
-			PAUSE 25
-		NEXT t
+
+		TIMER = 0
+		t = TIMER + ORANGE_TIME
+#orange_loop
+			'Do something meaningful, like updating the display
+			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
+			GOSUB display_time_left
+			IF TIMER < t THEN GOTO orange_loop
+
 		orange = OFF
 		
-		RETURN
-'		IF j = 0 THEN GOSUB toggle_ab
-'	NEXT j
+		IF j = 0 THEN GOSUB toggle_ab
+	NEXT j
+	
+	IF round_proef THEN GOSUB toggle_ab
+	
+	lcd_temp = 0
+	GOSUB display_time_left
 	
 #start_collect
 	red = ON
@@ -90,5 +101,23 @@ RETURN
 	GOSUB lcd_print_digit_2
 RETURN
 
-'                         0123456789ABCDEF
-ASCIITABLE round_display "ProefRonde XX/XX"
+#set_round_controls
+	' Set cursor at 2:0
+	lcd_param = lcd_line2
+	GOSUB lcd_cmd
+	
+	FOR j = 0 TO 15
+		LOOKTAB round_controls, j, lcd_param
+		GOSUB lcd_put
+	NEXT j
+RETURN
+
+#display_time_left
+	lcd_param = lcd_line2 + 13
+	GOSUB lcd_cmd
+	GOSUB lcd_print_digit
+RETURN
+
+'							 0123456789ABCDEF
+ASCIITABLE round_display	"ProefRonde XX/XX"
+ASCIITABLE round_controls	"* Nood          "
