@@ -15,22 +15,22 @@ DEFINE B 		PORT[6]
 DEFINE C 		PORT[7]
 DEFINE D 		PORT[8]
 
-DEFINE menu_option	BYTE
+DEFINE menu_option	BYTE '5
 DEFINE i			BYTE
 DEFINE j			BYTE
 DEFINE rounds		BYTE
 DEFINE blaat		BYTE
-
-DEFINE options		BYTE[10]
-DEFINE half			BIT[81]
-DEFINE long			BIT[82]
-DEFINE proef		BIT[83]
-DEFINE round_proef	BIT[84]
-DEFINE round_ab		BYTE 'BIT[85]
-
+DEFINE green_time	BYTE
 DEFINE t			WORD ' 11 & 12
 
-DEFINE green_time	BYTE
+DEFINE options		BYTE[20]
+DEFINE half			BIT[161]
+DEFINE long			BIT[162]
+DEFINE proef		BIT[163]
+DEFINE round_proef	BIT[164]
+DEFINE round_ab		BIT[165]
+
+
 
 ' Magic Constants
 DEFINE RED_TIME		400 '20 sec

@@ -75,7 +75,7 @@ RETURN
 		GOSUB lcd_put
 	NEXT j
 	' Write Ronde
-	FOR j = 5 TO 9
+	FOR j = 5 TO 10
 		LOOKTAB round_display, j, lcd_param
 		GOSUB lcd_put
 	NEXT j
@@ -91,4 +91,4 @@ RETURN
 RETURN
 
 '                         0123456789ABCDEF
-ASCIITABLE round_display "ProefRonde:XX/XX"
+ASCIITABLE round_display "ProefRonde XX/XX"
