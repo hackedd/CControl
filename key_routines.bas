@@ -1,3 +1,8 @@
+' This file is part of 'Buiten Wedstrijd Installatie' - HBSV Assumburg
+' (C) 2009 Paul Hooijenga - <phooijenga@gmail.com>
+' $Id$
+'
+
 #get_key
 	FOR key_nr = 0 TO 11
 		LOOKTAB key_codes, key_nr, key_compare

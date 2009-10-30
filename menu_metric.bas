@@ -1,3 +1,8 @@
+' This file is part of 'Buiten Wedstrijd Installatie' - HBSV Assumburg
+' (C) 2009 Paul Hooijenga - <phooijenga@gmail.com>
+' $Id$
+'
+
 #menu_render_metric
 	' Render Metric:
 	FOR i = 0 TO 7

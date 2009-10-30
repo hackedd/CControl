@@ -1,3 +1,8 @@
+' This file is part of 'Buiten Wedstrijd Installatie' - HBSV Assumburg
+' (C) 2009 Paul Hooijenga - <phooijenga@gmail.com>
+' $Id$
+'
+
 DEFINE lcd_port		BYTEPORT[2]
 DEFINE lcd_rs		PORT[14]
 DEFINE lcd_rw		PORT[13]
