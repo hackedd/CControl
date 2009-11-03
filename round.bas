@@ -9,7 +9,6 @@ DEFINE SLASH 47
 	GOSUB show_abcd
 	
 	FOR j = 0 TO 1
-#red_green_orange_cycle
 #start_red
 		red = ON
 		GOSUB buzz
@@ -18,7 +17,7 @@ DEFINE SLASH 47
 		TIMER = 0
 		t = TIMER + RED_TIME
 #red_loop
-			'Do something meaningful, like updating the display
+			' Display number of seconds left
 			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 			GOSUB display_time_left
 			IF TIMER < t THEN GOTO red_loop
@@ -31,7 +30,7 @@ DEFINE SLASH 47
 		TIMER = 0
 		t = TIMER + green_time
 #green_loop
-			'Do something meaningful, like updating the display
+			' Display number of seconds left
 			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 			GOSUB display_time_left
 			IF TIMER < t THEN GOTO green_loop
@@ -44,7 +43,7 @@ DEFINE SLASH 47
 		TIMER = 0
 		t = TIMER + ORANGE_TIME
 #orange_loop
-			'Do something meaningful, like updating the display
+			' Display number of seconds left
 			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 			GOSUB display_time_left
 			IF TIMER < t THEN GOTO orange_loop
@@ -56,23 +55,52 @@ DEFINE SLASH 47
 	
 	IF round_proef THEN GOSUB toggle_ab
 	
-	lcd_temp = 0
+	lcd_temp = 60
 	GOSUB display_time_left
-	
+
 #start_collect
+	GOSUB set_collect_controls
+	
 	red = ON
 	GOSUB buzz
 	GOSUB buzz
 	GOSUB buzz
 
-	FOR t = 0 TO 1
-#collect_loop
+	TIMER = 0
+	t = TIMER + COLLECT_MIN_TIME
+#collect_loop_1
 		red = ON
 		PAUSE 25
 		red = OFF
 		PAUSE 50
-		'GOTO collect_loop
-	NEXT t	
+		lcd_temp = (t - TIMER) / TICKS_PER_SECOND
+		GOSUB display_time_left
+		IF TIMER < t THEN GOTO collect_loop_1
+
+#collect_loop_2
+		red = ON
+
+		TIMER = 0
+		t = TIMER + 25
+#collect_loop_2_red
+			GOSUB get_key
+			IF TIMER < t AND key_nr <> 11 THEN GOTO collect_loop_2_red
+		
+		IF key_nr = 11 THEN GOTO collect_loop_2_end
+		
+		red = OFF
+					
+		TIMER = 0
+		t = TIMER + 50
+#collect_loop_2_not_red
+			GOSUB get_key
+			IF TIMER < t AND key_nr <> 11 THEN GOTO collect_loop_2_not_red
+
+		IF key_nr = 11 THEN GOTO collect_loop_2_end ELSE GOTO collect_loop_2
+	
+#collect_loop_2_end	
+	red = OFF
+	
 RETURN
 
 #set_round_display
@@ -112,6 +140,25 @@ RETURN
 	NEXT j
 RETURN
 
+#set_collect_controls
+	' Set cursor at 2:0
+	lcd_param = lcd_line1
+	GOSUB lcd_cmd
+
+	FOR j = 0 TO 15
+		LOOKTAB collect_display, j, lcd_param
+		GOSUB lcd_put
+	NEXT j
+	
+	' Set cursor at 2:0
+	lcd_param = lcd_line2
+	GOSUB lcd_cmd
+	
+	FOR j = 0 TO 9
+		LOOKTAB collect_controls, j, lcd_param
+		GOSUB lcd_put
+	NEXT j
+
 #display_time_left
 	lcd_param = lcd_line2 + 13
 	GOSUB lcd_cmd
@@ -121,3 +168,6 @@ RETURN
 '							 0123456789ABCDEF
 ASCIITABLE round_display	"ProefRonde XX/XX"
 ASCIITABLE round_controls	"* Nood          "
+ASCIITABLE collect_display	"  Pijlen Halen  "
+ASCIITABLE collect_controls "# Volgende      "
+

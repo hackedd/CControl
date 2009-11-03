@@ -19,9 +19,9 @@ DEFINE menu_option	BYTE '5
 DEFINE i			BYTE
 DEFINE j			BYTE
 DEFINE rounds		BYTE
-DEFINE k			BYTE
-DEFINE green_time	WORD
-DEFINE t			WORD ' 11 & 12
+DEFINE k			BYTE ' 9
+DEFINE green_time	WORD ' 10 - 11
+DEFINE t			WORD ' 12 - 13
 
 DEFINE options		BYTE[20]
 DEFINE half			BIT[161]
@@ -32,10 +32,11 @@ DEFINE round_ab		BIT[165]
 
 ' Magic Constants
 DEFINE TICKS_PER_SECOND 50
-DEFINE RED_TIME			500  '20 sec
-DEFINE ORANGE_TIME		500  '30 sec
-DEFINE GREEN_TIME_LONG 	1200 '240 sec
-DEFINE GREEN_TIME_SHORT 500  '120 sec
+DEFINE RED_TIME			500		'20 sec
+DEFINE ORANGE_TIME		500		'30 sec
+DEFINE GREEN_TIME_LONG 	1200	'240 sec
+DEFINE GREEN_TIME_SHORT 500		'120 sec
+DEFINE COLLECT_MIN_TIME 300		'60 sec
 
 ' Initialize LCD Screen
 GOSUB lcd_init
@@ -54,8 +55,6 @@ menu_option = 2
 #include "menu.bas"
 
 #start_proef
-	GOSUB set_round_controls
-	
 	IF long = ON THEN green_time = GREEN_TIME_LONG ELSE green_time = GREEN_TIME_SHORT
 	
 	IF proef = OFF THEN GOTO start_round_1
@@ -65,21 +64,25 @@ menu_option = 2
 	
 	FOR i = 1 TO rounds
 		GOSUB set_round_display
+		GOSUB set_round_controls
 
 		round_ab = ON
 		GOSUB round
-
-		'GOSUB show_ab
-		'GOSUB red_green_orange_cycle
-		
-		'GOSUB show_cd
-		'GOSUB red_green_orange_cycle
-		
-		' Collect Arrows
 	NEXT i
 	
 #start_round_1
-	' Do nothing for now...
+	round_proef = OFF
+	
+	IF long THEN rounds = 6 ELSE rounds = 12
+	IF half THEN rounds = rounds / 2
+		
+	FOR i = 1 TO rounds
+		GOSUB set_round_display
+		GOSUB set_round_controls
+
+		GOSUB round
+	NEXT i
+
 	GOSUB lcd_cls
 	
 	A = OFF
