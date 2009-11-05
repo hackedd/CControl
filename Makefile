@@ -15,6 +15,9 @@ main: main.dat
 main.dat: $(FILES)
 	$(CCBASIC) $(CCBASICFLAGS) main.bas
 
+clean:
+	rm -f main.dat tmp*.bas tmp*.dat
+
 %.dat: %.bas
 	$(CCBASIC) $(CCBASICFLAGS) $<
 

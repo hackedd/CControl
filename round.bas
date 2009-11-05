@@ -6,9 +6,11 @@
 DEFINE SLASH 47
 
 #round
+	GOSUB set_round_display
+	GOSUB set_round_controls
 	GOSUB show_abcd
 	
-	FOR j = 0 TO 1
+	FOR archer = 1 TO 2
 #start_red
 		red = ON
 		GOSUB buzz
@@ -20,6 +22,12 @@ DEFINE SLASH 47
 			' Display number of seconds left
 			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 			GOSUB display_time_left
+			
+			GOSUB get_key
+			IF key_nr = 10 THEN GOSUB panic_button
+			IF key_nr = 0 THEN GOSUB pause_button
+			IF key_nr = 11 THEN t = TIMER
+			
 			IF TIMER < t THEN GOTO red_loop
 		red = OFF
 
@@ -33,6 +41,12 @@ DEFINE SLASH 47
 			' Display number of seconds left
 			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 			GOSUB display_time_left
+			
+			GOSUB get_key
+			IF key_nr = 10 THEN GOSUB panic_button
+			IF key_nr = 0 THEN GOSUB pause_button
+			IF key_nr = 11 THEN t = TIMER
+			
 			IF TIMER < t THEN GOTO green_loop
 
 		green = OFF
@@ -46,17 +60,23 @@ DEFINE SLASH 47
 			' Display number of seconds left
 			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 			GOSUB display_time_left
+			
+			GOSUB get_key
+			IF key_nr = 10 THEN GOSUB panic_button
+			IF key_nr = 0 THEN GOSUB pause_button
+			IF key_nr = 11 THEN t = TIMER
+			
 			IF TIMER < t THEN GOTO orange_loop
 
 		orange = OFF
 		
-		IF j = 0 THEN GOSUB toggle_ab
-	NEXT j
+		IF archer = 1 THEN GOSUB toggle_ab
+	NEXT archer
 	
 	IF round_proef THEN GOSUB toggle_ab
 	
-	lcd_temp = 60
-	GOSUB display_time_left
+	'lcd_temp = 60
+	'GOSUB display_time_left
 
 #start_collect
 	GOSUB set_collect_controls
@@ -73,8 +93,8 @@ DEFINE SLASH 47
 		PAUSE 25
 		red = OFF
 		PAUSE 50
-		lcd_temp = (t - TIMER) / TICKS_PER_SECOND
-		GOSUB display_time_left
+		'lcd_temp = (t - TIMER) / TICKS_PER_SECOND
+		'GOSUB display_time_left
 		IF TIMER < t THEN GOTO collect_loop_1
 
 #collect_loop_2
@@ -100,10 +120,12 @@ DEFINE SLASH 47
 	
 #collect_loop_2_end	
 	red = OFF
-	
 RETURN
 
 #set_round_display
+	IF round_proef THEN PRINT "Proef";
+	PRINT "Ronde "; i; " / "; rounds
+	
 	' Set cursor at 1:0
 	lcd_param = lcd_line1
 	GOSUB lcd_cmd
@@ -113,51 +135,46 @@ RETURN
 		IF round_proef = ON THEN LOOKTAB round_display, j, lcd_param ELSE lcd_param = 32
 		GOSUB lcd_put
 	NEXT j
+
 	' Write Ronde
-	FOR j = 5 TO 10
-		LOOKTAB round_display, j, lcd_param
-		GOSUB lcd_put
-	NEXT j
+	%LCD_PRINT_SUBSTRING (round_display, j, 5, 10)
+	
+	' Set cursor at 1:11
+	lcd_param = lcd_line1 + 11
+	GOSUB lcd_cmd
 	
 	lcd_temp = i ' i contains current Round
+	PRINT lcd_temp
 	GOSUB lcd_print_digit_2
 	
 	lcd_param = SLASH
 	GOSUB lcd_put
 	
 	lcd_temp = rounds
+	PRINT lcd_temp
 	GOSUB lcd_print_digit_2
+	
+	PRINT
 RETURN
 
 #set_round_controls
 	' Set cursor at 2:0
 	lcd_param = lcd_line2
 	GOSUB lcd_cmd
-	
-	FOR j = 0 TO 15
-		LOOKTAB round_controls, j, lcd_param
-		GOSUB lcd_put
-	NEXT j
+	%LCD_PRINT_STRING (round_controls, j)
 RETURN
 
 #set_collect_controls
 	' Set cursor at 2:0
 	lcd_param = lcd_line1
 	GOSUB lcd_cmd
-
-	FOR j = 0 TO 15
-		LOOKTAB collect_display, j, lcd_param
-		GOSUB lcd_put
-	NEXT j
+	%LCD_PRINT_STRING (collect_display, j)
 	
 	' Set cursor at 2:0
 	lcd_param = lcd_line2
 	GOSUB lcd_cmd
-	
-	FOR j = 0 TO 9
-		LOOKTAB collect_controls, j, lcd_param
-		GOSUB lcd_put
-	NEXT j
+	%LCD_PRINT_STRING (collect_controls, j)
+RETURN
 
 #display_time_left
 	lcd_param = lcd_line2 + 13
@@ -165,9 +182,37 @@ RETURN
 	GOSUB lcd_print_digit
 RETURN
 
+#pause_button
+	'Store the amount of time left
+	time_left = t - TIMER
+	
+	lcd_param = lcd_line1
+	GOSUB lcd_cmd
+	%LCD_PRINT_STRING (pause_display, j)
+	
+	lcd_param = lcd_line2
+	GOSUB lcd_cmd
+	%LCD_PRINT_STRING (pause_controls, j)
+	
+#pause_loop
+	GOSUB get_key
+	IF key_nr <> 0 THEN GOTO pause_loop
+	
+	GOSUB dumpvars
+	
+	GOSUB set_round_display
+	GOSUB set_round_controls
+	
+	' Restore amount of time left
+	TIMER = 0
+	t = TIMER + time_left
+RETURN
+
 '							 0123456789ABCDEF
 ASCIITABLE round_display	"ProefRonde XX/XX"
-ASCIITABLE round_controls	"* Nood          "
+ASCIITABLE round_controls	"*Nood #Skip     "
 ASCIITABLE collect_display	"  Pijlen Halen  "
-ASCIITABLE collect_controls "# Volgende      "
+ASCIITABLE collect_controls "#Volgende Ronde "
+ASCIITABLE pause_display	"     Pause      "
+ASCIITABLE pause_controls	"0Doorgaan       "
 

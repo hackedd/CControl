@@ -15,3 +15,15 @@ DEFINE lcd_line1	&h80
 DEFINE lcd_line2	&hC0
 DEFINE lcd_width	16
 
+#define LCD_PRINT_SUBSTRING (table, index, start, end) \
+	FOR %index = %start TO %end\
+		LOOKTAB %table, %index, lcd_param\
+		GOSUB lcd_put\
+	NEXT %index
+
+#define LCD_PRINT_STRING (table, index) \
+	FOR %index = 0 TO 15\
+		LOOKTAB %table, %index, lcd_param\
+		GOSUB lcd_put\
+	NEXT %index
+
