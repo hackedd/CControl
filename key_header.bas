@@ -7,3 +7,5 @@ DEFINE key_value	AD[8]
 DEFINE key_nr		BYTE
 DEFINE key_compare	BYTE
 
+DEFINE KEY_STAR		10
+DEFINE KEY_HASH		11

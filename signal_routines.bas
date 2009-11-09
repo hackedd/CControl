@@ -4,6 +4,7 @@
 '
 
 #buzz
+RETURN
 	BEEP 400, 50, 25
 RETURN
 	buzzer = ON

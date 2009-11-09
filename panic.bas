@@ -38,7 +38,7 @@
 		t = TIMER + 15
 #panic_loop_red
 			GOSUB get_key
-			IF key_nr = 10 THEN GOTO panic_end
+			IF key_nr = KEY_HASH THEN GOTO panic_end
 			IF TIMER < t THEN GOTO panic_loop_red
 		
 		red = OFF
@@ -46,8 +46,8 @@
 		t = TIMER + 15
 #panic_loop_not_red
 			GOSUB get_key
-			IF key_nr = 10 THEN GOTO panic_end
-			IF TIMER < t THEN GOTO panic_loop_red
+			IF key_nr = KEY_HASH THEN GOTO panic_end
+			IF TIMER < t THEN GOTO panic_loop_not_red
 	
 		GOTO panic_loop
 		
@@ -110,5 +110,5 @@ RETURN
 RETURN
 
 ASCIITABLE panic_display	"    Noodstop    "
-ASCIITABLE panic_controls	"#Doorgaan       "
+ASCIITABLE panic_controls	"#\x7EDoorgaan      "
 

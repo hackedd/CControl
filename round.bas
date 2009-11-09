@@ -24,9 +24,9 @@ DEFINE SLASH 47
 			GOSUB display_time_left
 			
 			GOSUB get_key
-			IF key_nr = 10 THEN GOSUB panic_button
+			IF key_nr = KEY_STAR THEN GOSUB panic_button
 			IF key_nr = 0 THEN GOSUB pause_button
-			IF key_nr = 11 THEN t = TIMER
+			IF key_nr = KEY_HASH THEN t = TIMER
 			
 			IF TIMER < t THEN GOTO red_loop
 		red = OFF
@@ -43,9 +43,9 @@ DEFINE SLASH 47
 			GOSUB display_time_left
 			
 			GOSUB get_key
-			IF key_nr = 10 THEN GOSUB panic_button
+			IF key_nr = KEY_STAR THEN GOSUB panic_button
 			IF key_nr = 0 THEN GOSUB pause_button
-			IF key_nr = 11 THEN t = TIMER
+			IF key_nr = KEY_HASH THEN t = TIMER
 			
 			IF TIMER < t THEN GOTO green_loop
 
@@ -62,9 +62,9 @@ DEFINE SLASH 47
 			GOSUB display_time_left
 			
 			GOSUB get_key
-			IF key_nr = 10 THEN GOSUB panic_button
+			IF key_nr = KEY_STAR THEN GOSUB panic_button
 			IF key_nr = 0 THEN GOSUB pause_button
-			IF key_nr = 11 THEN t = TIMER
+			IF key_nr = KEY_HASH THEN t = TIMER
 			
 			IF TIMER < t THEN GOTO orange_loop
 
@@ -104,9 +104,9 @@ DEFINE SLASH 47
 		t = TIMER + 25
 #collect_loop_2_red
 			GOSUB get_key
-			IF TIMER < t AND key_nr <> 11 THEN GOTO collect_loop_2_red
+			IF TIMER < t AND key_nr <> KEY_HASH THEN GOTO collect_loop_2_red
 		
-		IF key_nr = 11 THEN GOTO collect_loop_2_end
+		IF key_nr = KEY_HASH THEN GOTO collect_loop_2_end
 		
 		red = OFF
 					
@@ -114,18 +114,15 @@ DEFINE SLASH 47
 		t = TIMER + 50
 #collect_loop_2_not_red
 			GOSUB get_key
-			IF TIMER < t AND key_nr <> 11 THEN GOTO collect_loop_2_not_red
+			IF TIMER < t AND key_nr <> KEY_HASH THEN GOTO collect_loop_2_not_red
 
-		IF key_nr = 11 THEN GOTO collect_loop_2_end ELSE GOTO collect_loop_2
+		IF key_nr = KEY_HASH THEN GOTO collect_loop_2_end ELSE GOTO collect_loop_2
 	
 #collect_loop_2_end	
 	red = OFF
 RETURN
 
 #set_round_display
-	IF round_proef THEN PRINT "Proef";
-	PRINT "Ronde "; i; " / "; rounds
-	
 	' Set cursor at 1:0
 	lcd_param = lcd_line1
 	GOSUB lcd_cmd
@@ -144,17 +141,13 @@ RETURN
 	GOSUB lcd_cmd
 	
 	lcd_temp = i ' i contains current Round
-	PRINT lcd_temp
 	GOSUB lcd_print_digit_2
 	
 	lcd_param = SLASH
 	GOSUB lcd_put
 	
 	lcd_temp = rounds
-	PRINT lcd_temp
 	GOSUB lcd_print_digit_2
-	
-	PRINT
 RETURN
 
 #set_round_controls
@@ -186,10 +179,6 @@ RETURN
 	'Store the amount of time left
 	time_left = t - TIMER
 	
-	lcd_param = lcd_line1
-	GOSUB lcd_cmd
-	%LCD_PRINT_STRING (pause_display, j)
-	
 	lcd_param = lcd_line2
 	GOSUB lcd_cmd
 	%LCD_PRINT_STRING (pause_controls, j)
@@ -200,7 +189,6 @@ RETURN
 	
 	GOSUB dumpvars
 	
-	GOSUB set_round_display
 	GOSUB set_round_controls
 	
 	' Restore amount of time left
@@ -210,9 +198,8 @@ RETURN
 
 '							 0123456789ABCDEF
 ASCIITABLE round_display	"ProefRonde XX/XX"
-ASCIITABLE round_controls	"*Nood #Skip     "
+ASCIITABLE round_controls	"*\x7ENood #\x7ESkip   "
 ASCIITABLE collect_display	"  Pijlen Halen  "
-ASCIITABLE collect_controls "#Volgende Ronde "
-ASCIITABLE pause_display	"     Pause      "
-ASCIITABLE pause_controls	"0Doorgaan       "
+ASCIITABLE collect_controls "#\x7EVolgende Ronde"
+ASCIITABLE pause_controls	"Pause 0\x7EDoorgaan"
 

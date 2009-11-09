@@ -43,10 +43,10 @@
 	IF (key_nr =  4 OR key_nr = 6) AND menu_option = 1 THEN GOSUB menu_proef_toggle
 	
 	' Start
-	IF key_nr = 11 AND menu_option = 2 THEN GOTO start_proef
+	IF key_nr = KEY_HASH AND menu_option = 2 THEN GOTO start_proef
 	
 	' Start Testing Code
-	IF key_nr = 11 AND menu_option = 3 THEN GOTO start_test
+	IF key_nr = KEY_HASH AND menu_option = 3 THEN GOTO start_test
 	
 	GOTO menu_render
 

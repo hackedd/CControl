@@ -99,14 +99,6 @@ menu_option = 0
 	PRINT "key_compare: "; key_compare
 	PRINT "lcd_param: "; lcd_param
 	PRINT "lcd_temp: "; lcd_temp
-	PRINT "red: "; red
-	PRINT "orange: "; orange
-	PRINT "green: "; green
-	PRINT "buzzer: "; buzzer
-	PRINT "A: "; A
-	PRINT "B: "; B
-	PRINT "C: "; C
-	PRINT "D: "; D
 	PRINT "menu_option: "; menu_option
 	PRINT "i: "; i
 	PRINT "j: "; j
