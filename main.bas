@@ -93,30 +93,30 @@ menu_option = 0
 
 '	END
 
-#dumpvars
-	PRINT "key_value: "; key_value
-	PRINT "key_nr: "; key_nr
-	PRINT "key_compare: "; key_compare
-	PRINT "lcd_param: "; lcd_param
-	PRINT "lcd_temp: "; lcd_temp
-	PRINT "menu_option: "; menu_option
-	PRINT "i: "; i
-	PRINT "j: "; j
-	PRINT "rounds: "; rounds
-	PRINT "archer: "; archer
-	PRINT "green_time: "; green_time
-	PRINT "t: "; t
-	PRINT "time_left: "; time_left
-	PRINT "options: "; options
-	PRINT "half: "; half
-	PRINT "long: "; long
-	PRINT "proef: "; proef
-	PRINT "round_proef: "; round_proef
-	PRINT "round_ab: "; round_ab
-	PRINT "panic_red: "; panic_red
-	PRINT "panic_orange: "; panic_orange
-	PRINT "panic_green: "; panic_green
-RETURN
+'#dumpvars
+'	PRINT "key_value: "; key_value
+'	PRINT "key_nr: "; key_nr
+'	PRINT "key_compare: "; key_compare
+'	PRINT "lcd_param: "; lcd_param
+'	PRINT "lcd_temp: "; lcd_temp
+'	PRINT "menu_option: "; menu_option
+'	PRINT "i: "; i
+'	PRINT "j: "; j
+'	PRINT "rounds: "; rounds
+'	PRINT "archer: "; archer
+'	PRINT "green_time: "; green_time
+'	PRINT "t: "; t
+'	PRINT "time_left: "; time_left
+'	PRINT "options: "; options
+'	PRINT "half: "; half
+'	PRINT "long: "; long
+'	PRINT "proef: "; proef
+'	PRINT "round_proef: "; round_proef
+'	PRINT "round_ab: "; round_ab
+'	PRINT "panic_red: "; panic_red
+'	PRINT "panic_orange: "; panic_orange
+'	PRINT "panic_green: "; panic_green
+'RETURN
 
 #include "round.bas"
 #include "panic.bas"

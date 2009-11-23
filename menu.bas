@@ -27,7 +27,8 @@
 	
 #menu_render_wait_key
 	GOSUB get_key
-	IF key_nr = -1 THEN GOTO menu_render_wait_key
+	IF key_nr = NO_KEY THEN GOTO menu_render_wait_key
+	PRINT key_nr
 	
 	' Up one item in menu
 	IF key_nr =  2 THEN IF menu_option = 0 THEN menu_option = 3 ELSE menu_option = menu_option - 1

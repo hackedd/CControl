@@ -8,7 +8,7 @@
 		LOOKTAB key_codes, key_nr, key_compare
 		IF ABS(key_value - key_compare) < 3 THEN RETURN
 	NEXT
-	key_nr = -1
+	key_nr = NO_KEY
 RETURN
 
 TABLE key_codes

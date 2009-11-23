@@ -14,6 +14,7 @@ DEFINE lcd_temp		BYTE
 DEFINE lcd_line1	&h80
 DEFINE lcd_line2	&hC0
 DEFINE lcd_width	16
+DEFINE SPACE		&h20
 
 #define LCD_PRINT_SUBSTRING (table, index, start, end) \
 	FOR %index = %start TO %end\

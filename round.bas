@@ -187,8 +187,6 @@ RETURN
 	GOSUB get_key
 	IF key_nr <> 0 THEN GOTO pause_loop
 	
-	GOSUB dumpvars
-	
 	GOSUB set_round_controls
 	
 	' Restore amount of time left
