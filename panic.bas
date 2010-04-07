@@ -1,6 +1,6 @@
 ' This file is part of 'Buiten Wedstrijd Installatie' - HBSV Assumburg
 ' (C) 2009 Paul Hooijenga - <phooijenga@gmail.com>
-' $Id: lcd_header.bas 15 2009-10-30 03:37:47Z paul $
+' $Id$
 '
 
 #panic_button
