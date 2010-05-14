@@ -26,7 +26,7 @@ DEFINE SLASH 47
 			GOSUB get_key
 			IF key_nr = KEY_STAR THEN GOSUB panic_button
 			IF key_nr = 0 THEN GOSUB pause_button
-			IF key_nr = KEY_HASH THEN t = TIMER
+			' IF key_nr = KEY_HASH THEN t = TIMER
 			
 			IF TIMER < t THEN GOTO red_loop
 		red = OFF
@@ -93,8 +93,6 @@ DEFINE SLASH 47
 		PAUSE 25
 		red = OFF
 		PAUSE 50
-		'lcd_temp = (t - TIMER) / TICKS_PER_SECOND
-		'GOSUB display_time_left
 		IF TIMER < t THEN GOTO collect_loop_1
 
 #collect_loop_2
