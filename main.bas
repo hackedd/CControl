@@ -36,13 +36,13 @@ DEFINE panic_green	BIT[168]
 
 ' Magic Constants
 DEFINE TICKS_PER_SECOND 50
-DEFINE RED_TIME			100		'20 sec
-DEFINE ORANGE_TIME		100		'30 sec
-DEFINE GREEN_TIME_LONG 	100		'240 sec
-DEFINE GREEN_TIME_SHORT 100		'120 sec
-DEFINE COLLECT_MIN_TIME 100		'60 sec
-DEFINE PANIC_RED_TIME	100		'20 sec
-DEFINE PANIC_BACK_TIME	1500	'30 sec
+DEFINE RED_TIME			500		' 10 sec
+DEFINE ORANGE_TIME		1500	' 30 sec
+DEFINE GREEN_TIME_LONG 	12000	' 240 sec
+DEFINE GREEN_TIME_SHORT 6000	' 120 sec
+DEFINE COLLECT_MIN_TIME 3000	' 60 sec
+DEFINE PANIC_RED_TIME	1000	' 20 sec
+DEFINE PANIC_BACK_TIME	1500	' 30 sec
 
 ' Initialize LCD Screen
 GOSUB lcd_init
@@ -90,33 +90,6 @@ menu_option = 0
 	D = OFF
 	
 	GOTO menu_render_controls
-
-'	END
-
-'#dumpvars
-'	PRINT "key_value: "; key_value
-'	PRINT "key_nr: "; key_nr
-'	PRINT "key_compare: "; key_compare
-'	PRINT "lcd_param: "; lcd_param
-'	PRINT "lcd_temp: "; lcd_temp
-'	PRINT "menu_option: "; menu_option
-'	PRINT "i: "; i
-'	PRINT "j: "; j
-'	PRINT "rounds: "; rounds
-'	PRINT "archer: "; archer
-'	PRINT "green_time: "; green_time
-'	PRINT "t: "; t
-'	PRINT "time_left: "; time_left
-'	PRINT "options: "; options
-'	PRINT "half: "; half
-'	PRINT "long: "; long
-'	PRINT "proef: "; proef
-'	PRINT "round_proef: "; round_proef
-'	PRINT "round_ab: "; round_ab
-'	PRINT "panic_red: "; panic_red
-'	PRINT "panic_orange: "; panic_orange
-'	PRINT "panic_green: "; panic_green
-'RETURN
 
 #include "round.bas"
 #include "panic.bas"
