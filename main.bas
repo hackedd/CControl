@@ -33,6 +33,7 @@ DEFINE round_ab		BIT[165]
 DEFINE panic_red	BIT[166]
 DEFINE panic_orange	BIT[167]
 DEFINE panic_green	BIT[168]
+DEFINE opschiet		BIT[169]
 
 ' Magic Constants
 DEFINE TICKS_PER_SECOND 50
@@ -40,7 +41,7 @@ DEFINE RED_TIME			500		' 10 sec
 DEFINE ORANGE_TIME		1500	' 30 sec
 DEFINE GREEN_TIME_LONG 	12000	' 240 sec
 DEFINE GREEN_TIME_SHORT 6000	' 120 sec
-DEFINE COLLECT_MIN_TIME 3000	' 60 sec
+DEFINE COLLECT_MIN_TIME 300	' 60 sec
 DEFINE PANIC_RED_TIME	1000	' 20 sec
 DEFINE PANIC_BACK_TIME	1500	' 30 sec
 
@@ -54,6 +55,7 @@ GOSUB custom_chars_setup
 half = OFF
 long = OFF
 proef = ON
+opschiet = OFF
 
 ' Start at Metric Option
 menu_option = 0
@@ -62,11 +64,13 @@ menu_option = 0
 
 #start_proef
 	IF long = ON THEN green_time = GREEN_TIME_LONG ELSE green_time = GREEN_TIME_SHORT
+	'IF opschiet = ON THEN green_time = GREEN_TIME_OPSCHIET
 	
 	IF proef = OFF THEN GOTO start_round_1
 	
 	round_proef = ON
 	IF long THEN rounds = 1 ELSE rounds = 2
+	IF opschiet THEN rounds = 1
 	
 	FOR i = 1 TO rounds
 		round_ab = ON

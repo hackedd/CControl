@@ -39,7 +39,7 @@
 #panic_loop_red
 			GOSUB get_key
 			IF key_nr = KEY_HASH THEN GOTO panic_end
-			IF TIMER < t THEN GOTO panic_loop_red
+			IF t - TIMER > 0 THEN GOTO panic_loop_red
 		
 		red = OFF
 		TIMER = 0
@@ -47,7 +47,7 @@
 #panic_loop_not_red
 			GOSUB get_key
 			IF key_nr = KEY_HASH THEN GOTO panic_end
-			IF TIMER < t THEN GOTO panic_loop_not_red
+			IF t - TIMER > 0 THEN GOTO panic_loop_not_red
 	
 		GOTO panic_loop
 		
@@ -60,7 +60,7 @@
 		' Display number of seconds left
 		lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 		GOSUB display_time_left
-		IF TIMER < t THEN GOTO panic_red_loop
+		IF t - TIMER > 0 THEN GOTO panic_red_loop
 
 	' Restore round display
 	GOSUB set_round_display
@@ -95,7 +95,7 @@ RETURN
 		lcd_temp = (t - TIMER) / TICKS_PER_SECOND
 		GOSUB display_time_left
 		
-		IF TIMER < t THEN GOTO panic_was_orange_green_loop
+		IF t - TIMER > 0 THEN GOTO panic_was_orange_green_loop
 	
 	' Set the time left back to the full Orange time
 	green = OFF

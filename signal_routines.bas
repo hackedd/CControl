@@ -4,6 +4,7 @@
 '
 
 #buzz
+RETURN
 	buzzer = ON
 	PAUSE 50
 	buzzer = OFF
@@ -14,6 +15,7 @@ RETURN
 	IF round_ab = ON THEN round_ab = OFF ELSE round_ab = ON
 	
 #show_abcd
+	IF opschiet = ON THEN GOTO show_abcd_all
 	IF round_ab = ON THEN GOTO show_ab
 	
 #show_cd
@@ -30,4 +32,10 @@ RETURN
 	B = ON
 RETURN
 
+#show_abcd_all
+	A = ON
+	B = ON
+	C = ON
+	D = ON
+RETURN
 

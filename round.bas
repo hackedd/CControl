@@ -28,7 +28,7 @@ DEFINE SLASH 47
 			IF key_nr = 0 THEN GOSUB pause_button
 			' IF key_nr = KEY_HASH THEN t = TIMER
 			
-			IF TIMER < t THEN GOTO red_loop
+			IF t - TIMER > 0 THEN GOTO red_loop
 		red = OFF
 
 #start_green
@@ -40,6 +40,7 @@ DEFINE SLASH 47
 #green_loop
 			' Display number of seconds left
 			lcd_temp = (t - TIMER) / TICKS_PER_SECOND
+			IF opschiet = ON THEN lcd_temp = 0
 			GOSUB display_time_left
 			
 			GOSUB get_key
@@ -47,7 +48,8 @@ DEFINE SLASH 47
 			IF key_nr = 0 THEN GOSUB pause_button
 			IF key_nr = KEY_HASH THEN t = TIMER
 			
-			IF TIMER < t THEN GOTO green_loop
+			IF opschiet = ON AND key_nr <> KEY_HASH THEN GOTO green_loop
+			IF t - TIMER > 0 THEN GOTO green_loop
 
 		green = OFF
 
@@ -66,11 +68,12 @@ DEFINE SLASH 47
 			IF key_nr = 0 THEN GOSUB pause_button
 			IF key_nr = KEY_HASH THEN t = TIMER
 			
-			IF TIMER < t THEN GOTO orange_loop
+			IF t - TIMER > 0 THEN GOTO orange_loop
 
 		orange = OFF
 		
 		IF archer = 1 THEN GOSUB toggle_ab
+		IF opschiet THEN GOTO start_collect
 	NEXT archer
 	
 	IF round_proef THEN GOSUB toggle_ab
@@ -93,7 +96,7 @@ DEFINE SLASH 47
 		PAUSE 25
 		red = OFF
 		PAUSE 50
-		IF TIMER < t THEN GOTO collect_loop_1
+		IF t - TIMER > 0 THEN GOTO collect_loop_1
 
 #collect_loop_2
 		red = ON
@@ -102,7 +105,7 @@ DEFINE SLASH 47
 		t = TIMER + 25
 #collect_loop_2_red
 			GOSUB get_key
-			IF TIMER < t AND key_nr <> KEY_HASH THEN GOTO collect_loop_2_red
+			IF t - TIMER > 0 AND key_nr <> KEY_HASH THEN GOTO collect_loop_2_red
 		
 		IF key_nr = KEY_HASH THEN GOTO collect_loop_2_end
 		
@@ -112,7 +115,7 @@ DEFINE SLASH 47
 		t = TIMER + 50
 #collect_loop_2_not_red
 			GOSUB get_key
-			IF TIMER < t AND key_nr <> KEY_HASH THEN GOTO collect_loop_2_not_red
+			IF t - TIMER > 0 AND key_nr <> KEY_HASH THEN GOTO collect_loop_2_not_red
 
 		IF key_nr = KEY_HASH THEN GOTO collect_loop_2_end ELSE GOTO collect_loop_2
 	
